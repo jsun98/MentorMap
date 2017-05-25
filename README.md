@@ -7,6 +7,11 @@ To clone to your local machine:
 $ git clone
 $ cd MentorMap
 ```
+Install dependencies:
+```
+$ npm install
+$ bower install
+```
 To run the startup script (in debug mode)
 ```
 $ DEBUG=mentormap:* npm start
