@@ -14,6 +14,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "nodemon": "^1.11.0",
+    "react": "^15.5.4",
     "serve-favicon": "~2.4.2"
   },
   "description": "Website development project for MentorMap",
