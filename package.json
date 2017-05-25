@@ -1,0 +1,31 @@
+{
+  "name": "mentormap",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "bower": "^1.8.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.8.1",
+    "nodemon": "^1.11.0",
+    "serve-favicon": "~2.4.2"
+  },
+  "description": "Website development project for MentorMap",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsun98/MentorMap.git"
+  },
+  "author": "Joshua Sun, Bill Qi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jsun98/MentorMap/issues"
+  },
+  "homepage": "https://github.com/jsun98/MentorMap#readme"
+}
