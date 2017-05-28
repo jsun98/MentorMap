@@ -10,11 +10,13 @@
     "bower": "^1.8.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
+    "ejs": "^2.5.6",
     "express": "~4.15.2",
-    "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "nodemon": "^1.11.0",
     "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-router": "^4.1.1",
     "serve-favicon": "~2.4.2"
   },
   "description": "Website development project for MentorMap",
@@ -28,5 +30,9 @@
   "bugs": {
     "url": "https://github.com/jsun98/MentorMap/issues"
   },
-  "homepage": "https://github.com/jsun98/MentorMap#readme"
+  "homepage": "https://github.com/jsun98/MentorMap#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "webpack": "^2.6.1"
+  }
 }
