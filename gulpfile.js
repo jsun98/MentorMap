@@ -5,6 +5,12 @@ var autoprefixer = require('gulp-autoprefixer');
 var jshint = require('gulp-jshint');
 var livereload = require('gulp-livereload');
 
+/*
+var browserify = require('browserify');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
+*/
+
 gulp.task('styles', function() {
   return sass('public/css/scss/*.scss', { style: 'expanded' })
     .pipe(autoprefixer('last 2 version'))
@@ -23,6 +29,17 @@ gulp.task('ejs',function(){
     return gulp.src('views/**/*.ejs')
     .pipe(livereload());
 });
+
+/*
+http://egorsmirnov.me/2015/05/25/browserify-babelify-and-es6.html
+gulp.task('buildJsx', function () {
+    return browserify({entries: 'react/main.jsx', extensions: ['.jsx'], debug: true})
+        .transform(babelify)
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest('dist'));
+});
+*/
 
 gulp.task('watch', function() {
     livereload.listen();
