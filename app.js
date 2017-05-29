@@ -7,7 +7,8 @@ var express = require('express');
 
 var app = express();
 
-
+//set port
+var PORT =  process.env.PORT || 3000;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,10 +24,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
 //route handlers
 app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -46,4 +45,4 @@ app.use(function(err, req, res, next) {
   res.render('404');
 });
 
-module.exports = app;
+app.listen(PORT);

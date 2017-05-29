@@ -11,13 +11,9 @@ Install dependencies:
 ```
 $ npm install
 ```
-To run the startup script (in debug mode)
+To run the startup script
 ```
-$ DEBUG=mentormap:* npm start
-```
-or
-```
-$ gulp nodemon
+$ gulp serve
 ```
 Navigate to ```localhost:3000```
 

@@ -25,6 +25,7 @@
     "browserify": "^14.4.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
+    "gulp-jshint": "^2.0.4",
     "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.2.1",
     "gulp-ruby-sass": "^2.1.1",
