@@ -10,11 +10,14 @@ $ cd MentorMap
 Install dependencies:
 ```
 $ npm install
-$ bower install
 ```
 To run the startup script (in debug mode)
 ```
 $ DEBUG=mentormap:* npm start
+```
+or
+```
+$ gulp nodemon
 ```
 Navigate to ```localhost:3000```
 

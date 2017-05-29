@@ -1,0 +1,23 @@
+{
+  "name": "mentormap",
+  "description": "Website development project for MentorMap",
+  "main": "app.js",
+  "authors": [
+    "Joshua Sun",
+    "Bill Qi"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jsun98/MentorMap",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7"
+  }
+}

@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+
 //route handlers
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
