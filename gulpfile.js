@@ -4,12 +4,9 @@ var sass = require('gulp-ruby-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var jshint = require('gulp-jshint');
 var livereload = require('gulp-livereload');
-
-/*
 var browserify = require('browserify');
 var babelify = require('babelify');
 var source = require('vinyl-source-stream');
-*/
 
 gulp.task('styles', function() {
   return sass('public/css/scss/*.scss', { style: 'expanded' })
@@ -30,22 +27,20 @@ gulp.task('ejs',function(){
     .pipe(livereload());
 });
 
-/*
-http://egorsmirnov.me/2015/05/25/browserify-babelify-and-es6.html
 gulp.task('buildJsx', function () {
     return browserify({entries: 'react/main.jsx', extensions: ['.jsx'], debug: true})
         .transform(babelify)
         .bundle()
         .pipe(source('bundle.js'))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('public/js'));
 });
-*/
 
 gulp.task('watch', function() {
     livereload.listen();
     gulp.watch('public/css/**/*.scss', ['styles']);
     gulp.watch('public/js/*.js', ['scripts']);
     gulp.watch('views/**/*.ejs', ['ejs']);
+    gulp.watch('react/**/*.jsx', ['buildJsx']);
 });
 
 gulp.task('server',function(){
