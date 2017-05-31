@@ -6,6 +6,7 @@ var livereload = require('gulp-livereload');
 var browserify = require('browserify');
 var babelify = require('babelify');
 var source = require('vinyl-source-stream');
+var jshint = require('gulp-jshint');
 
 gulp.task('styles', function() {
   return sass('public/css/scss/*.scss', { style: 'expanded' })
@@ -25,6 +26,26 @@ gulp.task('build', function () {
         .bundle()
         .pipe(source('bundle.js'))
         .pipe(gulp.dest('public/js'));
+});
+
+gulp.task('scripts', function() {
+  return gulp.src('react/**/*.js')
+    .pipe(jshint('.jshintrc'))
+    .pipe(jshint.reporter('default'))
+    .pipe(livereload());
+});
+
+gulp.task('eslint', function() {
+  return gulp.src('react/main.js')
+    .pipe(eslint({
+      baseConfig: {
+        "ecmaFeatures": {
+           "jsx": true
+         }
+      }
+    }))
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('watch', function() {
