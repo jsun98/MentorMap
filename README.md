@@ -27,21 +27,21 @@ Navigate to ```localhost:3000```
 ##File Structure
 ```
 .
-|-app.js		//express server entry point
-|-gulpfile.js	//gulp task automation processes
+|-app.js		    //express server entry point
+|-gulpfile.js	  //gulp task automation processes
 |-package.json	//lists npm dependencies
-|-bower.json	//lists bower dependencies
-|-public		//static assets
+|-bower.json	  //lists bower dependencies
+|-public		    //static assets
 |--css
 |--fonts
 |--js
-|-routes		//route handlers used by express
-|-views			//ejs template files
-|-react			//react files
-|--components	//react components go here
-|--routes		//react router route handlers
-|--data			//static data used by components
-|--main.jsx		//mount point
+|-routes		    //route handlers used by express
+|-views			    //ejs template files
+|-react			    //react files
+|--components	  //react components go here
+|--routes		    //react router route handlers
+|--data			    //static data used by components
+|--main.jsx		  //mount point
 ```
 
 ## Development Notes:
