@@ -1,0 +1,17 @@
+html, body {
+	height: 100%;
+
+}
+
+
+.jumbotron {
+  background: url('image/profile.jpg') no-repeat center center;
+  background-size: 100% 100%;
+  padding-top: 20%;
+  padding-bottom: 20%;
+  height: calc(100%);
+}
+
+.container-fluid {
+       padding: 60px 50px;
+}
