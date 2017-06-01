@@ -3,15 +3,33 @@ html, body {
 
 }
 
+.navbar {
 
-.jumbotron {
-  background: url('image/profile.jpg') no-repeat center center;
-  background-size: 100% 100%;
-  padding-top: 20%;
-  padding-bottom: 20%;
-  height: calc(100%);
 }
 
-.container-fluid {
-       padding: 60px 50px;
+.jumbotron {
+  background: url('../image/intro.jpg') no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	height: 100vh;
+	position: relative;
+}
+
+.intro-content {
+	padding-top: 25vh;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.jumbotron h1, p {
+	color: white;
+}
+
+.jumbotron h1 {
+	font-size: 4em;
+}
+
+.jumbotron p {
+	margin-bottom: -20px;
 }

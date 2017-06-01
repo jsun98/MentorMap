@@ -9,9 +9,7 @@ class App extends React.Component {
         <header>
           <Nav />
         </header>
-        <section>
-          <Jumbotron />
-        </section>
+        <Jumbotron />
       </div>
     );
   }

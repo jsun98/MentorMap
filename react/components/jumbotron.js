@@ -3,11 +3,17 @@ import React from 'react';
 class Jumbotron extends React.Component {
   render() {
     return (
-      <div className="jumbotron">
+      <div className="jumbotron jumbotron-fluid">
         <div className="container">
-          <h1>Hello, world!</h1>
-          <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-          <p><a className="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        	<div className="row">
+            <div className="col-md-2"></div>
+            <div className="col-md-8 intro-content">
+              <p className="jumbo-lead">Hello, World!</p>
+              <h1 className="jumbo-display-1">Our awesome app will make your life a lot easier.</h1>
+              <p><a className="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+            </div>
+            <div className="col-md-2"></div>
+          </div>
         </div>
       </div>
     );
