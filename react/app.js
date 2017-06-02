@@ -1,15 +1,13 @@
 import React from 'react';
-import Nav from './components/nav';
-import Jumbotron from './components/jumbotron';
+import BodyHeader from './components/top_header';
+import Wrapper from './components/wrapper';
 
 class App extends React.Component {
   render() {
     return (
       <div>
-        <header>
-          <Nav />
-        </header>
-        <Jumbotron />
+        <BodyHeader />
+        <Wrapper />
       </div>
     );
   }
