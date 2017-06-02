@@ -166,7 +166,9 @@ header.top-header {
   margin-top: 0px;
   color: white;
 }
-
+.h1, h1 {
+    font-size: 48px;
+}
 h1.logo {
   margin-top: 11px;
   color: white;
@@ -225,8 +227,9 @@ h1.logo {
 }
 .logo-head{
   font-family: 'Raleway', sans-serif;
-  font-size: 12px;
+  font-size: 24px;
   font-weight: 300;
+  color: white;
 }
 .logo:hover{
   text-decoration: none;
