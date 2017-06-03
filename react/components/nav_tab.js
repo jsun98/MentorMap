@@ -7,7 +7,7 @@ class NavTab extends React.Component {
         <a href={this.props.target}>
           <i className={this.props.tabClass}></i>
           {this.props.tabVal}
-          </a>
+        </a>
       </li>
     );
   }

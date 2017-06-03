@@ -12,7 +12,9 @@ class About extends React.Component {
               <p className="sub-header">Make sure you know about us</p>
             </div>
           </header>
+
           <div className="divide50"></div>
+          
           <div className="row">
             <AboutItem
               title="Great Benefits"
