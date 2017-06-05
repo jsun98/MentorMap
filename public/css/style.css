@@ -28,6 +28,8 @@ Text Domain: flusk
 * -----------------------------------------------------------------------------
 */
 
+@import url("ionicons/css/ionicons.min.css");
+@import url("micons/micons.css");
 
 /* /////////////////////////////////////////////////////////////////////
 //  01 - Global
@@ -79,10 +81,26 @@ a:hover {
 }
 
 
+
 h1, h2, h3, h4, h5, h6{
   margin: 0 0 15px 0;
   color: #3A4F52;
-  font-family: 'Raleway';
+  font-family: "raleway-heavy", sans-serif;
+}
+
+h5 {
+  color: rgba(56, 66, 78, 0.5);
+	font-size: 3rem;
+	line-height: 1.875;
+	margin-bottom: 0.3rem;
+	letter-spacing: .2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-rendering: optimizeLegibility;
+}
+.title-page h5 {
+  font-size: 2.2rem;
+  margin-bottom: 0;
 }
 
 .btn{border-radius: 0;}
@@ -106,7 +124,8 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .title-page {
-  display: inline-flex;
+  display: block-heading;
+  text-align: center;
   margin-bottom: -20px;
 }
 p.main-header {
@@ -135,12 +154,19 @@ p.sub-header:before {
 li{
   list-style: none;
 }
+header.block-heading {
+  text-align: center;
+  display: block;
+  padding-bottom: 40px;
+}
 
 /*////////////////////////////////////////////////////////////////////////
 //  02 - Header
 ///////////////////////////////////////////////////////////////////////*/
 
-
+header p {
+  color: rgba(0, 0, 0, 0.45);
+}
 
 header.top-header {
   position: fixed;
@@ -148,7 +174,7 @@ header.top-header {
   width: 100%;
 }
 .shows {
- background: rgba(43, 62, 81, 0.77);
+ background: #14171c;
  transition: all .6s;
 }
 .shows .navbar-default {
@@ -164,13 +190,18 @@ header.top-header {
 }
 .shows h1.logo {
   margin-top: 0px;
-  color: white;
+  color: #FF0077;
 }
-
+.h1, h1 {
+    font-size: 48px;
+}
 h1.logo {
   margin-top: 11px;
-  color: white;
+  color: #FF0077;
   display: inline-flex;
+}
+.secondary-slogan h5{
+  color: #05bca9;
 }
 #header{
   position: relative;
@@ -225,8 +256,9 @@ h1.logo {
 }
 .logo-head{
   font-family: 'Raleway', sans-serif;
-  font-size: 12px;
+  font-size: 24px;
   font-weight: 300;
+  color: white;
 }
 .logo:hover{
   text-decoration: none;
@@ -241,6 +273,31 @@ h1.logo {
   font-weight: bold;
 }
 
+#header .button {
+	border-color: #FFFFFF;
+	color: #FFFFFF;
+	height: 6.6rem;
+	line-height: 3rem;
+  border-radius: 25px;
+  padding: 1.5rem 3rem;
+	margin-top: 4rem;
+	font-family: "raleway-heavy", sans-serif;
+	font-size: 1.4rem;
+  font-weight: bolder;
+	text-transform: uppercase;
+	letter-spacing: .4rem;
+  display: inline-block;
+}
+
+#header .button:hover, #header .button:focus {
+	color: #05bca9;
+	border-color: #05bca9;
+}
+button.stroke, .button.stroke {
+	background: transparent !important;
+	border: 3px solid transparent;
+	line-height: 4.4rem;
+}
 #header .secondary-slogan{
   font-size: 2em;
   color: rgba(255,255,255,.7);
@@ -319,16 +376,21 @@ h1.logo {
   overflow:hidden;
   padding: 60px 0;
 }
+.intro-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #111111;
+	opacity: 0.85;
+}
 .parallax{
   padding: 80px 0;
 }
 
-.block-body {
-  margin-top: 60px;
-}
-
 #header {
-  background-image: url(../images/header-bg.jpg);
+  background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(../images/header-bg.jpg);
   box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
 }
 #services {
@@ -337,7 +399,7 @@ h1.logo {
 #parallax {
   /* background-image: url(../images/blue_mac2.jpg); */
   color: white;
-  background: #db5252;
+  background: #05bca9;
 }
 #contact {
   background-image: url(../images/newsletter-bg.png);
@@ -349,8 +411,14 @@ h1.logo {
   color: white;
 }
 
-
-
+/*////////////////////////////////////////////////////////////////////////
+//  Portfolio
+///////////////////////////////////////////////////////////////////////*/
+#portfolio {
+  padding-top: 1rem;
+  padding-bottom: 6rem;
+  background: white;
+}
 
 /*////////////////////////////////////////////////////////////////////////
 //  05 - Recent works
@@ -400,9 +468,73 @@ h1.logo {
     opacity: 1;
 }
 
+/**
+ * ===================================================================
+ * process section
+ *
+ * -------------------------------------------------------------------
+ */
 
-
-
+#process {
+	background: #FFFFFF;
+	padding-top: 6rem;
+	padding-bottom: 6rem;
+	overflow: hidden;
+}
+.process-content {
+	position: relative;
+	text-align: center;
+}
+.process-content .right-side,
+.process-content .left-side,
+.process-content .image-part {
+	width: 33.33333%;
+	font-size: 15px;
+	line-height: 27px;
+}
+.process-content .right-side, .process-content .left-side {
+	padding: 0 6% 24px;
+	position: absolute;
+	top: 0;
+}
+.process-content .right-side {
+	right: 0;
+}
+.process-content .left-side {
+	left: 0;
+}
+.process-content .image-part {
+	margin: 0 auto;
+	height: 660px;
+	background-image: url("../images/appdesign.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	-webkit-background-size: contain;
+	-moz-background-size: contain;
+	background-size: contain;
+}
+.process-content .item[data-item]::before {
+	background: #38424e;
+	color: #FFFFFF;
+	border-radius: 100%;
+	font-family: "montserrat-bold", sans-serif;
+	content: attr(data-item);
+	display: inline-block;
+	font-size: 18px;
+	height: 42px;
+	width: 42px;
+	line-height: 42px;
+	text-align: center;
+	vertical-align: middle;
+	margin-bottom: 1.5rem;
+}
+.process-content h5 {
+	color: #05bca9;
+	font-size: 1.6rem;
+	line-height: 1.875;
+	letter-spacing: .2rem;
+	margin-bottom: .3rem;
+}
 
 /*////////////////////////////////////////////////////////////////////////
 //  06 - Services
@@ -434,8 +566,15 @@ h1.logo {
 /*////////////////////////////////////////////////////////////////////////
 //  About us
 ///////////////////////////////////////////////////////////////////////*/
+#about {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  background: white;
+}
+
 .portfolio-sec ,.services-sec ,.blog-sec , .testimonial-sec{
   margin-top: 60px;
+
 }
 .about-sec {
   margin-top: 40px;
@@ -499,7 +638,8 @@ h3.call-action.pull-left {
   color: white;
 }
  .parallax {
-  padding: 61px 0 55px;
+  padding-top: 7.2rem;
+  padding-bottom: 9rem;
 }
 
 
@@ -514,6 +654,64 @@ h3.call-action.pull-left {
 #blog .date {
     margin-bottom: 15px;
     font-style: italic;
+}
+
+/**
+ * ===================================================================
+ * features section
+ *
+ * -------------------------------------------------------------------
+ */
+
+#features {
+	background: #090909 url(../images/features-bg.jpg) no-repeat center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	padding-top: 12rem;
+	padding-bottom: 12rem;
+	color: white;
+}
+#features .section-intro h1 {
+	color: white;
+}
+#features .section-intro h5 {
+	color: rgba(255, 255, 255, 0.5);
+}
+#features .section-intro p {
+	color: rgba(255, 255, 255, 0.7);
+}
+#features h1 {
+  color: white;
+}
+#features p{
+  color: rgba(255, 255, 255, 0.7);
+}
+#features h5 {
+  color: rgba(255, 255, 255, 0.5);
+}
+.features-list {
+	margin-top: 1.2rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
+	text-align: center;
+}
+.features-list .feature {
+	margin-bottom: 1.2rem;
+	padding: 0 32px;
+}
+.features-list .icon {
+	display: inline-block;
+	margin-bottom: 2.1rem;
+}
+.features-list .icon i {
+	font-size: 4.8rem;
+}
+.features-list .h05 {
+	font-size: 1.7rem;
+	line-height: 1.765;
+	color: #05bca9;
+	margin-bottom: 1.8rem;
 }
 
 
@@ -531,6 +729,10 @@ ol.carousel-indicators {
 }
 #testimonials .testimonial {
   padding: 25px;
+}
+#testimonials .block-heading {
+  margin-bottom: 10px;
+  padding-bottom: 0;
 }
 .carousel {
   position: relative;
@@ -577,7 +779,7 @@ ol.carousel-indicators {
 ///////////////////////////////////////////////////////////////////////*/
 
 
-#footer{ background: #2B3E51; color: white; border-top: 1px solid rgba(255, 255, 255, 0.24);}
+#footer{ background: #14171c; color: white; border-top: 1px solid rgba(255, 255, 255, 0.24);}
 
 h2.footer-block {
     color: white;
