@@ -24,6 +24,7 @@ class Nav extends React.Component {
                   <NavTab target="#services" tabClass="fa fa-tasks" tabVal="Service" />
                   <NavTab target="#blog" tabClass="fa fa-wordpress" tabVal="Blog" />
                   <NavTab target="#testimonials" tabClass="fa fa-thumbs-up" tabVal="Testimonial" />
+                  <NavTab target="#" tabClass="fa fa-sign-up" tabVal="Sign Up" />
                 </ul>
               </div>
             </div>
