@@ -5,16 +5,22 @@ import AboutItem from './about_item';
 class Portfolio extends React.Component {
   render() {
     return (
-      <div className="content-block" id="portfolio">
+      <div id="portfolio">
         <div className="container portfolio-sec">
 
-          <header className="block-heading cleafix">
-            <a href="#" className="btn btn-o btn-lg pull-right">View All</a>
-            <div className="title-page">
-              <p className="main-header">Our Latest Examples </p>
-              <p className="sub-header">Take a look at some of our recent comments</p>
+        <header className="block-heading cleafix">
+          <div className="row">
+            <div className="col-md-3" />
+            <div className="col-md-6" >
+              <div className="title-page">
+                <h5>Target Audience</h5>
+                <h1>Who is MentorMap for?</h1>
+                <p className="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>
+              </div>
             </div>
-          </header>
+            <div className="col-md-3" />
+          </div>
+        </header>
 
 
           <section className="block-body">

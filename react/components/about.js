@@ -4,28 +4,35 @@ import AboutItem from './about_item';
 class About extends React.Component {
   render() {
     return (
-      <div id="about" className="about-us">
+      <div id="about">
         <div className="container about-sec">
           <header className="block-heading cleafix">
-            <div className="title-page">
-              <p className="main-header">About us</p>
-              <p className="sub-header">Make sure you know about us</p>
+            <div className="row">
+              <div className="col-md-1" />
+              <div className="col-md-10" >
+              <div className="title-page">
+                <h5>About</h5>
+                <h1>What is MentorMap?</h1>
+                <p className="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>
+              </div>
+              </div>
+              <div className="col-md-1" />
             </div>
           </header>
 
           <div className="divide50"></div>
-          
+
           <div className="row">
             <AboutItem
-              title="Great Benefits"
+              title="Who we are"
               paragraph="Sorry No Engrish Sorry No Engrish Sorry No Engrish Sorry No Engrish Sorry No Engrish Sorry No Engrish "
             />
             <AboutItem
-              title="Very Cheap"
+              title="What we do"
               paragraph="Sorry No Engrish Sorry No Engrish Sorry No Engrish Sorry No Engrish Sorry No Engrish Sorry No Engrish"
             />
             <AboutItem
-              title="Delicious Food"
+              title="Who you are"
               paragraph="Sorry No Engrish Sorry No Engrish Sorry No Engrish Sorry No Engrish Sorry No Engrish Sorry No Engrish"
             />
           </div>

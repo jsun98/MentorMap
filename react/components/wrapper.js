@@ -6,6 +6,8 @@ import Portfolio from './portfolio';
 import Parallax from './parallax';
 import Footer from './footer';
 import CopyRight from './copyright';
+import Process from './process'
+import Features from './features'
 
 class Wrapper extends React.Component {
   render() {
@@ -13,11 +15,14 @@ class Wrapper extends React.Component {
       <div id='wrapper'>
         <Jumbotron />
         <About />
+        <Features />
+        <Process />
         <Portfolio />
         <Testimonials />
         <Parallax />
         <Footer />
         <CopyRight />
+
       </div>
     );
   }
