@@ -8,6 +8,7 @@ import Footer from './footer';
 import CopyRight from './copyright';
 import Process from './process'
 import Features from './features'
+import Tutor from './tutor';
 
 class Wrapper extends React.Component {
   render() {
@@ -19,6 +20,7 @@ class Wrapper extends React.Component {
         <Process />
         <Portfolio />
         <Testimonials />
+        <Tutor />
         <Parallax />
         <Footer />
         <CopyRight />
