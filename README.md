@@ -1,7 +1,7 @@
 # MentorMap
 Website development project for MentorMap
 hi im bill
-
+hi im ethan
 ## Running the App
 To clone to your local machine:
 ```
