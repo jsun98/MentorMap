@@ -4,7 +4,8 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,900);
 
 $font-stack: 'Lato', sans-serif;
-$font-color: #6a6a6a;
+$h-color: #6a6a6a;
+$theme-color: #05bca9;
 
 html {
   text-rendering: optimizeLegibility;
@@ -12,11 +13,11 @@ html {
   -webkit-text-size-adjust: none;
   -ms-text-size-adjust: none;
   overflow-y: scroll;
+  font-family: $font-stack;
 }
 
 body {
-  color: $font-color;
-  font-family: $font-stack;
+  color:#6a6a6a;
 }
 
 p {
@@ -35,10 +36,10 @@ a {
   -moz-transition: all .4s;
   -webkit-transition: all .4s;
   transition: all .4s;
-}
 
-a:hover {
-  color: #4290ae;
+  :hover {
+    color: #4290ae;
+  }
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -55,17 +56,13 @@ h5 {
   text-transform: uppercase;
 }
 
-.title-page h5 {
-  font-size: 2.2rem;
-  margin-bottom: 0;
-}
-
 ::selection {
   background-color: #475B6F;
   color: #fff;
 }
 
 .btn {border-radius: 0;}
+
 .btn-o {
     border: 1px solid #3A4F52;
     color: #3A4F52;

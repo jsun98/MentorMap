@@ -13,7 +13,7 @@ gulp.task('styles', function() {
     gulp.src('public/sass/*.scss')
         .pipe(sass({outputStyle: 'expanded'})
         .on('error', sass.logError))
-        .pipe(gulp.dest('./public/css'));
+        .pipe(gulp.dest('./public/css/compiled'));
 });
 
 gulp.task('ejs',function(){

@@ -52,6 +52,8 @@ h1.logo {
   position: relative;
   text-align: center;
   padding: 0 !important;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../../images/header-bg.jpg);
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
 }
 
 .navbar-nav {
@@ -101,12 +103,10 @@ h1.logo {
 }
 
 #header .logo, #header .toggleDrawer {
-  font-family: 'Raleway', sans-serif;
   color: white;
 }
 
 .logo-head {
-  font-family: 'Raleway', sans-serif;
   font-size: 24px;
   font-weight: 300;
   color: white;

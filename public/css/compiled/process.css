@@ -38,7 +38,7 @@
 .process-content .image-part {
   margin: 0 auto;
   height: 660px;
-  background-image: url("../images/appdesign.jpg");
+  background-image: url("../../images/appdesign.jpg");
   background-repeat: no-repeat;
   background-position: center;
   -webkit-background-size: contain;
@@ -50,7 +50,6 @@
   background: #38424e;
   color: #FFFFFF;
   border-radius: 100%;
-  font-family: "montserrat-bold", sans-serif;
   content: attr(data-item);
   display: inline-block;
   font-size: 18px;

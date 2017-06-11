@@ -8,11 +8,11 @@ html {
   -webkit-text-size-adjust: none;
   -ms-text-size-adjust: none;
   overflow-y: scroll;
+  font-family: "Lato", sans-serif;
 }
 
 body {
   color: #6a6a6a;
-  font-family: "Lato", sans-serif;
 }
 
 p {
@@ -33,7 +33,7 @@ a {
   transition: all .4s;
 }
 
-a:hover {
+a :hover {
   color: #4290ae;
 }
 
@@ -49,11 +49,6 @@ h5 {
   line-height: 1.875;
   letter-spacing: .2rem;
   text-transform: uppercase;
-}
-
-.title-page h5 {
-  font-size: 2.2rem;
-  margin-bottom: 0;
 }
 
 ::selection {
