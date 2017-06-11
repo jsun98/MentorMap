@@ -1,0 +1,63 @@
+
+/*////////////////////////////////////////////////////////////////////////
+//  About us
+///////////////////////////////////////////////////////////////////////*/
+#about {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  background: white;
+}
+
+.portfolio-sec ,.services-sec ,.blog-sec , .testimonial-sec{
+  margin-top: 60px;
+
+}
+.about-sec {
+  margin-top: 40px;
+}
+
+.about-us {
+  background: white;
+  padding: 92px 0 80px;
+}
+
+
+@media (min-width: 320px) and (max-width: 1024px) {
+      .about-us {
+      background: white;
+      padding: 50px 0;
+      color: #ffffff;
+    }
+}
+
+.aboutus-item {
+  margin-bottom: 15px;
+  margin-top: 60px;
+}
+
+i.aboutus-icon {
+  border: 3px solid rgb(106, 106, 106);
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 56px;
+  width: 140px;
+  height: 140px;
+  line-height: 136px;
+  vertical-align: middle;
+  text-align: center;
+  color: rgb(106, 106, 106);
+}
+
+h4.aboutus-title {
+  font-family: 'Raleway', sans-serif;
+  margin-top: 23px;
+  font-weight: 300;
+  font-size: 22px;
+}
+
+p.aboutus-desc {
+  font-size: 16px;
+  line-height: 29px;
+  letter-spacing: 0.4px;
+  color: rgb(106, 106, 106);
+}

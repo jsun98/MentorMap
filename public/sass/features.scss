@@ -1,0 +1,54 @@
+/*////////////////////////////////////////////////////////////////////////
+// Features
+///////////////////////////////////////////////////////////////////////*/
+
+#features {
+	background: #090909 url(../images/features-bg.jpg) no-repeat center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	padding-top: 12rem;
+	padding-bottom: 12rem;
+	color: white;
+}
+#features .section-intro h1 {
+	color: white;
+}
+#features .section-intro h5 {
+	color: rgba(255, 255, 255, 0.5);
+}
+#features .section-intro p {
+	color: rgba(255, 255, 255, 0.7);
+}
+#features h1 {
+  color: white;
+}
+#features p{
+  color: rgba(255, 255, 255, 0.7);
+}
+#features h5 {
+  color: rgba(255, 255, 255, 0.5);
+}
+.features-list {
+	margin-top: 1.2rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
+	text-align: center;
+}
+.features-list .feature {
+	margin-bottom: 1.2rem;
+	padding: 0 32px;
+}
+.features-list .icon {
+	display: inline-block;
+	margin-bottom: 2.1rem;
+}
+.features-list .icon i {
+	font-size: 4.8rem;
+}
+.features-list .h05 {
+	font-size: 1.7rem;
+	line-height: 1.765;
+	color: #05bca9;
+	margin-bottom: 1.8rem;
+}

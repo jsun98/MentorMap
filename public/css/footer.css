@@ -1,0 +1,138 @@
+/*////////////////////////////////////////////////////////////////////////
+// Blog
+///////////////////////////////////////////////////////////////////////*/
+#blog .blog-post img {
+  margin-bottom: 20px;
+}
+
+#blog .date {
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+/*////////////////////////////////////////////////////////////////////////
+// Contact
+///////////////////////////////////////////////////////////////////////*/
+#contact {
+  color: white;
+}
+
+#contact h1 {
+  color: white;
+}
+
+.form-control-white {
+  background: white;
+  /* color: black; */
+  padding: 20px 16px !important;
+}
+
+.form-control-white::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: white;
+}
+
+.form-control-white:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: white;
+  opacity: 1;
+}
+
+.form-control-white::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: white;
+  opacity: 1;
+}
+
+.form-control-white:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: white;
+}
+
+/*////////////////////////////////////////////////////////////////////////
+// Footer
+///////////////////////////////////////////////////////////////////////*/
+#footer {
+  background: #14171c;
+  color: white;
+  border-top: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+h2.footer-block {
+  color: white;
+  font-family: "Raleway" , sans-serif;
+}
+
+.form-control {
+  border-radius: none !important;
+  padding: 20px 26px;
+}
+
+.form-group .btn.btn-o-white {
+  width: 100%;
+  padding: 9px 0;
+  background: #db5252;
+  border: none;
+}
+
+::-webkit-input-placeholder {
+  color: #969595 !important;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #969595 !important;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #969595 !important;
+}
+
+:-ms-input-placeholder {
+  color: #969595 !important;
+}
+
+.footer-bottom {
+  padding: 37px 0 30px;
+}
+
+.blog-post ul p {
+  margin-left: 40px;
+}
+
+.blog-post ul li .fa {
+  border-radius: 33px 33px;
+  background: #db5252;
+  width: 28px;
+  /* height: 20px; */
+  text-align: center;
+  padding: 7px 7px;
+  margin-right: 9px;
+}
+
+.blog-post ul {
+  margin-left: -40px;
+}
+
+.blog-post .fa {
+  background: #db5252;
+  width: 28px;
+  text-align: center;
+  padding: 7px 7px;
+  cursor: pointer;
+}
+
+.blog-post .fa:hover {
+  color: #db5252;
+  background: white;
+  transition: all .6s;
+}
+
+.social {
+  margin-left: 40px;
+}
+
+.social a i {
+  color: #fff;
+}
