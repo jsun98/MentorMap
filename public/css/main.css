@@ -1637,6 +1637,28 @@ a.menu-toggle {
 	}
 }
 
+/**
+ * ===================================================================
+ * tutors section
+ *
+ * -------------------------------------------------------------------
+ */
+
+ #tutors {
+ 	background: #FFFFFF;
+ 	padding-top: 10.2rem;
+ 	padding-bottom: 12rem;
+ 	position: relative;
+ 	min-height: 20.4rem;
+ 	width: 100%;
+ 	overflow: hidden;
+ 	text-align: center;
+ }
+
+ .tutors-content {
+ 	max-width: 1200px;
+ }
+
 
 /**
  * ===================================================================
