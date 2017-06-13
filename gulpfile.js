@@ -10,10 +10,10 @@ var jshint = require('gulp-jshint');
 var concat = require('gulp-concat');
 
 gulp.task('styles', function() {
-    gulp.src('public/sass/*.scss')
+    gulp.src('public/sass/**/*.scss')
         .pipe(sass({outputStyle: 'expanded'})
         .on('error', sass.logError))
-        .pipe(gulp.dest('./public/css/compiled'));
+        .pipe(gulp.dest('./public/css'));
 });
 
 gulp.task('ejs',function(){
