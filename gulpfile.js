@@ -54,7 +54,7 @@ gulp.task('eslint', function() {
 
 gulp.task('watch', function() {
     livereload.listen();
-    gulp.watch('public/sass/*.scss', ['styles']);
+    gulp.watch('public/sass/**/*.scss', ['styles']);
     //gulp.watch('react/**/*.js', ['scripts']);
     gulp.watch('views/**/*.ejs', ['ejs']);
     gulp.watch('react/**/*.js', ['build']);
