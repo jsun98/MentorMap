@@ -5,6 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//passport stuff
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash    = require('connect-flash');
+
+var morgan       = require('morgan');
+var cookieParser = require('cookie-parser');
+var session      = require('express-session');
+
+var configDB = require('./passport/config/database.js');
+
 var app = express();
 
 //set port
@@ -25,9 +36,21 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(morgan('dev')); // log every request to the console
+
+//======passport configuration ===============================================================
+mongoose.connect(configDB.url); // connect to our database
+
+require('./passport/config/passport')(passport); // pass passport for configuration
+
+// required for passport
+app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 //route handlers
-app.use('/', require('./routes/index'));
+require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
