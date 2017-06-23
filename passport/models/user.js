@@ -10,7 +10,16 @@ var userSchema = mongoose.Schema({
         email        : String,
         password     : String,
         firstname    : String,
-        lastname     : String
+        lastname     : String,
+        role         : String,
+        phone        : String,
+        gpa          : Number,
+        program      : String,
+        paragraph    : String,
+        school       : String,
+        graduation   : Date,
+        skills       : [String],
+
     }
 
 });

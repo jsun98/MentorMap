@@ -45,15 +45,15 @@ module.exports = function(passport) {
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
 
-            console.log('Email: '+email);
-            console.log('Password: '+password);
+          //  console.log('Email: '+email);
+          //  console.log('Password: '+password);
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
             // if there are any errors, return the error
-            console.log('create new user');
+          //  console.log('create new user');
             if (err) {
-                console.log('create new usersdfsfdf');
+              //  console.log('create new usersdfsfdf');
                 return done(err);
             }
 
@@ -67,10 +67,19 @@ module.exports = function(passport) {
                 var newUser            = new User();
 
                 // set the user's local credentials
-                newUser.local.email    = email;
-                newUser.local.password = newUser.generateHash(password);
+                newUser.local.email     = email;
+                newUser.local.password  = newUser.generateHash(password);
                 newUser.local.firstname = req.body.firstName;
-                newUser.local.lastname = req.body.lastName;
+                newUser.local.lastname  = req.body.lastName;
+                newUser.local.role      = 'tutor';
+                newUser.local.gpa       = 98;
+                newUser.local.school    = 'University of Waterloo';
+                newUser.local.program   = 'Software Engineering';
+                newUser.local.phone     = '123-567-8900';
+                newUser.local.graduation= new Date();
+                newUser.local.skills.push('c++', 'php');
+                newUser.local.paragraph = 'some words some words';
+
 
                 // save the user
                 newUser.save(function(err) {
