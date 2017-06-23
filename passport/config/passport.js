@@ -69,9 +69,9 @@ module.exports = function(passport) {
                 // set the user's local credentials
                 newUser.local.email     = email;
                 newUser.local.password  = newUser.generateHash(password);
-                newUser.local.firstname = req.body.firstName;
-                newUser.local.lastname  = req.body.lastName;
-                newUser.local.role      = 'tutor';
+                newUser.local.first_name = req.body.first_name;
+                newUser.local.last_name  = req.body.last_name;
+                newUser.local.role      = req.body.;
                 newUser.local.gpa       = 98;
                 newUser.local.school    = 'University of Waterloo';
                 newUser.local.program   = 'Software Engineering';
