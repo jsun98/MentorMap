@@ -6,20 +6,43 @@ var bcrypt   = require('bcrypt-nodejs');
 // define the schema for our user model
 var userSchema = mongoose.Schema({
 
-    local            : {
-        email        : String,
-        password     : String,
-        firstname    : String,
-        lastname     : String,
-        role         : String,
-        phone        : String,
-        gpa          : Number,
-        program      : String,
-        paragraph    : String,
-        school       : String,
-        graduation   : Date,
-        skills       : [String],
+    mentee: {
+        email                     : String,
+        gender                    : String,
+        password                  : String,
+        first_name                : String,
+        last_name                 : String,
+        phone                     : String,
+        avg_11                    : Number,
+        avg_12                    : Number,
+        high_school               : String,
+        grade                     : Number,
+        linkedin                  : String,
+        high_school_programs      : [String],
+        skills                    : [String],
+        preferred_school          : [String],
+        preferred_program         : [String],
+        paragraphs                : [String],
+    },
 
+    mentor: {
+        email                     : String,
+        gender                    : String,
+        password                  : String,
+        first_name                : String,
+        last_name                 : String,
+        phone                     : String,
+        gpa                       : Number,
+        dob                       : Date,
+        linkedin                  : String,
+        skills                    : [String],
+        paragraphs                : [String],
+        curr_school               : String,
+        curr_school_type          : String,
+        curr_major                : String,
+        curr_minor                : String,
+        grad_year                 : Number,
+        high_school_programs      : [String],
     }
 
 });

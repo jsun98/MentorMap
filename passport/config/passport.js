@@ -40,20 +40,16 @@ module.exports = function(passport) {
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) {
-        console.log(req.body);
+        //console.log(req.body);
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
 
-          //  console.log('Email: '+email);
-          //  console.log('Password: '+password);
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
             // if there are any errors, return the error
-          //  console.log('create new user');
             if (err) {
-              //  console.log('create new usersdfsfdf');
                 return done(err);
             }
 
@@ -67,25 +63,27 @@ module.exports = function(passport) {
                 var newUser            = new User();
 
                 // set the user's local credentials
-                newUser.local.email     = email;
-                newUser.local.password  = newUser.generateHash(password);
-                newUser.local.firstname = req.body.firstName;
-                newUser.local.lastname  = req.body.lastName;
-                newUser.local.role      = 'tutor';
-                newUser.local.gpa       = 98;
-                newUser.local.school    = 'University of Waterloo';
-                newUser.local.program   = 'Software Engineering';
-                newUser.local.phone     = '123-567-8900';
-                newUser.local.graduation= new Date();
-                newUser.local.skills.push('c++', 'php');
-                newUser.local.paragraph = 'some words some words';
 
+                if (req.body.role == 'mentor') {
+
+                  newUser.mentor.email     = email;
+                  newUser.mentor.password  = newUser.generateHash(password);
+                  newUser.mentor.first_name = req.body.first_name;
+                  newUser.mentor.last_name  = req.body.last_name;
+
+                }else if (req.body.role == 'mentee') {
+
+                  newUser.mentee.email     = email;
+                  newUser.mentee.password  = newUser.generateHash(password);
+                  newUser.mentee.first_name = req.body.first_name;
+                  newUser.mentee.last_name  = req.body.last_name;
+
+                }
 
                 // save the user
                 newUser.save(function(err) {
                     if (err)
                         throw err;
-                    console.log("error: "+err);
                     return done(null, newUser);
                 });
             }
@@ -130,5 +128,104 @@ module.exports = function(passport) {
         });
 
     }));
+
+
+    // =========================================================================
+    // mentor_info =============================================================
+    // =========================================================================
+
+    passport.use('mentor_info', new LocalStrategy({
+        // by default, local strategy uses username and password, we will override with email
+        usernameField : 'email',
+        passwordField : 'password',
+        passReqToCallback : true // allows us to pass back the entire request to the callback
+    },
+    function(req, email, password, done) {
+        // asynchronous
+        // User.findOne wont fire unless data is sent back
+        process.nextTick(function() {
+
+        // find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to login already exists
+        User.findOne({ 'mentor.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err) {
+                return done(err);
+            }
+
+            // check to see if theres already a user with that email
+            if (user) {
+                // set the user's local credentials
+                user.mentor.gpa                   = req.body.gpa;
+                user.mentor.gender                = req.body.gender;
+                user.mentor.phone                 = req.body.phone;
+                user.mentor.dob                   = req.body.dob; //this would be a date type
+                user.mentor.linkedin              = req.body.linkedin;
+                user.mentor.skills                = req.body.skills;//might need to push
+                user.mentor.paragraphs            = req.body.paragraphs;//might need to push
+                user.mentor.curr_school           = req.body.curr_school;
+                user.mentor.curr_school_type      = req.body.curr_school_type;
+                user.mentor.curr_major            = req.body.curr_major;
+                user.mentor.curr_minor            = req.body.curr_minor;
+                user.mentor.grad_year             = req.body.grad_year;
+                user.mentor.high_school_programs  = req.body.high_school_programs;//might need to push
+            }else {
+              return done(null, false, req.flash('signupInfoMessage', 'Fail to update mentor info.'));
+            }
+        });
+
+        });
+
+    }));
+
+
+    // =========================================================================
+    // mentee_info =============================================================
+    // =========================================================================
+
+    passport.use('mentee_info', new LocalStrategy({
+        // by default, local strategy uses username and password, we will override with email
+        usernameField : 'email',
+        passwordField : 'password',
+        passReqToCallback : true // allows us to pass back the entire request to the callback
+    },
+    function(req, email, password, done) {
+        // asynchronous
+        // User.findOne wont fire unless data is sent back
+        process.nextTick(function() {
+
+        // find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to login already exists
+        User.findOne({ 'mentee.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err) {
+                return done(err);
+            }
+
+            // check to see if theres already a user with that email
+            if (user) {
+                // set the user's local credentials
+                user.mentee.gender               = req.body.gender;
+                user.mentee.phone                = req.body.phone;
+                user.mentee.avg_11               = req.body.avg_11;
+                user.mentee.avg_12               = req.body.avg_12;
+                user.mentee.high_school          = req.body.high_school;
+                user.mentee.grade                = req.body.grade;
+                user.mentee.skills               = req.body.skills;//might need to push
+                user.mentee.linkedin             = req.body.linkedin;
+                user.mentee.paragraphs           = req.body.paragraphs;//might need to push
+                user.mentee.high_school_programs = req.body.high_school_programs;//might need to push
+                user.mentee.preferred_program    = req.body.preferred_program;//might need to push
+                user.mentee.preferred_school     = req.body.preferred_school;//might need to push
+            }else {
+              return done(null, false, req.flash('signupInfoMessage', 'Fail to update mentee info.'));
+
+            }
+        });
+
+        });
+
+    }));
+
 
 };
