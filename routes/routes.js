@@ -43,6 +43,26 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
+
+    // =====================================
+    // MENTOR_INFO ==============================
+    // =====================================
+    app.post('/mentor_info', passport.authenticate('mentor_info', {
+        successRedirect : '/profile', // redirect to the secure profile section
+        failureRedirect : '/profile', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+
+    // =====================================
+    // MENTEE_INFO ==============================
+    // =====================================
+    app.post('/mentee_info', passport.authenticate('mentee_info', {
+        successRedirect : '/profile', // redirect to the secure profile section
+        failureRedirect : '/profile', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+
+
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
