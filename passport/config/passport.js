@@ -47,7 +47,7 @@ module.exports = function(passport) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'profile.email' :  email }, function(err, user) {
+        User.findOne({ 'email' :  email }, function(err, user) {
             // if there are any errors, return the error
             if (err) {
                 return done(err);
@@ -63,8 +63,9 @@ module.exports = function(passport) {
                 var newUser            = new User();
 
                 // set the user's local credentials
-                newUser.profile.email     = email;
-                newUser.profile.password  = newUser.generateHash(password);
+                newUser.email     = email;
+                newUser.password  = newUser.generateHash(password);
+                newUser.role      = req.body.role;
                 newUser.profile.first_name = req.body.first_name;
                 newUser.profile.last_name  = req.body.last_name;
 
@@ -99,7 +100,7 @@ module.exports = function(passport) {
     function(req, email, password, done) { // callback with email and password from our form
         // find a user whose email is the same as the forms email
 
-        User.findOne({ 'profile.email' :  email }, function(err, user) {
+        User.findOne({ 'email' :  email }, function(err, user) {
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);

@@ -42,17 +42,21 @@
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2 id="user-full-name"></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
 
             <br />
+            <br />
+            <br />
+            <br />
+            <br />
 
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h3 style="padding-left: 17px;">Mentee</h3>
+                <h3 id="user-role" style="padding-left: 17px;"></h3>
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -119,7 +123,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="images/img.jpg" alt="">
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -569,6 +573,11 @@
       </div>
     </div>
 
+    <!-- Save EJS var to local -->
+    <script>
+      var user = <%- JSON.stringify(user) %>;
+    </script>
+
     <!-- jQuery -->
     <script src="vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -596,7 +605,6 @@
     <!-- Custom Theme Scripts -->
     <script src="dashboard/js/custom.min.js"></script>
     <script src="dashboard/js/custom2.js"></script>
-
 
     <!-- Select2 -->
     <script>
