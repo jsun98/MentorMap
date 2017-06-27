@@ -24,20 +24,6 @@ router.post('/signup', passport.authenticate('user-signup', {
     failureFlash : true // allow flash messages
 }));
 
-/*
-router.post('/mentor_register', passport.authenticate('mentor_info', {
-    successRedirect : '/mentor_info', // redirect to the secure profile section
-    failureRedirect : '/', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
-}));
-
-router.post('/mentee_register', passport.authenticate('mentee_info', {
-    successRedirect : '/mentee_info', // redirect to the secure profile section
-    failureRedirect : '/', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
-}));
-*/
-
 // =====================================
 // LOGOUT ==============================
 // =====================================

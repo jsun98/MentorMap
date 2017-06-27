@@ -280,7 +280,7 @@
                       <div id="step-1">
                         <h2 class="StepTitle">Step 1 - Personal Profile</h2>
                         <p>Just for our information</p>
-                        <form class="form-horizontal form-label-left">
+                        <form id="form-step-1" method="post" action="/mentee-complete" class="form-horizontal form-label-left">
 
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
@@ -368,7 +368,7 @@
                       <div id="step-2">
                         <h2 class="StepTitle">Step 2 - Academic Information</h2>
                         <p>Let us get to know you better</p>
-                        <form class="form-horizontal form-label-left">
+                        <form id="form-step-2" class="form-horizontal form-label-left">
 
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Grade 11 Average <span class="required">*</span></label>
@@ -491,7 +491,7 @@
                       <div id="step-3">
                         <h2 class="StepTitle">Step 3 Additional Information</h2>
                         <p>Provide us with some more information to help us better match you with a suitable mentor</p>
-                        <form class="form-horizontal form-label-left">
+                        <form id="form-step-3" class="form-horizontal form-label-left">
 
                           <div class="form-group">
                             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -703,6 +703,7 @@
 
     <!-- validator -->
     <script>
+    /*
       console.log(validator);
       // initialize the validator function
       validator.message.date = 'not a real date';
@@ -723,18 +724,29 @@
         var submit = true;
 
         // evaluate the form using generic validaing
+
         if (!validator.checkAll($(this))) {
           submit = false;
         }
+
 
         if (submit)
           this.submit();
 
         return false;
       });
-
+      */
     </script>
     <!-- /validator -->
+
+    <script>
+      $('#form-step-1').submit(function(e) {
+        $('#form-step-2 :input, #form-step-2 textarea, #form-step-2 select').clone().hide().appendTo('#form-step-1');
+        $('#form-step-3 :input, #form-step-3 textarea, #form-step-3 select').clone().hide().appendTo('#form-step-1');
+        //e.preventDefault();
+      });
+    </script>
+
 
     <!-- jQuery Tags Input -->
     <script>
@@ -761,10 +773,10 @@
     <!-- jQuery Smart Wizard -->
     <script>
       $(document).ready(function() {
-        $('#wizard').smartWizard();
-
-        $('#wizard_verticle').smartWizard({
-          transitionEffect: 'slide'
+        $('#wizard').smartWizard({
+          onFinish: function() {
+            $('#form-step-1').submit();
+          }
         });
 
         $('.buttonNext').addClass('btn btn-success');
