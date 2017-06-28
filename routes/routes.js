@@ -31,10 +31,6 @@ router.get('/profile', isLoggedIn, function(req, res, next) {
 router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
   req.body.skills = req.body.skills.split(',');
   console.log(req.body);
-
-
-
-
   User.findByIdAndUpdate(req.user.id, {
     $set:
       { 'profile.gender' : req.body.gender,
@@ -49,6 +45,39 @@ router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
         'profile.high_school_programs': req.body.high_school_programs,
         'profile.preferred_program' : req.body.preferred_program,
         'profile.preferred_school' : req.body.preferred_school
+     }
+    },
+    function (err, tank) {
+      if (err) console.error(err);
+
+      res.render('profile', {
+          user : req.user
+      });
+
+    }
+  );
+
+});
+
+router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
+  req.body.skills = req.body.skills.split(',');
+  console.log(req.body);
+
+  User.findByIdAndUpdate(req.user.id, {
+    $set:
+      { 'profile.gender' : req.body.gender,
+        'profile.phone' : req.body.phone,
+        'profile.high_school_programs': req.body.high_school_programs,
+        'profile.skills' : req.body.skills,
+        'profile.linkedin' : req.body.linkedin,
+        'profile.paragraphs' : req.body.paragraphs,
+        'profile.gpa' : parseInt(req.body.gpa),
+        'profile.dob' : req.body.dob, //DATE
+        'profile.curr_school' : req.body.curr_school,
+        'profile.curr_school_type' : req.body.curr_school_type,
+        'profile.curr_major' : req.body.curr_major,
+        'profile.curr_minor' : req.body.curr_minor,
+        'profile.grad_year' : parseInt(req.body.grad_year)
      }
     },
     function (err, tank) {

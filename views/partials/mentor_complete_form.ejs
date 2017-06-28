@@ -1,0 +1,363 @@
+<div class="right_col" role="main" style="min-height: none">
+  <!-- complete profile -->
+  <div class="complete-registration">
+
+    <div class="row">
+
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Complete Registration<small>You must complete the full registration to become a mentor</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Settings 1</a>
+                  </li>
+                  <li><a href="#">Settings 2</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+
+
+            <!-- Smart Wizard -->
+            <p>This wizard will walk you through the registration process.</p>
+            <div id="wizard" class="form_wizard wizard_horizontal">
+              <ul class="wizard_steps">
+                <li>
+                  <a href="#step-1">
+                    <span class="step_no">1</span>
+                    <span class="step_descr">
+                                      Step 1<br />
+                                      <small>Personal Profile</small>
+                                  </span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#step-2">
+                    <span class="step_no">2</span>
+                    <span class="step_descr">
+                                      Step 2<br />
+                                      <small>Background Information</small>
+                                  </span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#step-3">
+                    <span class="step_no">4</span>
+                    <span class="step_descr">
+                                      Step 3<br />
+                                      <small>Additional Information</small>
+                                  </span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#step-4">
+                    <span class="step_no">5</span>
+                    <span class="step_descr">
+                                      Step 4<br />
+                                      <small>Terms of Service</small>
+                                  </span>
+                  </a>
+                </li>
+              </ul>
+              <div id="step-1">
+                <h2 class="StepTitle">Step 1 - Personal Profile</h2>
+                <p>Just for our information</p>
+                <form class="form-horizontal form-label-left" id="form-step-1">
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                      <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="first-name" readonly required="required" value=<%= user.profile.first_name %> >
+                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                      <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="last-name" readonly required="required" value=<%= user.profile.last_name %> >
+                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Email <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                      <input id="email" type="email" class="form-control col-md-7 col-xs-12 has-feedback-left" readonly required="required" value=<%= user.email %> >
+                      <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Confirm Email <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                      <input id="email" type="email" class="form-control col-md-7 col-xs-12 has-feedback-left" required="required" placeholder="Confirm Your Email Address">
+                      <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender<span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <span style="padding-right: 2px;">Male:</span><input type="radio" class="flat" name="gender" id="genderM" value="M"/>
+                        <span style="padding: 0px 5px;">Female:</span><input type="radio" class="flat" name="gender" id="genderF" value="F" style="padding-right: 5px"/>
+                        <span style="padding: 0px 5px;">Other:</span><input type="radio" class="flat" name="gender" id="genderF" value="O" style="padding-right: 5px"/>
+                        <span style="padding: 0px 5px;">Prefer Not to Disclose:</span><input type="radio" class="flat" name="gender" id="genderF" value="N" style="padding-right: 5px"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                      <input id="birthday" class="date-picker form-control col-md-7 col-xs-12 has-feedback-left" required="required" type="text" name="dob">
+                      <span class="fa fa-birthday-cake form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone Number <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                      <input id="phone" name="phone" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. (999) 999-9999" data-inputmask="'mask' : '(999) 999-9999'" required="required" type="text">
+                      <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Linkedin &nbsp
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                      <input id="phone" name="linkedin" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. www.example.com" required="required" type="text">
+                      <span class="fa fa-linkedin form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                  </div>
+
+                </form>
+
+              </div>
+              <div id="step-2">
+                <h2 class="StepTitle">Step 2 - Background Information</h2>
+                <p>This information is used to facilitate the mentor-match process</p>
+                <form class="form-horizontal form-label-left" method="post" action="/mentor-complete" id="form-step-2">
+
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">You Are Currently Attending <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="radio">
+                        <label style="padding-right: 10px;">
+                          <input type="radio" value="canadian-university" id="optionsRadios1" name="curr_school_type"> A Canadian University
+                        </label>
+                      </div>
+                      <div class="radio">
+                        <label style="padding-right: 10px;">
+                          <input type="radio" value="canadian-college" id="optionsRadios1" name="curr_school_type"> A Canadian College
+                        </label>
+                      </div>
+                      <div class="radio">
+                        <label style="padding-right: 10px;">
+                          <input type="radio" value="american" id="optionsRadios1" name="curr_school_type"> An American University/College
+                        </label>
+                      </div>
+                      <div class="radio">
+                        <label style="padding-right: 10px;">
+                          <input type="radio" value="international" id="optionsRadios1" name="curr_school_type"> A Post-Secondary Institution outside of Canada/USA
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Current or Most Recent University/College <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="select2_single form-control" tabindex="-1" name='curr_school'>
+                        <option></option>
+                        <option value="University of Waterloo">University of Waterloo</option>
+                        <option value="University of Toronto">University of Toronto</option>
+                        <option value="University of Western Ontario">University of Western Ontario</option>
+                        <option value="University of British Columbia">University of British Columbia</option>
+                        <option value="York University">York University</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Major Field of Study <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="select2_single form-control" tabindex="-1" name='curr_major'>
+                        <option></option>
+                        <option value="med">Medicine and Health Sciences</option>
+                        <option value="cs">Computer Science</option>
+                        <option value="eng">Engineering and Applied Sciences</option>
+                        <option value="math">Mathematics and Physics</option>
+                        <option value="fin">Accounting, Finance and Financial Mathematics</option>
+                        <option value="econ">Business, Economics and Commerce</option>
+                        <option value="arts">Arts and Humanities</option>
+                        <option value="sci">Natural Sciences (Biology, Chemistry, Earth and Space)</option>
+                        <option value="law">Political Science, Law and Societal Studies</option>
+                        <option value="soci">Social Sciences (Psychology, Sociology, Nutrition Science)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Minor Field of Study (optional)
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="select2_single form-control" tabindex="-1" name='curr_minor'>
+                        <option></option>
+                        <option value="med">Medicine and Health Sciences</option>
+                        <option value="cs">Computer Science</option>
+                        <option value="eng">Engineering and Applied Sciences</option>
+                        <option value="math">Mathematics and Physics</option>
+                        <option value="fin">Accounting, Finance and Financial Mathematics</option>
+                        <option value="econ">Business, Economics and Commerce</option>
+                        <option value="arts">Arts and Humanities</option>
+                        <option value="sci">Natural Sciences (Biology, Chemistry, Earth and Space)</option>
+                        <option value="law">Political Science, Law and Societal Studies</option>
+                        <option value="soci">Social Sciences (Psychology, Sociology, Nutrition Science)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">What Year Do You Graduate in? <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="select2_single form-control" tabindex="-1" name='grad_year'>
+                        <option></option>
+                        <option value="2025">2025 or later</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015 or earlier</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Cumulative GPA <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="select2_single form-control" tabindex="-1" name='gpa'>
+                        <option></option>
+                        <option value="5">4.0+ (100% or more)</option>
+                        <option value="4">4.0 (99% - 90%)</option>
+                        <option value="3">3.9-3.0 (89%-75%)</option>
+                        <option value="2">2.9 or below (74% or below)</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">You Were Once a Part of: <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                      <div class="checkbox">
+                          <input type="checkbox" class="flat" name="high_school_programs" value="AP"> AP (Advanced Placement)
+                      </div>
+                      <div class="checkbox">
+                          <input type="checkbox" class="flat" name="high_school_programs" value="IB"> IB (International Baccalaureate)
+                      </div>
+                      <div class="checkbox">
+                          <input type="checkbox" class="flat" name="high_school_programs" value="TOPS"> TOPS (Talented Offerings for Programs in the Sciences)
+                      </div>
+                      <div class="checkbox">
+                          <input type="checkbox" class="flat" name="high_school_programs" value="ESL"> ESL (English as a Second Language)
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Skills And Extracurriculars</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input id="tags_1" type="text" class="tags form-control" name="skills" />
+                      <div id="suggestions-container" style="position: relative; float: left; width: 250px; margin: 10px;"></div>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+              <div id="step-3">
+                <h2 class="StepTitle">Step 3 Additional Information</h2>
+                <p>So that we get to know you better!</p>
+                <form class="form-horizontal form-label-left" id='form-step-3'>
+
+                  <div class="form-group">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <label class="control-label" for="textarea">What makes you a great mentor?</label>
+                      <textarea id="additional-info1" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <label class="control-label" for="textarea">What do you hope to gain from being a mentor?</label>
+                      <textarea id="additional-info2" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <label class="control-label" for="textarea">Tell us about a time you tried to teach someone about a subject.</label>
+                      <textarea id="additional-info2" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <label class="control-label" for="textarea">Feel Free to Tell Us Anything Else. </label>
+                      <textarea id="additional-info3" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                    </div>
+                  </div>
+                </form>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <label class="control-label" for="textarea">Your Resume</label>
+                  <form action="form_upload.html" class="dropzone"></form>
+                </div>
+              </div>
+              <div id="step-4">
+                <h2 class="StepTitle">Step 4 Terms of Service</h2>
+                <h2>The MIT License</h2>
+                <p>Copyright 2017 MentorMap</p>
+                <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+                  and associated documentation files (the "Software"), to deal in the Software without restriction,
+                  including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+                  and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+                  subject to the following conditions:
+                </p>
+                <p>The above copyright notice and this permission notice shall be included in all copies or substantial
+                  portions of the Software.</p>
+                <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+                  LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+                  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+                  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+                  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+              </div>
+
+            </div>
+            <!-- End SmartWizard Content -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end complete profile -->
+</div>
