@@ -1,91 +1,99 @@
-// app/routes.js
-module.exports = function(app, passport) {
+var express = require('express');
+var router = express.Router();
+var passport = require('passport');
+var User = require('../passport/models/user');
 
-    // =====================================
-    // HOME PAGE (with login links) ========
-    // =====================================
-    app.get('/', function(req, res) {
-        res.render('index'); // load the index.ejs file
+
+// =====================================
+// HOME PAGE =====================
+// =====================================
+router.get('/', function(req, res, next) {
+  //console.log(req.flash('loginMessage'));
+  res.render('index', { title: 'Express' });
+});
+
+// =====================================
+// PROFILE SECTION =====================
+// =====================================
+// we will want this protected so you have to be logged in to visit
+// we will use route middleware to verify this (the isLoggedIn function)
+router.get('/profile', isLoggedIn, function(req, res, next) {
+    res.render('profile', {
+        user : req.user // get the user out of session and pass to template
     });
+});
 
-    // =====================================
-    // LOGIN ===============================
-    // =====================================
-    // show the login form
-    app.get('/login', function(req, res) {
+// =====================================
+// Complete signup =====================
+// =====================================
+// we will want this protected so you have to be logged in to visit
+// we will use route middleware to verify this (the isLoggedIn function)
+router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
+  req.body.skills = req.body.skills.split(',');
+  console.log(req.body);
+  User.findByIdAndUpdate(req.user.id, {
+    $set:
+      { 'profile.gender' : req.body.gender,
+        'profile.phone' : req.body.phone,
+        'profile.avg_11' : parseInt(req.body.avg_11),
+        'profile.avg_12' : parseInt(req.body.avg_12),
+        'profile.high_school' : req.body.high_school,
+        'profile.grade' : parseInt(req.body.grade),
+        'profile.skills' : req.body.skills,
+        'profile.linkedin' : req.body.linkedin,
+        'profile.paragraphs' : req.body.paragraphs,
+        'profile.high_school_programs': req.body.high_school_programs,
+        'profile.preferred_program' : req.body.preferred_program,
+        'profile.preferred_school' : req.body.preferred_school
+     }
+    },
+    function (err, tank) {
+      if (err) console.error(err);
 
-        // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') });
-    });
+      res.render('profile', {
+          user : req.user
+      });
 
-    // process the login form
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
+    }
+  );
 
-    // =====================================
-    // SIGNUP ==============================
-    // =====================================
-    // show the signup form
-    app.get('/signup', function(req, res) {
+});
 
-        // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
-    });
+router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
+  req.body.skills = req.body.skills.split(',');
+  console.log(req.body);
 
+  User.findByIdAndUpdate(req.user.id, {
+    $set:
+      { 'profile.gender' : req.body.gender,
+        'profile.phone' : req.body.phone,
+        'profile.high_school_programs': req.body.high_school_programs,
+        'profile.skills' : req.body.skills,
+        'profile.linkedin' : req.body.linkedin,
+        'profile.paragraphs' : req.body.paragraphs,
+        'profile.gpa' : parseInt(req.body.gpa),
+        'profile.dob' : req.body.dob, //DATE
+        'profile.curr_school' : req.body.curr_school,
+        'profile.curr_school_type' : req.body.curr_school_type,
+        'profile.curr_major' : req.body.curr_major,
+        'profile.curr_minor' : req.body.curr_minor,
+        'profile.grad_year' : parseInt(req.body.grad_year)
+     }
+    },
+    function (err, tank) {
+      if (err) console.error(err);
 
-    // process the signup form
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
+      res.render('profile', {
+          user : req.user
+      });
 
+    }
+  );
 
-    // =====================================
-    // MENTOR_INFO ==============================
-    // =====================================
-    app.post('/mentor_info', passport.authenticate('mentor_info', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/profile', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-
-    // =====================================
-    // MENTEE_INFO ==============================
-    // =====================================
-    app.post('/mentee_info', passport.authenticate('mentee_info', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/profile', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-
-
-    // =====================================
-    // PROFILE SECTION =====================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
-        });
-    });
-
-    // =====================================
-    // LOGOUT ==============================
-    // =====================================
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
-};
+});
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
@@ -93,3 +101,5 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
+
+module.exports = router;

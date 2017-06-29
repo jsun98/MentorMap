@@ -5,46 +5,39 @@ var bcrypt   = require('bcrypt-nodejs');
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
+      email                     : String,
+      password                  : String,
+      role                      : String,
 
-    mentee: {
-        email                     : String,
+      profile : {
+        //common info
+
         gender                    : String,
-        password                  : String,
         first_name                : String,
         last_name                 : String,
         phone                     : String,
+        high_school_programs      : [String],
+        skills                    : [String],
+        paragraphs                : [String],
+
+        //mentee
         avg_11                    : Number,
         avg_12                    : Number,
         high_school               : String,
         grade                     : Number,
-        linkedin                  : String,
-        high_school_programs      : [String],
-        skills                    : [String],
         preferred_school          : [String],
         preferred_program         : [String],
-        paragraphs                : [String],
-    },
 
-    mentor: {
-        email                     : String,
-        gender                    : String,
-        password                  : String,
-        first_name                : String,
-        last_name                 : String,
-        phone                     : String,
+
+        //mentor
         gpa                       : Number,
         dob                       : Date,
-        linkedin                  : String,
-        skills                    : [String],
-        paragraphs                : [String],
         curr_school               : String,
         curr_school_type          : String,
         curr_major                : String,
         curr_minor                : String,
-        grad_year                 : Number,
-        high_school_programs      : [String],
-    }
-
+        grad_year                 : Number
+      }
 });
 
 // methods ======================
@@ -55,7 +48,7 @@ userSchema.methods.generateHash = function(password) {
 
 // checking if password is valid
 userSchema.methods.validPassword = function(password) {
-    return bcrypt.compareSync(password, this.local.password);
+    return bcrypt.compareSync(password, this.password);
 };
 
 // create the model for users and expose it to our app
