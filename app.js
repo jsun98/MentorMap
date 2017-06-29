@@ -14,7 +14,7 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var session      = require('express-session');
 
-var configDB = require('./passport/config/database.js');
+var devDBUrl = require('./passport/config/database.js').url;
 
 var app = express();
 
@@ -39,7 +39,7 @@ app.use(cookieParser());
 app.use(morgan('dev')); // log every request to the console
 
 //======passport configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(process.env.MONGODB_URI || devDBUrl); // connect to our database
 
 require('./passport/config/passport')(passport); // pass passport for configuration
 

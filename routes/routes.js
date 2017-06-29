@@ -23,6 +23,7 @@ router.get('/profile', isLoggedIn, function(req, res, next) {
     });
 });
 
+
 // =====================================
 // Complete signup =====================
 // =====================================
