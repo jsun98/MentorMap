@@ -8,6 +8,8 @@ var userSchema = mongoose.Schema({
       email                     : String,
       password                  : String,
       role                      : String,
+      completed                 : Boolean,
+      creation_date             : Date,
 
       profile : {
         //common info

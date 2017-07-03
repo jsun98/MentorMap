@@ -17,8 +17,8 @@ router.get('/', function(req, res, next) {
 // =====================================
 // we will want this protected so you have to be logged in to visit
 // we will use route middleware to verify this (the isLoggedIn function)
-router.get('/profile', isLoggedIn, function(req, res, next) {
-    res.render('profile', {
+router.get('/register', isLoggedIn, function(req, res, next) {
+    res.render('register', {
         user : req.user // get the user out of session and pass to template
     });
 });
@@ -34,7 +34,8 @@ router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
   console.log(req.body);
   User.findByIdAndUpdate(req.user.id, {
     $set:
-      { 'profile.gender' : req.body.gender,
+      { 'completed' : true,
+        'profile.gender' : req.body.gender,
         'profile.phone' : req.body.phone,
         'profile.avg_11' : parseInt(req.body.avg_11),
         'profile.avg_12' : parseInt(req.body.avg_12),
@@ -51,7 +52,7 @@ router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
     function (err, tank) {
       if (err) console.error(err);
 
-      res.render('profile', {
+      res.render('register', {
           user : req.user
       });
 
@@ -66,7 +67,8 @@ router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
 
   User.findByIdAndUpdate(req.user.id, {
     $set:
-      { 'profile.gender' : req.body.gender,
+      { 'completed' : true,
+        'profile.gender' : req.body.gender,
         'profile.phone' : req.body.phone,
         'profile.high_school_programs': req.body.high_school_programs,
         'profile.skills' : req.body.skills,
@@ -84,7 +86,7 @@ router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
     function (err, tank) {
       if (err) console.error(err);
 
-      res.render('profile', {
+      res.render('register', {
           user : req.user
       });
 
