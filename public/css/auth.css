@@ -55,6 +55,15 @@
   display: none;
 }
 
+.form select {
+  font-family: "merriweather-bold", sans-serif;
+  font-size: 22px;
+  left: 13px;
+  width: 100%;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
 .form h1 {
   text-align: center;
   color: #ffffff;
@@ -62,7 +71,7 @@
   margin: 0 0 40px;
 }
 
-.form label{
+.form label {
   position: absolute;
   -webkit-transform: translateY(6px);
           transform: translateY(6px);
@@ -74,7 +83,7 @@
   pointer-events: none;
   font-size: 22px;
 }
-.form label .req {
+.form label .req{
   margin: 2px;
   color: #1ab188;
 }
@@ -143,6 +152,7 @@
   outline: none;
   border-radius: 0;
   padding: 15px 0;
+  margin-top: 15px;
   font-size: 2rem;
   font-weight: 600;
   text-transform: uppercase;

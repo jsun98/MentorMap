@@ -3,7 +3,7 @@
 ------------------------------------------------------ */
 function handleLoginClick() {
   $("#auth-overlay").fadeIn();
-  $('.tab a').click();
+  $('#login-tab-link').click();
   $('html, body').css({
     overflow: 'hidden',
     height: '100%'
@@ -12,6 +12,7 @@ function handleLoginClick() {
 
 function handleSignupClick() {
   $("#auth-overlay").fadeIn();
+  $('#signup-tab-link').click();
   $('html, body').css({
     overflow: 'hidden',
     height: '100%'
@@ -29,7 +30,7 @@ window.onclick = function(event) {
    }
 }
 
-$('.form').find('input, textarea').on('keyup blur focus', function (e) {
+$('.form').find('input, textarea, select').on('keyup blur focus change', function (e) {
 
   var $this = $(this),
       label = $this.prev('label');
@@ -47,13 +48,18 @@ $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 		    label.removeClass('highlight');
 			}
     } else if (e.type === 'focus') {
-
       if( $this.val() === '' ) {
     		label.removeClass('highlight');
 			}
       else if( $this.val() !== '' ) {
 		    label.addClass('highlight');
 			}
+    } else if (e.type === "change") {
+      if ($this.val() === '') {
+        label.removeClass('active highlight');
+      } else {
+        label.addClass('active highlight');
+      }
     }
 
 });
