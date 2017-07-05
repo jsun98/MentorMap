@@ -149,8 +149,12 @@
 					<li><a class="smoothscroll"  href="#pricing" title="">Pricing</a></li>
           <li><a class="smoothscroll"  href="#team" title="">Team</a></li>
 					<li><a class="smoothscroll"  href="#faq" title="">FAQ</a></li>
-          <li class="highlight with-sep"><a href="javascript:handleLoginClick();" title="">Log In</a></li>
-					<li class="highlight with-sep"><a href="javascript:handleSignupClick();" title="">Sign Up</a></li>
+          <% if (user) { %>
+            <li class="highlight with-sep"><a href="./profile" title=""><%= user.profile.first_name + ' ' + user.profile.last_name %></a></li>
+          <% } else { %>
+            <li class="highlight with-sep"><a href="javascript:handleLoginClick();" title="">Log In</a></li>
+            <li class="highlight with-sep"><a href="javascript:handleSignupClick();" title="">Sign Up</a></li>
+          <% } %>
 				</ul>
 			</nav>
 
