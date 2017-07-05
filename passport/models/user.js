@@ -8,6 +8,8 @@ var userSchema = mongoose.Schema({
       email                     : String,
       password                  : String,
       role                      : String,
+      completed                 : Boolean,
+      creation_date             : Date,
 
       profile : {
         //common info
@@ -16,7 +18,8 @@ var userSchema = mongoose.Schema({
         first_name                : String,
         last_name                 : String,
         phone                     : String,
-        high_school_programs      : [String],
+        age                       : Number,
+        high_school_program       : [String],
         skills                    : [String],
         paragraphs                : [String],
 
@@ -31,9 +34,7 @@ var userSchema = mongoose.Schema({
 
         //mentor
         gpa                       : Number,
-        dob                       : Date,
         curr_school               : String,
-        curr_school_type          : String,
         curr_major                : String,
         curr_minor                : String,
         grad_year                 : Number

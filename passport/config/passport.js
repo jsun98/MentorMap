@@ -66,6 +66,8 @@ module.exports = function(passport) {
                 newUser.email     = email;
                 newUser.password  = newUser.generateHash(password);
                 newUser.role      = req.body.role;
+                newUser.creation_date = new Date();
+                newUser.completed = false;
                 newUser.profile.first_name = req.body.first_name;
                 newUser.profile.last_name  = req.body.last_name;
 

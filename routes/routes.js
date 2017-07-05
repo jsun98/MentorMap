@@ -9,7 +9,8 @@ var User = require('../passport/models/user');
 // =====================================
 router.get('/', function(req, res, next) {
   //console.log(req.flash('loginMessage'));
-  res.render('index', { title: 'Express' });
+  res.render('index', { user: req.user});
+
 });
 
 // =====================================
@@ -17,8 +18,10 @@ router.get('/', function(req, res, next) {
 // =====================================
 // we will want this protected so you have to be logged in to visit
 // we will use route middleware to verify this (the isLoggedIn function)
-router.get('/profile', isLoggedIn, function(req, res, next) {
-    res.render('profile', {
+router.get('/register', isLoggedIn, function(req, res, next) {
+    if (req.user.completed)
+      res.redirect('/profile');
+    res.render('register', {
         user : req.user // get the user out of session and pass to template
     });
 });
@@ -29,13 +32,29 @@ router.get('/profile', isLoggedIn, function(req, res, next) {
 // =====================================
 // we will want this protected so you have to be logged in to visit
 // we will use route middleware to verify this (the isLoggedIn function)
-router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
+
+router.post('/mentee-complete', isLoggedIn, function(req, res, next) {
+
+  if (req.user.completed) {
+    var err = new Error("Already Completed");
+    next(err);
+  }
+
   req.body.skills = req.body.skills.split(',');
-  console.log(req.body);
+
+  if (req.body.high_school_program.constructor !== Array)
+    req.body.high_school_program = [req.body.high_school_program];
+  if (req.body.preferred_program.constructor !== Array)
+    req.body.preferred_program = [req.body.preferred_program];
+  if (req.body.preferred_school.constructor !== Array)
+    req.body.preferred_school = [req.body.preferred_school];
+
   User.findByIdAndUpdate(req.user.id, {
     $set:
-      { 'profile.gender' : req.body.gender,
+      { 'completed' : true,
+        'profile.gender' : req.body.gender,
         'profile.phone' : req.body.phone,
+        'profile.age' : req.body.age,
         'profile.avg_11' : parseInt(req.body.avg_11),
         'profile.avg_12' : parseInt(req.body.avg_12),
         'profile.high_school' : req.body.high_school,
@@ -43,7 +62,7 @@ router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
         'profile.skills' : req.body.skills,
         'profile.linkedin' : req.body.linkedin,
         'profile.paragraphs' : req.body.paragraphs,
-        'profile.high_school_programs': req.body.high_school_programs,
+        'profile.high_school_program': req.body.high_school_program,
         'profile.preferred_program' : req.body.preferred_program,
         'profile.preferred_school' : req.body.preferred_school
      }
@@ -51,31 +70,35 @@ router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
     function (err, tank) {
       if (err) console.error(err);
 
-      res.render('profile', {
-          user : req.user
-      });
-
     }
   );
+  res.redirect('/profile');
 
 });
 
 router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
+
+  if (req.user.completed) {
+    var err = new Error("Already Completed");
+    next(err);
+  }
+
   req.body.skills = req.body.skills.split(',');
-  console.log(req.body);
+  if (req.body.high_school_program.constructor !== Array)
+    req.body.high_school_program = [req.body.high_school_program];
 
   User.findByIdAndUpdate(req.user.id, {
     $set:
-      { 'profile.gender' : req.body.gender,
+      { 'completed' : true,
+        'profile.gender' : req.body.gender,
         'profile.phone' : req.body.phone,
-        'profile.high_school_programs': req.body.high_school_programs,
+        'profile.high_school_program': req.body.high_school_program,
         'profile.skills' : req.body.skills,
         'profile.linkedin' : req.body.linkedin,
         'profile.paragraphs' : req.body.paragraphs,
         'profile.gpa' : parseInt(req.body.gpa),
-        'profile.dob' : req.body.dob, //DATE
+        'profile.age' : req.body.age,
         'profile.curr_school' : req.body.curr_school,
-        'profile.curr_school_type' : req.body.curr_school_type,
         'profile.curr_major' : req.body.curr_major,
         'profile.curr_minor' : req.body.curr_minor,
         'profile.grad_year' : parseInt(req.body.grad_year)
@@ -84,14 +107,27 @@ router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
     function (err, tank) {
       if (err) console.error(err);
 
-      res.render('profile', {
-          user : req.user
-      });
-
     }
   );
+  res.redirect('/profile');
 
 });
+
+// =====================================
+// Dashboard Profile Pages  =====================
+// =====================================
+router.get('/profile', isLoggedIn, isRegCompleted, function(req, res, next) {
+  res.render('profile', { user: req.user });
+});
+
+function isRegCompleted (req, res, next) {
+  // if user is authenticated in the session, carry on
+  if (req.user.completed)
+    return next();
+
+  // if they aren't redirect them to the home page
+  res.redirect('/register');
+}
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {

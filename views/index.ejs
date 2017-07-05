@@ -17,16 +17,14 @@
 
  	<!-- CSS
    ================================================== -->
-   <link rel="stylesheet" href="css/base.css">
-   <link rel="stylesheet" href="vendors/select2/dist/css/select2.min.css" >
-   <link rel="stylesheet" href="css/main.css">
-   <link rel="stylesheet" href="css/vendor.css">
-   <link rel="stylesheet" href="css/auth.css">
-
+   <link rel="stylesheet" href="vendor/Lhander/css/base.css">
+   <link rel="stylesheet" href="vendor/Lhander/css/main.css">
+   <link rel="stylesheet" href="vendor/Lhander/css/vendor.css">
+   <link rel="stylesheet" href="vendor/Lhander/css/auth.css">
 
    <!-- script
    ================================================== -->
-	<script src="js/modernizr.js"></script>
+	<script src="vendor/Lhander/js/modernizr.js"></script>
 
    <!-- favicons
 	================================================== -->
@@ -39,8 +37,8 @@
     <div class="form">
 
           <ul class="tab-group">
-            <li class="tab active"><a href="#signup">Sign Up</a></li>
-            <li class="tab"><a href="#login">Log In</a></li>
+            <li class="tab active"><a id="signup-tab-link" href="#signup">Sign Up</a></li>
+            <li class="tab"><a id="login-tab-link" href="#login">Log In</a></li>
           </ul>
 
           <div class="tab-content">
@@ -80,9 +78,13 @@
               </div>
 
               <div class="field-wrap">
-                <select class="select2_single" tabindex="-1" name="role">
-                  <option value='mentee'>Mentee</option>
-                  <option value='mentor'>Mentor</option>
+                <label>
+                  Choose A Role<span class="req">*</span>
+                </label>
+                <select class="select2_single" tabindex="-1" name="role" required>
+                  <option></option>
+                  <option value='mentee'>I Am A Mentee</option>
+                  <option value='mentor'>I Am A Mentor</option>
                 </select>
               </div>
 
@@ -147,8 +149,12 @@
 					<li><a class="smoothscroll"  href="#pricing" title="">Pricing</a></li>
           <li><a class="smoothscroll"  href="#team" title="">Team</a></li>
 					<li><a class="smoothscroll"  href="#faq" title="">FAQ</a></li>
-          <li class="highlight with-sep"><a href="javascript:handleLoginClick();" title="">Log In</a></li>
-					<li class="highlight with-sep"><a href="javascript:handleSignupClick();" title="">Sign Up</a></li>
+          <% if (user) { %>
+            <li class="highlight with-sep"><a href="./profile" title=""><%= user.profile.first_name + ' ' + user.profile.last_name %></a></li>
+          <% } else { %>
+            <li class="highlight with-sep"><a href="javascript:handleLoginClick();" title="">Log In</a></li>
+            <li class="highlight with-sep"><a href="javascript:handleSignupClick();" title="">Sign Up</a></li>
+          <% } %>
 				</ul>
 			</nav>
 
@@ -1214,24 +1220,11 @@
 
    <!-- Java Script
    ================================================== -->
-   <script src="js/jquery-1.11.3.min.js"></script>
-   <script src="js/jquery-migrate-1.2.1.min.js"></script>
-   <script src="js/plugins.js"></script>
-   <script src="js/main.js"></script>
-   <script src="js/support.js"></script>
-   <!-- Select2 -->
-   <script src="vendors/select2/dist/js/select2.full.min.js"></script>
-
-   <!-- Select2 -->
-   <script>
-     $(document).ready(function() {
-       $(".select2_single").select2({
-         placeholder: "Choose One...",
-         allowClear: true
-       });
-     });
-   </script>
-   <!-- /Select2 -->
+   <script src="vendor/Lhander/js/jquery-1.11.3.min.js"></script>
+   <script src="vendor/Lhander/js/jquery-migrate-1.2.1.min.js"></script>
+   <script src="vendor/Lhander/js/plugins.js"></script>
+   <script src="vendor/Lhander/js/main.js"></script>
+   <script src="vendor/Lhander/js/support.js"></script>
 
 
 
