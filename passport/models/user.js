@@ -18,7 +18,7 @@ var userSchema = mongoose.Schema({
         first_name                : String,
         last_name                 : String,
         phone                     : String,
-        high_school_programs      : [String],
+        high_school_program      : [String],
         skills                    : [String],
         paragraphs                : [String],
 

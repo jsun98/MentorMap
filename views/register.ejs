@@ -27,6 +27,7 @@
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
+
         <!-- left navigation -->
         <%- include('./partials/left_nav', {user: user}); %>
         <!-- /left navigation -->
@@ -70,8 +71,11 @@
     <script src="vendors/select2/dist/js/select2.full.min.js"></script>
     <!-- Dropzone.js -->
     <script src="vendors/dropzone/dist/min/dropzone.min.js"></script>
+    <!-- Parsley validation -->
+    <script src="vendors/parsley/parsley.min.js"></script>
     <!-- validator -->
     <script src="vendors/validator/validator.min.js"></script>
+    <script src="vendors/validator/multifield.js"></script>
     <!-- jQuery Smart Wizard -->
     <script src="vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
     <!-- jquery.inputmask -->
@@ -98,6 +102,11 @@
         $(".select2_multiple_3").select2({
           maximumSelectionLength: 3,
           placeholder: "Choose up to 3",
+          allowClear: true
+        });
+        $(".select2_multiple_4").select2({
+          maximumSelectionLength: 4,
+          placeholder: "Choose up to 4",
           allowClear: true
         });
       });
@@ -188,59 +197,46 @@
 
     <!-- validator -->
     <script>
-    /*
-      console.log(validator);
+
       // initialize the validator function
       validator.message.date = 'not a real date';
 
       // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
       $('form')
-        .on('blur', 'input[required], input.optional, select.required', validator.checkField)
+        .on('blur', 'input[required], input.optional, textarea[required], select.required', validator.checkField)
         .on('change', 'select.required', validator.checkField)
         //.on('keypress', 'input[required][pattern]', validator.keypress);
 
-      $('.multi.required').on('keyup blur', 'input', function() {
-        validator.checkField.apply($(this).siblings().last()[0]);
-      });
-
-
-      $('form').submit(function(e) {
-        e.preventDefault();
-        var submit = true;
-
-        // evaluate the form using generic validaing
-
-        if (!validator.checkAll($(this))) {
-          submit = false;
-        }
-
-
-        if (submit)
-          this.submit();
-
-        return false;
-      });
-      */
-    </script>
-    <!-- /validator -->
-
-    <script>
       $('#form-step-2').submit(function(e) {
 
-        var form2SelectCount = $('#form-step-2').find("select").length;
+        e.preventDefault();
+  			var submit = true;
+  			// evaluate the form using generic validaing
+  			if( !validator.checkAll( $('form') ) ){
+  				submit = false;
+  			}
 
-        $('#form-step-1 :input, #form-step-1 textarea, #form-step-1 select').clone().hide().appendTo('#form-step-2');
-        $('#form-step-3 :input, #form-step-3 textarea').clone().hide().appendTo('#form-step-2');
+  			if ( submit ) {
+          var form2SelectCount = $('#form-step-2').find("select").length;
 
-        var selects = $('#form-step-1').find("select");
+          $('#form-step-1 :input, #form-step-1 textarea, #form-step-1 select').clone().hide().appendTo('#form-step-2');
+          $('#form-step-3 :input, #form-step-3 textarea').clone().hide().appendTo('#form-step-2');
 
-        $(selects).each(function(i) {
-            var select = this;
-            $('#form-step-2').find("select").eq(i+form2SelectCount).val($(select).val());
-        });
+          var selects = $('#form-step-1').find("select");
+
+          $(selects).each(function(i) {
+              var select = this;
+              $('#form-step-2').find("select").eq(i+form2SelectCount).val($(select).val());
+          });
+
+  				this.submit();
+        }
+  			return false;
 
       });
+
     </script>
+    <!-- /validator -->
 
 
     <!-- jQuery Tags Input -->
@@ -259,7 +255,8 @@
 
       $(document).ready(function() {
         $('#tags_1').tagsInput({
-          width: 'auto'
+          width: '100%',
+          maxTags: 10
         });
       });
     </script>
@@ -269,9 +266,15 @@
     <script>
       $(document).ready(function() {
         $('#wizard').smartWizard({
+          onLeaveStep: function() {
+            return validator.checkAll($('form'));
+          },
           onFinish: function() {
             $('#form-step-2').submit();
-          }
+          },
+          hideButtonsOnDisabled: true,
+          transitionEffect: 'slide',
+          labelFinish:'Accept'
         });
 
         $('.buttonNext').addClass('btn btn-success');

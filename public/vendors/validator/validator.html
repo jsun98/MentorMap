@@ -30,7 +30,7 @@
 					<div class="item">
 						<label>
 							<span>Name</span>
-							<input data-validate-length-range="6" data-validate-words="2" name="name" placeholder="ex. John f. Kennedy" required="required" type="text" />		
+							<input data-validate-length-range="6" data-validate-words="2" name="name" placeholder="ex. John f. Kennedy" required="required" type="text" />
 						</label>
 						<div class='tooltip help'>
 							<span>?</span>
@@ -174,7 +174,7 @@
 					<input name="somethingHidden" required="required" type="text" style='display:none' />
 				</fieldset>
 				<button id='send' type='submit'>Submit</button>
-			</form>	
+			</form>
 		</section>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -186,13 +186,13 @@
 		// validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
 		$('form').on('blur', 'input[required], input.optional', validator.checkField)
 			.on('change', 'select.required', validator.checkField);;
-		$('.multi.required').on('keyup', 'input', function(){ 
+		$('.multi.required').on('keyup', 'input', function(){
 			validator.checkField.apply($(this).siblings().last()[0]);
 		});
-		
+
 		// bind the validation to the form submit event
 		//$('#send').click('submit');//.prop('disabled', true);
-		
+
 		$('form').submit(function(e){
 			e.preventDefault();
 			var submit = true;
@@ -205,12 +205,12 @@
 				this.submit();
 			return false;
 		});
-		
+
 		/* FOR DEMO ONLY */
 		$('#vfields').change(function(){
 			$('form').toggleClass('mode2');
 		}).prop('checked',false);
-		
+
 		$('#alerts').change(function(){
 			validator.defaults.alerts = (this.checked) ? false : true;
 			if( this.checked )

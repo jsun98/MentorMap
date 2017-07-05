@@ -29,8 +29,18 @@ router.get('/register', isLoggedIn, function(req, res, next) {
 // =====================================
 // we will want this protected so you have to be logged in to visit
 // we will use route middleware to verify this (the isLoggedIn function)
+
 router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
+
   req.body.skills = req.body.skills.split(',');
+
+  if (req.body.high_school_program.constructor !== Array)
+    req.body.high_school_program = [req.body.high_school_program];
+  if (req.body.preferred_program.constructor !== Array)
+    req.body.preferred_program = [req.body.preferred_program];
+  if (req.body.preferred_school.constructor !== Array)
+    req.body.preferred_school = [req.body.preferred_school];
+
   console.log(req.body);
   User.findByIdAndUpdate(req.user.id, {
     $set:
@@ -44,7 +54,7 @@ router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
         'profile.skills' : req.body.skills,
         'profile.linkedin' : req.body.linkedin,
         'profile.paragraphs' : req.body.paragraphs,
-        'profile.high_school_programs': req.body.high_school_programs,
+        'profile.high_school_programs': req.body.high_school_program,
         'profile.preferred_program' : req.body.preferred_program,
         'profile.preferred_school' : req.body.preferred_school
      }
@@ -63,6 +73,9 @@ router.post('/mentee-complete',isLoggedIn, function(req, res, next) {
 
 router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
   req.body.skills = req.body.skills.split(',');
+  if (req.body.high_school_program.constructor !== Array)
+    req.body.high_school_program = [req.body.high_school_program];
+
   console.log(req.body);
 
   User.findByIdAndUpdate(req.user.id, {
@@ -70,7 +83,7 @@ router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
       { 'completed' : true,
         'profile.gender' : req.body.gender,
         'profile.phone' : req.body.phone,
-        'profile.high_school_programs': req.body.high_school_programs,
+        'profile.high_school_programs': req.body.high_school_program,
         'profile.skills' : req.body.skills,
         'profile.linkedin' : req.body.linkedin,
         'profile.paragraphs' : req.body.paragraphs,

@@ -72,59 +72,62 @@
               <div id="step-1">
                 <h2 class="StepTitle">Step 1 - Personal Profile</h2>
                 <p>Just for our information</p>
-                <form id="form-step-1" method="post" class="form-horizontal form-label-left">
+                <form id="form-step-1" method="post" class="form-horizontal form-label-left" novalidate>
 
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
+                  <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
-                      <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="first-name" required="required" readonly value=<%= user.profile.first_name %> >
+                      <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="first-name" readonly value=<%= user.profile.first_name %> >
                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
+                  <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
-                      <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="last-name" required="required" readonly value=<%= user.profile.last_name %> >
+                      <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="last-name" readonly value=<%= user.profile.last_name %> >
                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Email <span class="required">*</span>
+                  <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Email
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
-                      <input id="email" type="email" class="form-control col-md-7 col-xs-12 has-feedback-left" required="required" readonly value=<%= user.email %> >
+                      <input id="email" type="email" name=email class="form-control col-md-7 col-xs-12 has-feedback-left" readonly value=<%= user.email %> >
                       <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Confirm Email <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
-                      <input id="email2" type="email" class="form-control col-md-7 col-xs-12 has-feedback-left" required="required" placeholder="e.g. example@host.com">
+                      <input data-validate-linked='email' id="email2" type="email" class="form-control col-md-7 col-xs-12 has-feedback-left" required="required" placeholder="e.g. example@host.com">
                       <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="item multi required form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <span style="padding-right: 2px;">Male:</span><input type="radio" class="flat" name="gender" id="genderM" value="male"/>
-                        <span style="padding: 0px 5px;">Female:</span><input type="radio" class="flat" name="gender" id="genderF" value="female" style="padding-right: 5px"/>
-                        <span style="padding: 0px 5px;">Other:</span><input type="radio" class="flat" name="gender" id="genderF" value="other" style="padding-right: 5px"/>
-                        <span style="padding: 0px 5px;">Prefer Not to Disclose:</span><input type="radio" class="flat" name="gender" id="genderF" value="na" style="padding-right: 5px"/>
+                      <select class="required select2_single form-control" tabindex="-1" name="gender">
+                        <option></option>
+                        <option value='male'>Male</option>
+                        <option value='female'>Female</option>
+                        <option value='other'>Other</option>
+                        <option value='na'>Prefer Not To Disclose</option>
+                      </select>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone Number <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
-                      <input id="phone" name="phone" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. (999) 999-9999" data-inputmask="'mask' : '(999) 999-9999'" required="required" type="text">
+                      <input id="phone" name="phone" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. (999) 999-9999" required="required" type="tel">
                       <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">High School <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
@@ -132,10 +135,10 @@
                       <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Grade <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="select2_single form-control" tabindex="-1" name="grade">
+                      <select class="required select2_single form-control" tabindex="-1" name="grade">
                         <option></option>
                         <option value=9>9</option>
                         <option value=10>10</option>
@@ -145,11 +148,11 @@
                       </select>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Linkedin &nbsp
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
-                      <input id="linkedin" name="linkedin" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. www.example.com" required="required" type="text">
+                      <input id="linkedin" name="linkedin" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. www.example.com" type="text">
                       <span class="fa fa-linkedin form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
@@ -160,93 +163,65 @@
               <div id="step-2">
                 <h2 class="StepTitle">Step 2 - Academic Information</h2>
                 <p>Let us get to know you better</p>
-                <form id="form-step-2" action="/mentee-complete" method="post" class="form-horizontal form-label-left">
+                <form id="form-step-2" action="/mentee-complete" method="post" class="form-horizontal form-label-left" novalidate>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Grade 11 Average <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
-                      <div class="radio">
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="4" id="optionsRadios1" name="avg_11"> 100%-95%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="3" id="optionsRadios2" name="avg_11"> 94%-90%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="2" id="optionsRadios2" name="avg_11"> 89%-85%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="1" id="optionsRadios2" name="avg_11"> 84%-75%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="0" id="optionsRadios2" name="avg_11"> Below 75%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="-1" id="optionsRadios2" name="avg_11"> N/A
-                        </label>
-                      </div>
+                      <select class="required select2_single form-control" tabindex="-1" name="avg_11">
+                        <option></option>
+                        <option value='4'>100%-95%</option>
+                        <option value='3'>94%-90%</option>
+                        <option value='2'>89%-85%</option>
+                        <option value='1'>84%-75%</option>
+                        <option value='0'>Below 75%</option>
+                        <option value='-1'>N/A</option>
+                      </select>
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Grade 12 Average <span class="required">*</span></label>
 
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
-                      <div class="radio">
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="4" id="optionsRadios1" name="avg_12"> 100%-95%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="3" id="optionsRadios2" name="avg_12"> 94%-90%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="2" id="optionsRadios2" name="avg_12"> 89%-85%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="1" id="optionsRadios2" name="avg_12"> 84%-75%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="0" id="optionsRadios2" name="avg_12"> Below 75%
-                        </label>
-                        <label style="padding-right: 10px;">
-                          <input type="radio" value="-1" id="optionsRadios2" name="avg_12"> N/A
-                        </label>
-                      </div>
+                      <select class="required select2_single form-control" tabindex="-1" name="avg_12">
+                        <option></option>
+                        <option value='4'>100%-95%</option>
+                        <option value='3'>94%-90%</option>
+                        <option value='2'>89%-85%</option>
+                        <option value='1'>84%-75%</option>
+                        <option value='0'>Below 75%</option>
+                        <option value='-1'>N/A</option>
+                      </select>
                     </div>
                   </div>
 
 
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">You Are Enrolled In <span class="required">*</span>
+                  <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">You Are A Part Of <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
-                      <div class="checkbox">
-                          <input type="checkbox" class="flat" name="high_school_programs" value="AP"> AP (Advanced Placement)
-                      </div>
-                      <div class="checkbox">
-                          <input type="checkbox" class="flat" name="high_school_programs" value="IB"> IB (International Baccalaureate)
-                      </div>
-                      <div class="checkbox">
-                          <input type="checkbox" class="flat" name="high_school_programs" value="TOPS"> TOPS (Talented Offerings for Programs in the Sciences)
-                      </div>
-                      <div class="checkbox">
-                          <input type="checkbox" class="flat" name="high_school_programs" value="ESL"> ESL (English as a Second Language)
-                      </div>
+                      <select class="required select2_multiple_4 form-control" multiple="multiple" name="high_school_program">
+                        <option></option>
+                        <option value="AP">AP (Advanced Placement)</option>
+                        <option value="IB">IB (International Baccalaureate)</option>
+                        <option value="TOPS">TOPS (Talented Offerings for Programs in the Sciences)</option>
+                        <option value="ESL">ESL (English as a Second Language)</option>
+                      </select>
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Skills And Extracurriculars</label>
+                  <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Skills And Extracurriculars <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input id="tags_1" type="text" class="tags form-control" name="skills" />
-                      <div id="suggestions-container" style="position: relative; float: left; width: 250px; margin: 10px;"></div>
+                      <input id="tags_1" type="text" required="required" class="tags form-control" name="skills" />
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Preferred Post Secondary Institutions</label>
+                  <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Preferred Post Secondary Institutions <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="select2_multiple_3 form-control" multiple="multiple" name="preferred_school">
+                      <select class="required select2_multiple_3 form-control" multiple="multiple" name="preferred_school">
                         <option></option>
                         <option value="University of Waterloo">University of Waterloo</option>
                         <option value="University of Toronto">University of Toronto</option>
@@ -257,10 +232,10 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Preferred Major Fields of Study</label>
+                  <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Preferred Major Fields of Study <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="select2_multiple_2 form-control" multiple="multiple" name="preferred_program">
+                      <select class="required select2_multiple_2 form-control" multiple="multiple" name="preferred_program">
                         <option></option>
                         <option value="med">Medicine and Health Sciences</option>
                         <option value="cs">Computer Science</option>
@@ -283,37 +258,39 @@
               <div id="step-3">
                 <h2 class="StepTitle">Step 3 Additional Information</h2>
                 <p>Provide us with some more information to help us better match you with a suitable mentor</p>
-                <form id="form-step-3" class="form-horizontal form-label-left">
+                <form id="form-step-3" class="form-horizontal form-label-left" novalidate>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                      <label class="control-label" for="textarea">What are you looking for in a mentor?</label>
-                      <textarea id="additional-info1" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                      <label class="control-label" for="textarea">What are you looking for in a mentor? (min. 200 chars) <span class="required">*</span></label>
+                      <textarea id="additional-info1" data-validate-length-range="200,500" required="required" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                      <label class="control-label" for="textarea">Tell us more about your future goals.</label>
-                      <textarea id="additional-info2" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                      <label class="control-label" for="textarea">Tell us more about your future goals. (min. 200 chars) <span class="required">*</span></label>
+                      <textarea id="additional-info2" data-validate-length-range="200,500" required="required" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                      <label class="control-label" for="textarea">What Motivated You to Look For a Mentor?</label>
-                      <textarea id="additional-info2" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                      <label class="control-label" for="textarea">What Motivated You to Look For a Mentor? (min. 200 chars) <span class="required">*</span></label>
+                      <textarea id="additional-info2" data-validate-length-range="200,500" required="required" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                       <label class="control-label" for="textarea">Feel Free to Tell Us Anything Else. </label>
                       <textarea id="additional-info3" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
                     </div>
                   </div>
                 </form>
+                <!--
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <label class="control-label" for="textarea">Drop Us Your Resume If You Have One</label>
                   <form action="form_upload.html" class="dropzone"></form>
                 </div>
+              -->
               </div>
               <div id="step-4">
                 <h2 class="StepTitle">Step 4 Terms of Service</h2>

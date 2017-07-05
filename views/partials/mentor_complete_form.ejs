@@ -74,7 +74,7 @@
                 <p>Just for our information</p>
                 <form class="form-horizontal form-label-left" id="form-step-1">
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
@@ -82,7 +82,7 @@
                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
@@ -90,7 +90,7 @@
                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Email <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
@@ -98,7 +98,7 @@
                       <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Confirm Email <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
@@ -107,7 +107,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <span style="padding-right: 2px;">Male:</span><input type="radio" class="flat" name="gender" id="genderM" value="M"/>
@@ -116,7 +116,7 @@
                         <span style="padding: 0px 5px;">Prefer Not to Disclose:</span><input type="radio" class="flat" name="gender" id="genderF" value="N" style="padding-right: 5px"/>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
@@ -124,7 +124,7 @@
                       <span class="fa fa-birthday-cake form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone Number <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
@@ -132,7 +132,7 @@
                       <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Linkedin &nbsp
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
@@ -150,7 +150,7 @@
                 <form class="form-horizontal form-label-left" method="post" action="/mentor-complete" id="form-step-2">
 
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">You Are Currently Attending <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <div class="radio">
@@ -176,11 +176,11 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Current or Most Recent University/College <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="select2_single form-control" tabindex="-1" name='curr_school'>
+                      <select class="required select2_single form-control" tabindex="-1" name='curr_school'>
                         <option></option>
                         <option value="University of Waterloo">University of Waterloo</option>
                         <option value="University of Toronto">University of Toronto</option>
@@ -191,11 +191,11 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Major Field of Study <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="select2_single form-control" tabindex="-1" name='curr_major'>
+                      <select class="required select2_single form-control" tabindex="-1" name='curr_major'>
                         <option></option>
                         <option value="med">Medicine and Health Sciences</option>
                         <option value="cs">Computer Science</option>
@@ -211,11 +211,11 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Minor Field of Study (optional)
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="select2_single form-control" tabindex="-1" name='curr_minor'>
+                      <select class="required select2_single form-control" tabindex="-1" name='curr_minor'>
                         <option></option>
                         <option value="med">Medicine and Health Sciences</option>
                         <option value="cs">Computer Science</option>
@@ -231,11 +231,11 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">What Year Do You Graduate in? <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="select2_single form-control" tabindex="-1" name='grad_year'>
+                      <select class="required select2_single form-control" tabindex="-1" name='grad_year'>
                         <option></option>
                         <option value="2025">2025 or later</option>
                         <option value="2024">2024</option>
@@ -252,11 +252,11 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Cumulative GPA <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="select2_single form-control" tabindex="-1" name='gpa'>
+                      <select class="required select2_single form-control" tabindex="-1" name='gpa'>
                         <option></option>
                         <option value="5">4.0+ (100% or more)</option>
                         <option value="4">4.0 (99% - 90%)</option>
@@ -268,26 +268,26 @@
 
 
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">You Were Once a Part of: <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
                       <div class="checkbox">
-                          <input type="checkbox" class="flat" name="high_school_programs" value="AP"> AP (Advanced Placement)
+                          <input type="checkbox" class="flat" name="high_school_program" value="AP"> AP (Advanced Placement)
                       </div>
                       <div class="checkbox">
-                          <input type="checkbox" class="flat" name="high_school_programs" value="IB"> IB (International Baccalaureate)
+                          <input type="checkbox" class="flat" name="high_school_program" value="IB"> IB (International Baccalaureate)
                       </div>
                       <div class="checkbox">
-                          <input type="checkbox" class="flat" name="high_school_programs" value="TOPS"> TOPS (Talented Offerings for Programs in the Sciences)
+                          <input type="checkbox" class="flat" name="high_school_program" value="TOPS"> TOPS (Talented Offerings for Programs in the Sciences)
                       </div>
                       <div class="checkbox">
-                          <input type="checkbox" class="flat" name="high_school_programs" value="ESL"> ESL (English as a Second Language)
+                          <input type="checkbox" class="flat" name="high_school_program" value="ESL"> ESL (English as a Second Language)
                       </div>
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Skills And Extracurriculars</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input id="tags_1" type="text" class="tags form-control" name="skills" />
@@ -302,25 +302,25 @@
                 <p>So that we get to know you better!</p>
                 <form class="form-horizontal form-label-left" id='form-step-3'>
 
-                  <div class="form-group">
+                  <div class="item form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                       <label class="control-label" for="textarea">What makes you a great mentor?</label>
                       <textarea id="additional-info1" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                       <label class="control-label" for="textarea">What do you hope to gain from being a mentor?</label>
                       <textarea id="additional-info2" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                       <label class="control-label" for="textarea">Tell us about a time you tried to teach someone about a subject.</label>
                       <textarea id="additional-info2" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="item form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                       <label class="control-label" for="textarea">Feel Free to Tell Us Anything Else. </label>
                       <textarea id="additional-info3" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
