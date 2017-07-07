@@ -120,6 +120,32 @@ router.get('/profile', isLoggedIn, isRegCompleted, function(req, res, next) {
   res.render('profile', { user: req.user });
 });
 
+// =====================================
+// Inbox Page  =====================
+// =====================================
+router.get('/inbox', isLoggedIn, isRegCompleted, function(req, res, next) {
+  res.render('inbox', { user: req.user });
+});
+
+
+// =====================================
+// List all Mentor/Mentee  =====================
+// =====================================
+router.get('/mentees-list', isLoggedIn, isRegCompleted, function(req, res, next) {
+  res.render('contacts', { user: req.user });
+});
+
+router.get('/mentors-list', isLoggedIn, isRegCompleted, function(req, res, next) {
+  res.render('contacts', { user: req.user });
+});
+
+// =====================================
+// Mentor/Mentee Profile Details  =====================
+// =====================================
+router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, next) {
+  res.render('mentor-details', { user: req.user });
+});
+
 function isRegCompleted (req, res, next) {
   // if user is authenticated in the session, carry on
   if (req.user.completed)

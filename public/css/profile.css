@@ -1,0 +1,9 @@
+.tutor-buttons button {
+  width: 100%;
+
+}
+
+.x_content {
+  height: 40vh;
+  overflow: auto;
+}

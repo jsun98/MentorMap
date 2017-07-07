@@ -38,12 +38,13 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-        <% if (user.role==='mentee') { %>
-          <%- include('./partials/mentee_complete_form', {user: user}); %>
-        <% } else { %>
-          <%- include('./partials/mentor_complete_form', {user: user}); %>
-        <% } %>
-
+        <div class="right_col" role="main">
+          <% if (user.role==='mentee') { %>
+            <%- include('./partials/mentee_complete_form', {user: user}); %>
+          <% } else { %>
+            <%- include('./partials/mentor_complete_form', {user: user}); %>
+          <% } %>
+        </div>
         <!-- /page content -->
 
         <!-- footer content -->
