@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MentorMap - List All Mentors</title>
+
+    <!-- Bootstrap -->
+    <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="vendor/gentelella/css/custom.min.css" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <!-- left navigation -->
+        <%- include('./partials/left_nav', {user: user}); %>
+        <!-- /left navigation -->
+
+        <!-- top navigation -->
+        <%- include('./partials/top_nav', {user: user}); %>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>All Mentors</h3>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="x_panel">
+                  <div class="x_content">
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                        <div id="page-selection" class="pagination pagination-split"></div>
+                      </div>
+
+                      <div class="clearfix"></div>
+
+                      <div id="page-content">
+
+                        <% for (var i = 0 ; i < profiles.length; i++) { %>
+
+                          <%- include('./partials/mentor_profile_tab', {mentor: profiles[i]}); %>
+
+                        <% } %>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="vendor/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="vendor/nprogress/nprogress.js"></script>
+    <!-- Bootpag -->
+    <script src="vendor/bootpag/jquery.bootpag.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="vendor/gentelella/js/custom.min.js"></script>
+
+    <script>
+      $('.profile_view button').click(function () {
+        window.location.href = "/mentor-details?id="+$(this).attr('userId')
+      });
+    </script>
+
+    <script>
+      $(document).ready(function() {
+        var profiles = <%- JSON.stringify(profiles) %>;
+        var pageProfilesCount = 9;
+
+        $("#page-content").children().each(function (idx, val) {
+          if (idx < 9)
+            $(this).show();
+        });
+
+        $('#page-selection').bootpag({
+          total: profiles.length/pageProfilesCount + 1
+        }).on("page", function(event, num){
+          var pageStartIdx = (num - 1) * pageProfilesCount;
+          var pageEndIdx = pageStartIdx + pageProfilesCount;
+          $("#page-content").children().each(function (idx, val) {
+            if (idx < pageStartIdx || idx > pageEndIdx)
+              $(this).hide();
+            else
+              $(this).show();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

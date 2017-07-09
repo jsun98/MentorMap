@@ -131,19 +131,31 @@ router.get('/inbox', isLoggedIn, isRegCompleted, function(req, res, next) {
 // =====================================
 // List all Mentor/Mentee  =====================
 // =====================================
-router.get('/mentees-list', isLoggedIn, isRegCompleted, function(req, res, next) {
-  res.render('contacts', { user: req.user });
-});
 
 router.get('/mentors-list', isLoggedIn, isRegCompleted, function(req, res, next) {
-  res.render('contacts', { user: req.user });
+  User.find({
+    role: "mentor",
+    completed: true
+  }, function (err, profiles) {
+    if (err)
+      console.error(err);
+    else {
+      res.render('profile_list', { user: req.user, profiles: profiles });
+    }
+  });
 });
 
 // =====================================
 // Mentor/Mentee Profile Details  =====================
 // =====================================
 router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, next) {
-  res.render('mentor-details', { user: req.user });
+  User.findById(req.query.id, function (err, mentor){
+    if (err)
+      console.error(err);
+    else {
+      res.render('mentor-details', { user: req.user, mentor: mentor });
+    }
+  });
 });
 
 function isRegCompleted (req, res, next) {
