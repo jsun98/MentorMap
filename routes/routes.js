@@ -68,7 +68,8 @@ router.post('/mentee-complete', isLoggedIn, function(req, res, next) {
      }
     },
     function (err, tank) {
-      if (err) console.error(err);
+      if (err)
+        next(err);
 
     }
   );
@@ -105,7 +106,8 @@ router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
      }
     },
     function (err, tank) {
-      if (err) console.error(err);
+      if (err)
+        next(err);
 
     }
   );
@@ -138,7 +140,7 @@ router.get('/mentors-list', isLoggedIn, isRegCompleted, function(req, res, next)
     completed: true
   }, function (err, profiles) {
     if (err)
-      console.error(err);
+      next(err);
     else {
       res.render('profile_list', { user: req.user, profiles: profiles });
     }
@@ -151,10 +153,22 @@ router.get('/mentors-list', isLoggedIn, isRegCompleted, function(req, res, next)
 router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, next) {
   User.findById(req.query.id, function (err, mentor){
     if (err)
-      console.error(err);
+      next(err);
     else {
       res.render('mentor-details', { user: req.user, mentor: mentor });
     }
+  });
+});
+
+router.post('/appointment', isLoggedIn, isRegCompleted, function(req, res, next) {
+
+  User.findByIdAndUpdate(req.body.targetUserID, {
+    $addToSet: { 'requestedSessions' : req.user }
+  }, function (err, tank) {
+      if (err)
+        next(err);
+      else
+        res.send('success');
   });
 });
 

@@ -4,12 +4,17 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 // define the schema for our user model
-var userSchema = mongoose.Schema({
+
+var userSchema = new mongoose.Schema();
+
+userSchema.add({
       email                     : String,
       password                  : String,
       role                      : String,
       completed                 : Boolean,
       creation_date             : Date,
+      requestedSessions         : [userSchema],
+      confirmedSessions         : [userSchema],
 
       profile : {
         //common info
@@ -19,9 +24,11 @@ var userSchema = mongoose.Schema({
         last_name                 : String,
         phone                     : String,
         age                       : Number,
+        linkedin                  : String,
         high_school_program       : [String],
         skills                    : [String],
         paragraphs                : [String],
+
 
         //mentee
         avg_11                    : Number,

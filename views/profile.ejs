@@ -35,7 +35,7 @@
 
         <!-- page content -->
         <div class="right_col" role="main" style="min-height: none">
-          <% if (user.role==='mentee') { %>
+          <% if (user.role === 'mentee') { %>
             <%- include('./partials/mentee_dashboard_content', {user: user}); %>
           <% } else { %>
             <%- include('./partials/mentor_dashboard_content', {user: user}); %>
