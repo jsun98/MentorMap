@@ -4,28 +4,23 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 var random = require('mongoose-random');
 
-// define the schema for our user model
 
 var userSchema = new mongoose.Schema();
+
 userSchema.plugin(random, { path: 'r' });
 
 userSchema.add({
       email                     : String,
       password                  : String,
-      role                      : String,
       completed                 : Boolean,
       creation_date             : Date,
       upcomingSessions          : [{
                                     type: mongoose.Schema.ObjectId,
-                                    ref: 'User'
+                                    ref: 'userSchema'
                                   }],
       mentors                   : [{
                                     type: mongoose.Schema.ObjectId,
-                                    ref: 'User'
-                                  }],
-      mentees                   : [{
-                                    type: mongoose.Schema.ObjectId,
-                                    ref: 'User'
+                                    ref: 'userSchema'
                                   }],
 
       profile : {
@@ -49,14 +44,6 @@ userSchema.add({
         grade                     : Number,
         preferred_school          : [String],
         preferred_program         : [String],
-
-
-        //mentor
-        gpa                       : Number,
-        curr_school               : String,
-        curr_major                : String,
-        curr_minor                : String,
-        grad_year                 : Number
       }
 });
 
@@ -72,4 +59,4 @@ userSchema.methods.validPassword = function(password) {
 };
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Mentee', userSchema);

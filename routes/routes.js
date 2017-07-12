@@ -4,14 +4,14 @@ var passport = require('passport');
 var User = require('../passport/models/user');
 var random = require('mongoose-random');
 
-
+//set up the Mongoose-Random plugin
 User.syncRandom(function (err, result) {
   if (err)
     console.log(err);
 });
 
 // =====================================
-// HOME PAGE =====================
+// Index PAGE =====================
 // =====================================
 router.get('/', function(req, res, next) {
   //console.log(req.flash('loginMessage'));
@@ -20,10 +20,9 @@ router.get('/', function(req, res, next) {
 });
 
 // =====================================
-// PROFILE SECTION =====================
+// Register =====================
 // =====================================
-// we will want this protected so you have to be logged in to visit
-// we will use route middleware to verify this (the isLoggedIn function)
+// Directs user to complete his/her registeration
 router.get('/register', isLoggedIn, function(req, res, next) {
     if (req.user.completed) {
       res.redirect('/dashboard');
@@ -34,13 +33,7 @@ router.get('/register', isLoggedIn, function(req, res, next) {
       res.render('mentor_register', {user : req.user});
 });
 
-
-// =====================================
-// Complete signup =====================
-// =====================================
-// we will want this protected so you have to be logged in to visit
-// we will use route middleware to verify this (the isLoggedIn function)
-
+//update mentee database records
 router.post('/mentee-complete', isLoggedIn, function(req, res, next) {
 
   if (req.user.completed) {
@@ -85,6 +78,7 @@ router.post('/mentee-complete', isLoggedIn, function(req, res, next) {
 
 });
 
+//update mentor database records
 router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
 
   if (req.user.completed) {
@@ -124,7 +118,7 @@ router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
 });
 
 // =====================================
-// Dashboard Profile Pages  =====================
+// Dashboard Page  =====================
 // =====================================
 router.get('/dashboard', isLoggedIn, isRegCompleted, function(req, res, next) {
   if (req.user.role === "mentee")
@@ -141,9 +135,21 @@ router.get('/inbox', isLoggedIn, isRegCompleted, function(req, res, next) {
   res.render('inbox', { user: req.user });
 });
 
+// =====================================
+// List all the mentees's current mentror =====================
+// =====================================
+router.get('/mymentors', isLoggedIn, isRegCompleted, function(req, res, next) {
+  User.findById(req.user._id)
+    .populate('mentors')
+    .exec(function (err, user) {
+      if (err)
+        next(err);
+      res.render('mentor_list', { user: req.user, profiles: user.mentors });
+    });
+});
 
 // =====================================
-// List all Mentor/Mentee  =====================
+// Mentor list page =====================
 // =====================================
 
 router.get('/mentor-list', isLoggedIn, isRegCompleted, function(req, res, next) {
@@ -163,7 +169,7 @@ router.get('/mentor-list', isLoggedIn, isRegCompleted, function(req, res, next) 
 });
 
 // =====================================
-// Mentor/Mentee Profile Details  =====================
+// Mentor profile details  =====================
 // =====================================
 router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, next) {
   User.findById(req.query.id, function (err, mentor){
@@ -177,6 +183,7 @@ router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, nex
   });
 });
 
+// Mentees choose mentor
 router.post('/choose-mentor', isLoggedIn, isRegCompleted, function(req, res, next) {
 
   //might wanna change this to promise
@@ -195,6 +202,11 @@ router.post('/choose-mentor', isLoggedIn, isRegCompleted, function(req, res, nex
 
 });
 
+// =====================================
+// Auxillary Functions =====================
+// =====================================
+
+//checks if registration is completed
 function isRegCompleted (req, res, next) {
   // if user is authenticated in the session, carry on
   if (req.user.completed)

@@ -30,6 +30,12 @@
               <div class="title_left">
                 <h3>Mentor Profile</h3>
               </div>
+
+              <div class="title_right">
+                  <div class="input-group pull-right">
+                    <a type="button" href="/mymentors" class="btn btn-round btn-default">Back</a>
+                  </div>
+              </div>
             </div>
 
             <div class="clearfix"></div>
@@ -160,7 +166,7 @@
                               </p>
                               <div class="modal-footer">
                                 <button type="button" id="btn-choose-mentor" class="btn btn-success" style="margin-bottom:0;" >Confirm Choice</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom:0;">Back</button>
+                                <button type="button" id="btn-close-modal" class="btn btn-default" data-dismiss="modal" style="margin-bottom:0;">Back</button>
                               </div>
                             </div>
                           </div>
@@ -193,8 +199,14 @@
                           </li>
                           <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">My Skills</a>
                           </li>
+                          <% if (matched === true) { %>
+                          <li role="presentation" class=""><a href="#tab_content4" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Contact Information</a>
+                          </li>
+                          <% } %>
                         </ul>
+
                         <div id="myTabContent" class="tab-content">
+
                           <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
 
                             <!-- About -->
@@ -286,6 +298,16 @@
                             <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
                               photo booth letterpress, commodo enim craft beer mlkshk </p>
                           </div>
+
+                          <% if (matched === true) { %>
+                          <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="home-tab">
+                            <div>
+                              <p>Email: <%= mentor.email %></p>
+                              <p>Phone: <%= mentor.profile.phone %></p>
+                              <p>LinkedIn: <%= mentor.profile.linkedin %></p>
+                            </div>
+                          </div>
+                          <% } %>
                         </div>
                       </div>
                     </div>
@@ -330,10 +352,11 @@
           $.post("/choose-mentor", {mentor_id: '<%= mentor._id %>'})
           .done(function (data) {
             alert('mentor successfully chosen');
-            window.location.href = '/dashboard';
+            window.location.reload();
           })
           .fail(function () {
             alert('internal server error');
+            window.location.href = '/dashboard';
           });
         });
       });
