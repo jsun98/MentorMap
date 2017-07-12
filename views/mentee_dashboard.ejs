@@ -143,8 +143,8 @@
                 <div class="x_content">
 
                   <div class="tutor-buttons">
-                    <button type="button" class="btn btn-success btn-lg" id="btn-listmentors">Choose A Mentor</button>
-                    <button type="button" class="btn btn-info btn-lg" id="btn-mymentors">See My Mentors</button>
+                    <a type="button" href="/mentor-list" class="btn btn-success btn-lg" id="btn-listmentors">Choose A Mentor</a>
+                    <button type="button" href="/mymentors" class="btn btn-info btn-lg" id="btn-mymentors">See My Mentors</button>
                     <button type="button" class="btn btn-primary btn-lg" disabled>Leave a Review</button>
                     <button type="button" class="btn btn-dark btn-lg" disabled>Help</button>
                   </div>
@@ -184,18 +184,6 @@
     <!-- Custom Theme Scripts -->
     <script src="vendor/gentelella/js/custom.min.js"></script>
 
-    <!-- bind buttons -->
-    <script>
-      $(document).ready(function() {
-        $('#btn-listmentors').click(function() {
-          window.location.href = '/mentor-list';
-        });
-        $('#btn-mymentors').click(function() {
-          window.location.href = '/mymentors';
-        });
-      });
-    </script>
-    <!-- end bind buttons -->
 
     <!-- gauge.js -->
     <script>

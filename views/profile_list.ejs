@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('./partials/meta', {pageTitle: 'List All Mentors'}); %>
+    <%- include('./partials/meta', {pageTitle: 'List Profiles'}); %>
 
     <!-- Bootstrap -->
     <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -55,7 +55,7 @@
 
                         <% for (var i = 0 ; i < profiles.length; i++) { %>
 
-                          <%- include('./partials/mentor_profile_tab', {mentor: profiles[i]}); %>
+                          <%- include('./partials/profile_tab', {profile: profiles[i]}); %>
 
                         <% } %>
 
@@ -89,12 +89,6 @@
 
     <!-- Custom Theme Scripts -->
     <script src="vendor/gentelella/js/custom.min.js"></script>
-
-    <script>
-      $('.profile_view .details').click(function () {
-        window.location.href = "/mentor-details?id="+$(this).attr('userId')
-      });
-    </script>
 
     <script>
       $(document).ready(function() {

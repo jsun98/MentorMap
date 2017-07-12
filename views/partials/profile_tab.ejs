@@ -2,11 +2,16 @@
   <div class="well profile_view">
     <div class="col-sm-12">
       <div class="left col-xs-7">
-        <h2><%= mentor.profile.first_name + ' ' + mentor.profile.last_name %></h2>
+        <h2><%= profile.profile.first_name + ' ' + profile.profile.last_name %></h2>
         <p><strong>About: </strong> </p>
         <ul class="list-unstyled">
-          <li><i class="fa fa-institution"></i> <%= mentor.profile.curr_school %> </li>
-          <li><i class="fa fa-book"></i> <%= mentor.profile.curr_major %> </li>
+          <% if (profile.role == "mentor") { %>
+          <li><i class="fa fa-book"></i> <%= profile.profile.curr_school %> </li>
+          <li><i class="fa fa-book"></i> <%= profile.profile.curr_major %> </li>
+          <% } else { %>
+          <li><i class="fa fa-book"></i> <%= profile.profile.high_school %> </li>
+          <li><i class="fa fa-book"></i> Grade: <%= profile.profile.grade %> </li>
+          <% } %>
         </ul>
       </div>
       <div class="right col-xs-5 text-center">
@@ -28,9 +33,16 @@
         <button type="button" class="btn btn-success btn-xs message pull-right">
           <i class="fa fa-user"></i> Message
         </button>
-        <button type="button" class="btn btn-primary btn-xs details pull-right" userId = <%= mentor._id %> >
-          <i class="fa fa-user"></i> Profile
-        </button>
+        <% if (profile.role == "mentor") { %>
+          <a type="button" class="btn btn-primary btn-xs details pull-right" href = "/mentor-details?id=<%= profile._id %>" >
+            <i class="fa fa-user"></i> Profile
+          </a>
+        <% } else { %>
+          <a type="button" class="btn btn-primary btn-xs details pull-right" href="/booking?id=<%= profile._id %>" >
+            <i class="fa fa-user"></i> Book a Session
+          </a>
+        <% } %>
+
       </div>
     </div>
   </div>

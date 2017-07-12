@@ -136,15 +136,61 @@ router.get('/inbox', isLoggedIn, isRegCompleted, function(req, res, next) {
 });
 
 // =====================================
-// List all the mentees's current mentror =====================
+// Session Booking Page  =====================
 // =====================================
-router.get('/mymentors', isLoggedIn, isRegCompleted, function(req, res, next) {
+router.get('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
+  if (!req.query.id)
+    next(new Error("Unable to Fetch Profile Data"));
+  User.findById(req.query.id, function (err, mentee){
+    if (err)
+      next(err);
+    res.render('session_booking', { user: req.user, mentee: mentee });
+  });
+});
+
+router.post('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
+  console.log(req.body);
+
+//might wanna change this to promise
+/*
+  User.update({_id: req.body.mentee_id}, { $addToSet: { 'upcomingSessions' : req.user._id }}, function (err) {
+    if (err)
+      next(err);
+    else {
+      User.update({_id: req.user._id}, { $addToSet: { 'mentors' : req.body.mentor_id }}, function (err) {
+        if (err)
+          next(err);
+        else
+          res.send('success');
+      });
+    }
+  });
+  */
+});
+
+// =====================================
+// List all the mentors's current mentees =====================
+// =====================================
+router.get('/mymentees', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
+  User.findById(req.user._id)
+    .populate('mentees')
+    .exec(function (err, user) {
+      if (err)
+        next(err);
+      res.render('profile_list', { user: req.user, profiles: user.mentees });
+    });
+});
+
+// =====================================
+// List all the mentees's current mentor =====================
+// =====================================
+router.get('/mymentors', isLoggedIn, isRegCompleted, isMenteeOnly, function(req, res, next) {
   User.findById(req.user._id)
     .populate('mentors')
     .exec(function (err, user) {
       if (err)
         next(err);
-      res.render('mentor_list', { user: req.user, profiles: user.mentors });
+      res.render('profile_list', { user: req.user, profiles: user.mentors });
     });
 });
 
@@ -162,7 +208,7 @@ router.get('/mentor-list', isLoggedIn, isRegCompleted, function(req, res, next) 
     if (err)
       next(err);
     else {
-      res.render('mentor_list', { user: req.user, profiles: profiles });
+      res.render('profile_list', { user: req.user, profiles: profiles });
     }
   }).limit(6);
 
@@ -172,6 +218,8 @@ router.get('/mentor-list', isLoggedIn, isRegCompleted, function(req, res, next) 
 // Mentor profile details  =====================
 // =====================================
 router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, next) {
+  if (!req.query.id)
+    next(new Error("Unable to Fetch Profile Data"));
   User.findById(req.query.id, function (err, mentor){
     if (err)
       next(err);
@@ -184,7 +232,7 @@ router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, nex
 });
 
 // Mentees choose mentor
-router.post('/choose-mentor', isLoggedIn, isRegCompleted, function(req, res, next) {
+router.post('/choose-mentor', isLoggedIn, isRegCompleted, isMenteeOnly, function(req, res, next) {
 
   //might wanna change this to promise
     User.update({_id: req.body.mentor_id}, { $addToSet: { 'mentees' : req.user._id }}, function (err) {
@@ -205,6 +253,20 @@ router.post('/choose-mentor', isLoggedIn, isRegCompleted, function(req, res, nex
 // =====================================
 // Auxillary Functions =====================
 // =====================================
+
+function isMentorOnly (req, res, next) {
+  if (req.user.role === "mentor")
+    return next();
+
+  res.redirect('/dashboard');
+}
+
+function isMenteeOnly (req, res, next) {
+  if (req.user.role === "mentee")
+    return next();
+
+  res.redirect('/dashboard');
+}
 
 //checks if registration is completed
 function isRegCompleted (req, res, next) {
