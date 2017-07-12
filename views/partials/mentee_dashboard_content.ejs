@@ -28,7 +28,7 @@
     <div class="tile-stats">
       <div class="icon"><i class="fa fa-check-square-o"></i></div>
       <div class="count">9.9</div>
-      <h3>Average Mentor Review</h3>
+      <h3>Average Review</h3>
       <p>Lorem ipsum psdea itgum rixt.</p>
     </div>
   </div>
@@ -80,7 +80,7 @@
       </div>
       <div class="x_content" style="overflow: auto;">
         <ul class="list-unstyled top_profiles scroll-view">
-          <% if (user.confirmedSessions.length > 0) { %>
+          <% if (user.upcomingSessions.length > 0) { %>
           <li class="media event">
             <a class="pull-left border-aero profile_thumb">
               <i class="fa fa-user aero"></i>
@@ -112,11 +112,10 @@
       <div class="x_content">
 
         <div class="tutor-buttons">
-          <button type="button" class="btn btn-info btn-lg" disabled>Match Me With A Mentor</button>
-          <button type="button" class="btn btn-success btn-lg" onclick="window.location.href = './mentors-list';">See All Mentors</button>
-          <button type="button" class="btn btn-danger btn-lg">View My Profile</button>
-          <button type="button" class="btn btn-primary btn-lg">Leave a Review</button>
-          <button type="button" class="btn btn-dark btn-lg">Help</button>
+          <button type="button" class="btn btn-success btn-lg" id="btn-listmentors">Choose A Mentor</button>
+          <button type="button" class="btn btn-info btn-lg" disabled>See My Mentors</button>
+          <button type="button" class="btn btn-primary btn-lg" disabled>Leave a Review</button>
+          <button type="button" class="btn btn-dark btn-lg" disabled>Help</button>
         </div>
       </div>
     </div>

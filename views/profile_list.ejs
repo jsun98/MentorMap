@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>MentorMap - List All Mentors</title>
+    <%- include('./partials/meta', {pageTitle: 'List All Mentors'}); %>
 
     <!-- Bootstrap -->
     <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -71,12 +65,7 @@
         <!-- /page content -->
 
         <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
+        <%- include('./partials/footer'); %>
         <!-- /footer content -->
       </div>
     </div>
@@ -96,7 +85,7 @@
     <script src="vendor/gentelella/js/custom.min.js"></script>
 
     <script>
-      $('.profile_view button').click(function () {
+      $('.profile_view .details').click(function () {
         window.location.href = "/mentor-details?id="+$(this).attr('userId')
       });
     </script>

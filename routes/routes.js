@@ -2,7 +2,12 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var User = require('../passport/models/user');
+var random = require('mongoose-random');
+var q = require('q');
 
+User.syncRandom(function (err, result) {
+  console.log(result.updated);
+});
 
 // =====================================
 // HOME PAGE =====================
@@ -135,16 +140,19 @@ router.get('/inbox', isLoggedIn, isRegCompleted, function(req, res, next) {
 // =====================================
 
 router.get('/mentors-list', isLoggedIn, isRegCompleted, function(req, res, next) {
-  User.find({
+
+  User.findRandom({
     role: "mentor",
-    completed: true
+    completed: true,
+    mentees: { "$ne": req.user._id }
   }, function (err, profiles) {
     if (err)
       next(err);
     else {
       res.render('profile_list', { user: req.user, profiles: profiles });
     }
-  });
+  }).limit(6);
+
 });
 
 // =====================================
@@ -154,22 +162,32 @@ router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, nex
   User.findById(req.query.id, function (err, mentor){
     if (err)
       next(err);
-    else {
-      res.render('mentor-details', { user: req.user, mentor: mentor });
-    }
+
+      console.log(mentor.mentees.indexOf(req.user._id));
+    if (mentor.mentees.indexOf(req.user._id) != -1)
+      res.render('mentor-details', { user: req.user, mentor: mentor, matched: true });
+    else
+      res.render('mentor-details', { user: req.user, mentor: mentor, matched: false });
+
   });
 });
 
-router.post('/appointment', isLoggedIn, isRegCompleted, function(req, res, next) {
+router.post('/choose-mentor', isLoggedIn, isRegCompleted, function(req, res, next) {
 
-  User.findByIdAndUpdate(req.body.targetUserID, {
-    $addToSet: { 'requestedSessions' : req.user }
-  }, function (err, tank) {
+  //might wanna change this to promise
+    User.update({_id: req.body.mentor_id}, { $addToSet: { 'mentees' : req.user._id }}, function (err) {
       if (err)
         next(err);
-      else
-        res.send('success');
-  });
+      else {
+        User.update({_id: req.user._id}, { $addToSet: { 'mentors' : req.body.mentor_id }}, function (err) {
+          if (err)
+            next(err);
+          else
+            res.send('success');
+        });
+      }
+    });
+
 });
 
 function isRegCompleted (req, res, next) {

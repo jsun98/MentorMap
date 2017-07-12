@@ -2,10 +2,15 @@
 // load the things we need
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
+var random = require('mongoose-random');
+
+
 
 // define the schema for our user model
 
 var userSchema = new mongoose.Schema();
+
+userSchema.plugin(random, { path: 'r' });
 
 userSchema.add({
       email                     : String,
@@ -13,8 +18,18 @@ userSchema.add({
       role                      : String,
       completed                 : Boolean,
       creation_date             : Date,
-      requestedSessions         : [userSchema],
-      confirmedSessions         : [userSchema],
+      upcomingSessions          : [{
+                                    type: mongoose.Schema.ObjectId,
+                                    ref: 'userSchema'
+                                  }],
+      mentors                   : [{
+                                    type: mongoose.Schema.ObjectId,
+                                    ref: 'userSchema'
+                                  }],
+      mentees                   : [{
+                                    type: mongoose.Schema.ObjectId,
+                                    ref: 'userSchema'
+                                  }],
 
       profile : {
         //common info
