@@ -8,7 +8,7 @@ var passport = require('passport');
 
 // process the login form
 router.post('/login', passport.authenticate('user-login', {
-    successRedirect : '/profile', // redirect to the secure profile section
+    successRedirect : '/dashboard', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));

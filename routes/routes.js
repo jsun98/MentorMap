@@ -25,11 +25,13 @@ router.get('/', function(req, res, next) {
 // we will want this protected so you have to be logged in to visit
 // we will use route middleware to verify this (the isLoggedIn function)
 router.get('/register', isLoggedIn, function(req, res, next) {
-    if (req.user.completed)
-      res.redirect('/profile');
-    res.render('register', {
-        user : req.user // get the user out of session and pass to template
-    });
+    if (req.user.completed) {
+      res.redirect('/dashboard');
+    }
+    if (req.user.role === "mentee")
+      res.render('mentee_register', {user : req.user});
+    else
+      res.render('mentor_register', {user : req.user});
 });
 
 
@@ -79,7 +81,7 @@ router.post('/mentee-complete', isLoggedIn, function(req, res, next) {
 
     }
   );
-  res.redirect('/profile');
+  res.redirect('/dashboard');
 
 });
 
@@ -117,15 +119,19 @@ router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
 
     }
   );
-  res.redirect('/profile');
+  res.redirect('/dashboard');
 
 });
 
 // =====================================
 // Dashboard Profile Pages  =====================
 // =====================================
-router.get('/profile', isLoggedIn, isRegCompleted, function(req, res, next) {
-  res.render('profile', { user: req.user });
+router.get('/dashboard', isLoggedIn, isRegCompleted, function(req, res, next) {
+  if (req.user.role === "mentee")
+    res.render('mentee_dashboard', { user: req.user });
+  else {
+    res.render('mentor_dashboard', { user: req.user });
+  }
 });
 
 // =====================================
@@ -164,9 +170,9 @@ router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, nex
     if (err)
       next(err);
     if (mentor.mentees.indexOf(req.user._id) != -1)
-      res.render('mentor_details', { user: req.user, mentor: mentor, matched: true });
+      res.render('mentor_profile_details', { user: req.user, mentor: mentor, matched: true });
     else
-      res.render('mentor_details', { user: req.user, mentor: mentor, matched: false });
+      res.render('mentor_profile_details', { user: req.user, mentor: mentor, matched: false });
 
   });
 });
