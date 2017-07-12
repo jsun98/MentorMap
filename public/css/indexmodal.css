@@ -13,6 +13,10 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+.modal .alert {
+  color: #D8000C;
+}
+
 .form a {
   text-decoration: none;
   color: #1ab188;

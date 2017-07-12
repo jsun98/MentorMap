@@ -45,55 +45,57 @@
       <div id="signup">
         <h1>Sign Up for Free</h1>
 
-        <form action="/auth/signup" method="post">
+        <form action="/auth/signup" method="post" novalidate>
 
         <div class="top-row">
-          <div class="field-wrap">
+          <div class="item field-wrap">
             <label>
               First Name<span class="req">*</span>
             </label>
-            <input type="text" name="first_name" required autocomplete="off" />
+            <input type="text" name="first_name" required="required" autocomplete="off" />
           </div>
 
-          <div class="field-wrap">
+          <div class="item field-wrap">
             <label>
               Last Name<span class="req">*</span>
             </label>
-            <input type="text" name="last_name" required autocomplete="off"/>
+            <input type="text" name="last_name" required="required" autocomplete="off"/>
           </div>
         </div>
 
-        <div class="field-wrap">
+        <div class="item field-wrap">
           <label>
             Email Address<span class="req">*</span>
           </label>
-          <input type="email" name="email" required autocomplete="off"/>
+          <input type="email" type="email" name="email" required autocomplete="off"/>
         </div>
-        <br>
 
-        <div class="field-wrap">
+        <div class="item field-wrap">
+          <label>
+            Confirm Email Address<span class="req">*</span>
+          </label>
+          <input type="email" type="email" data-validate-linked='email' required autocomplete="off"/>
+        </div>
+
+        <div class="item field-wrap">
           <label>
             Set A Password<span class="req">*</span>
           </label>
-          <input type="password" name="password" required autocomplete="off"/>
+          <input id="signupPassword" data-validate-length-range="8,25" type="password" name="password" required autocomplete="off"/>
         </div>
-        <br>
 
-        <div class="field-wrap">
+        <div class="item field-wrap">
           <label>
             Choose A Role<span class="req">*</span>
           </label>
-          <select class="select2_single" tabindex="-1" name="role" required>
+          <select class="required select2_single" tabindex="-1" name="role" required>
             <option></option>
             <option value='mentee'>I Am A Mentee</option>
             <option value='mentor'>I Am A Mentor</option>
           </select>
         </div>
 
-
-
-
-        <button type="submit" class="button button-block"/>Get Started</button>
+        <button type="submit" class="button button-block"/>Sign Up!</button>
 
         </form>
 
@@ -102,16 +104,16 @@
       <div id="login">
         <h1>Welcome Back!</h1>
 
-        <form action="/auth/login" method="post">
+        <form action="/auth/login" method="post" novalidate>
 
-          <div class="field-wrap">
+          <div class="item field-wrap">
           <label>
             Email Address<span class="req">*</span>
           </label>
           <input type="email" name="email" required autocomplete="on"/>
         </div>
 
-        <div class="field-wrap">
+        <div class="item field-wrap">
           <label>
             Password<span class="req">*</span>
           </label>
@@ -1226,7 +1228,43 @@
    <script src="vendor/Lhander/js/jquery-migrate-1.2.1.min.js"></script>
    <script src="vendor/Lhander/js/plugins.js"></script>
    <script src="vendor/Lhander/js/main.js"></script>
+   <!-- validator -->
+   <script src="vendor/validator/validator.min.js"></script>
    <script src="js/indexmodal.js"></script>
+
+
+   <!-- validator -->
+   <script>
+
+     // initialize the validator function
+     validator.message.date = 'not a real date';
+
+     // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
+     $('form')
+       .on('blur', 'input[required], input.optional, textarea[required], select.required', validator.checkField)
+       .on('change', 'select.required', validator.checkField)
+       //.on('keypress', 'input[required][pattern]', validator.keypress);
+
+     $('form').submit(function(e) {
+
+      e.preventDefault();
+
+      var submit = true;
+      // evaluate the form using generic validaing
+      if( !validator.checkAll( $(this) ) ){
+        submit = false;
+      }
+
+      if ( submit ) {
+        this.submit();
+      } else {
+        return false;
+      }
+
+     });
+
+   </script>
+   <!-- /validator -->
 
 
 
