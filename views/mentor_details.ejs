@@ -330,6 +330,7 @@
           $.post("/choose-mentor", {mentor_id: '<%= mentor._id %>'})
           .done(function (data) {
             alert('mentor successfully chosen');
+            window.location.href = '/profile';
           })
           .fail(function () {
             alert('internal server error');

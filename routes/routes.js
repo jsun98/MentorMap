@@ -3,10 +3,11 @@ var router = express.Router();
 var passport = require('passport');
 var User = require('../passport/models/user');
 var random = require('mongoose-random');
-var q = require('q');
+
 
 User.syncRandom(function (err, result) {
-  console.log(result.updated);
+  if (err)
+    console.log(err);
 });
 
 // =====================================
@@ -139,7 +140,7 @@ router.get('/inbox', isLoggedIn, isRegCompleted, function(req, res, next) {
 // List all Mentor/Mentee  =====================
 // =====================================
 
-router.get('/mentors-list', isLoggedIn, isRegCompleted, function(req, res, next) {
+router.get('/mentor-list', isLoggedIn, isRegCompleted, function(req, res, next) {
 
   User.findRandom({
     role: "mentor",
@@ -149,7 +150,7 @@ router.get('/mentors-list', isLoggedIn, isRegCompleted, function(req, res, next)
     if (err)
       next(err);
     else {
-      res.render('profile_list', { user: req.user, profiles: profiles });
+      res.render('mentor_list', { user: req.user, profiles: profiles });
     }
   }).limit(6);
 
@@ -162,12 +163,10 @@ router.get('/mentor-details', isLoggedIn, isRegCompleted, function(req, res, nex
   User.findById(req.query.id, function (err, mentor){
     if (err)
       next(err);
-
-      console.log(mentor.mentees.indexOf(req.user._id));
     if (mentor.mentees.indexOf(req.user._id) != -1)
-      res.render('mentor-details', { user: req.user, mentor: mentor, matched: true });
+      res.render('mentor_details', { user: req.user, mentor: mentor, matched: true });
     else
-      res.render('mentor-details', { user: req.user, mentor: mentor, matched: false });
+      res.render('mentor_details', { user: req.user, mentor: mentor, matched: false });
 
   });
 });
