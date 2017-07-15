@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var User = require('../passport/models/user');
+var Session = require('../passport/models/session');
 var random = require('mongoose-random');
 
 //set up the Mongoose-Random plugin
@@ -121,11 +122,32 @@ router.post('/mentor-complete',isLoggedIn, function(req, res, next) {
 // Dashboard Page  =====================
 // =====================================
 router.get('/dashboard', isLoggedIn, isRegCompleted, function(req, res, next) {
-  if (req.user.role === "mentee")
-    res.render('mentee_dashboard', { user: req.user });
-  else {
-    res.render('mentor_dashboard', { user: req.user });
-  }
+  User.findById(req.user._id)
+    .populate('upcomingSessions')
+    .populate({
+     path: 'upcomingSessions',
+     populate: {
+       path: 'mentor',
+       model: 'User'
+     }
+    })
+    .populate({
+     path: 'upcomingSessions',
+     populate: {
+       path: 'mentee',
+       model: 'User'
+     }
+    })
+    .exec(function (err, user) {
+      if (err)
+        next(err);
+      if (req.user.role === "mentee")
+        res.render('mentee_dashboard', { user: user });
+      else {
+        res.render('mentor_dashboard', { user: user });
+      }
+    });
+
 });
 
 // =====================================
@@ -149,22 +171,40 @@ router.get('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, r
 });
 
 router.post('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
-  console.log(req.body);
 
+  var newSession = new Session();
+
+  newSession.creation_date = Date();
+  newSession.type = req.body.type;
+  newSession.purpose = req.body.purpose;
+  newSession.date = new Date(req.body.date).toDateString();
+  newSession.startTime = req.body.startTime;
+  newSession.endTime = req.body.endTime;
+  newSession.mentor = req.user._id;
+  newSession.mentee = req.body.mentee_id;
+
+  // save the session
+  newSession.save(function(err, savedSession) {
+      if (err)
+        next(err);
+      else {
+        User.update({_id: req.body.mentee_id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
+          if (err)
+            next(err);
+          else {
+            User.update({_id: req.user._id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
+              if (err)
+                next(err);
+              else
+                res.send('success');
+            });
+          }
+        });
+      }
+  });
 //might wanna change this to promise
 /*
-  User.update({_id: req.body.mentee_id}, { $addToSet: { 'upcomingSessions' : req.user._id }}, function (err) {
-    if (err)
-      next(err);
-    else {
-      User.update({_id: req.user._id}, { $addToSet: { 'mentors' : req.body.mentor_id }}, function (err) {
-        if (err)
-          next(err);
-        else
-          res.send('success');
-      });
-    }
-  });
+
   */
 });
 

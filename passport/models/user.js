@@ -17,7 +17,7 @@ userSchema.add({
       creation_date             : Date,
       upcomingSessions          : [{
                                     type: mongoose.Schema.ObjectId,
-                                    ref: 'User'
+                                    ref: 'Session'
                                   }],
       mentors                   : [{
                                     type: mongoose.Schema.ObjectId,

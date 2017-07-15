@@ -70,10 +70,10 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <select class="required select2_single form-control" tabindex="-1" name="type" style="width: 100%;" style="width: 100%;">
                             <option></option>
-                            <option value='zoom'>Zoom Session</option>
-                            <option value='skype'>Skype Session</option>
-                            <option value='phone'>Phone Session</option>
-                            <option value='in-person'>In Person</option>
+                            <option value='Google Hangout'>Google Hangout</option>
+                            <option value='Skype'>Skype Session</option>
+                            <option value='Phone'>Phone Session</option>
+                            <option value='In-Person'>In Person</option>
                           </select>
                         </div>
                       </div>
@@ -82,10 +82,10 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <select class="required select2_single form-control" tabindex="-1" name="purpose" style="width: 100%;" style="width: 100%;">
                             <option></option>
-                            <option value='general'>General Discussion</option>
-                            <option value='admissions'>Admissions Advice</option>
-                            <option value='extracurriculars'>Extracurriculars Advice</option>
-                            <option value='other'>Other</option>
+                            <option value='General'>General Discussion</option>
+                            <option value='Admissions'>Admissions Advice</option>
+                            <option value='Extracurriculars'>Extracurriculars Advice</option>
+                            <option value='Other'>Other</option>
                           </select>
                         </div>
                       </div>
@@ -242,7 +242,19 @@
         }
 
         if ( submit ) {
-          this.submit();
+          $.ajax({
+           type: "POST",
+           url: '/booking',
+           data: $(this).serialize()
+          })
+          .done(function (res) {
+            alert(res);
+            window.location.href = '/dashboard';
+          })
+          .fail(function (err) {
+            console.error(err);
+            alert(err);
+          });
         }
         return false;
 
