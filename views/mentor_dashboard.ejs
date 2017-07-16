@@ -122,17 +122,13 @@
                         <div class="block">
                           <div class="block_content">
                             <h2 class="title">
-                              <%= user.upcomingSessions[i].type %> Session - <%= user.upcomingSessions[i].purpose %>
+                              <a href='/booking?mentee_id=<%= user.upcomingSessions[i].mentee._id %>'> <%= user.upcomingSessions[i].type %> Session - <%= user.upcomingSessions[i].purpose %> </a>
                             </h2>
                             <div class="byline">
-                              <% if (user.role === 'mentee') { %>
-                                Mentor: <a href='/mentor-details?id=<%= user.upcomingSessions[i].mentor._id %>'><%= user.upcomingSessions[i].mentor.profile.first_name + ' ' + user.upcomingSessions[i].mentor.profile.last_name %></a>
-                              <% } else { %>
                                 Mentee: <a href='/dashboard %>'><%= user.upcomingSessions[i].mentee.profile.first_name + ' ' + user.upcomingSessions[i].mentee.profile.last_name %></a>
-                              <% } %>
                             </div>
                             <p class="excerpt">
-                              Date: <%= user.upcomingSessions[i].date %>
+                              Date: <%= user.upcomingSessions[i].date.toDateString() %>
                             </p>
                             <p class="excerpt">
                               Start Time: <%= user.upcomingSessions[i].startTime %>

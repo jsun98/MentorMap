@@ -138,15 +138,20 @@ router.get('/dashboard', isLoggedIn, isRegCompleted, function(req, res, next) {
        model: 'User'
      }
     })
+    .sort({"upcomingSessions.date": -1})
     .exec(function (err, user) {
       if (err)
         next(err);
+      user.upcomingSessions.sort(function(a,b){
+        return new Date(a.date) - new Date(b.date);
+      });
       if (req.user.role === "mentee")
         res.render('mentee_dashboard', { user: user });
       else {
         res.render('mentor_dashboard', { user: user });
       }
     });
+
 
 });
 
@@ -161,9 +166,9 @@ router.get('/inbox', isLoggedIn, isRegCompleted, function(req, res, next) {
 // Session Booking Page  =====================
 // =====================================
 router.get('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
-  if (!req.query.id)
+  if (!req.query.mentee_id)
     next(new Error("Unable to Fetch Profile Data"));
-  User.findById(req.query.id, function (err, mentee){
+  User.findById(req.query.mentee_id, function (err, mentee){
     if (err)
       next(err);
     res.render('session_booking', { user: req.user, mentee: mentee });
@@ -172,40 +177,56 @@ router.get('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, r
 
 router.post('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
 
-  var newSession = new Session();
 
-  newSession.creation_date = Date();
-  newSession.type = req.body.type;
-  newSession.purpose = req.body.purpose;
-  newSession.date = new Date(req.body.date).toDateString();
-  newSession.startTime = req.body.startTime;
-  newSession.endTime = req.body.endTime;
-  newSession.mentor = req.user._id;
-  newSession.mentee = req.body.mentee_id;
 
-  // save the session
-  newSession.save(function(err, savedSession) {
-      if (err)
-        next(err);
-      else {
-        User.update({_id: req.body.mentee_id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
-          if (err)
-            next(err);
-          else {
-            User.update({_id: req.user._id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
-              if (err)
-                next(err);
-              else
-                res.send('success');
-            });
-          }
-        });
-      }
-  });
-//might wanna change this to promise
-/*
+  Session.findOne({ mentee: req.body.mentee_id }, function (err, result) {
+    if (err)
+      next(err);
 
-  */
+    var newSession;
+    var exists = false;
+    if (result) {
+      newSession = result;
+      exists = true;
+    } else {
+      newSession = new Session();
+    }
+
+    newSession.creation_date = Date();
+    newSession.type = req.body.type;
+    newSession.purpose = req.body.purpose;
+    newSession.date = new Date(req.body.date);
+    newSession.startTime = req.body.startTime;
+    newSession.endTime = req.body.endTime;
+    newSession.mentor = req.user._id;
+    newSession.mentee = req.body.mentee_id;
+
+    // save the session
+    newSession.save(function(err, savedSession) {
+        if (err)
+          next(err);
+        if (!exists) {
+          User.update({_id: req.body.mentee_id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
+            if (err)
+              next(err);
+            else {
+              User.update({_id: req.user._id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
+                if (err)
+                  next(err);
+                else
+                  res.send('Created New Session');
+              });
+            }
+          });
+        } else {
+          res.send('Updated Session');
+        }
+    });
+  })
+
+
+
+
 });
 
 // =====================================
@@ -217,7 +238,7 @@ router.get('/mymentees', isLoggedIn, isRegCompleted, isMentorOnly, function(req,
     .exec(function (err, user) {
       if (err)
         next(err);
-      res.render('profile_list', { user: req.user, profiles: user.mentees });
+      res.render('profile_list', { user: req.user, profiles: user.mentees, title: "My Mentees" });
     });
 });
 
@@ -230,7 +251,7 @@ router.get('/mymentors', isLoggedIn, isRegCompleted, isMenteeOnly, function(req,
     .exec(function (err, user) {
       if (err)
         next(err);
-      res.render('profile_list', { user: req.user, profiles: user.mentors });
+      res.render('profile_list', { user: req.user, profiles: user.mentors, title: "My Mentors" });
     });
 });
 
@@ -248,7 +269,7 @@ router.get('/mentor-list', isLoggedIn, isRegCompleted, function(req, res, next) 
     if (err)
       next(err);
     else {
-      res.render('profile_list', { user: req.user, profiles: profiles });
+      res.render('profile_list', { user: req.user, profiles: profiles, title: "We Selected Some Mentors For You" });
     }
   }).limit(6);
 

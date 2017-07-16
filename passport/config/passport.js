@@ -102,7 +102,9 @@ module.exports = function(passport) {
     function(req, email, password, done) { // callback with email and password from our form
         // find a user whose email is the same as the forms email
 
-        User.findOne({ 'email' :  email }, function(err, user) {
+        User.findOne({ 'email' :  email })
+          .populate('upcomingSessions')
+          .exec(function(err, user) {
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);
@@ -115,6 +117,15 @@ module.exports = function(passport) {
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
+            //promise
+            for (var i = 0; i < user.upcomingSessions.length; i++) {
+              if (user.upcomingSessions[i].date < new Date()) {
+                user.upcomingSessions[i].remove(function(err) {
+                  if (err)
+                    console.log(err);
+                });
+              }
+            }
             // all is well, return successful user
             return done(null, user);
         });

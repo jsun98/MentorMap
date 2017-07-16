@@ -102,36 +102,46 @@
             </div>
             <!-- End Settngs Widget -->
 
-            <!-- Upcoming Sessions -->
+            <!-- Start upcoming sessions -->
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Upcoming Sessions</h2>
+                  <h2>Upcoming Sessions<small>You have <%= user.upcomingSessions.length %> Sessions</small></h2>
                   <div class="clearfix"></div>
                 </div>
-                <div class="x_content" style="overflow: auto;">
-                  <ul class="list-unstyled top_profiles scroll-view">
-                    <% if (user.upcomingSessions.length > 0) { %>
-                    <li class="media event">
-                      <a class="pull-left border-aero profile_thumb">
-                        <i class="fa fa-user aero"></i>
-                      </a>
-                      <div class="media-body">
-                        <a class="title" href="#">Ms. Mary Jane</a>
-                        <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                        <p> <small>12 Sales Today</small>
-                        </p>
-                      </div>
-                    </li>
-                    <% } else { %>
-                    <p><strong>You Have No Upcoming Sessions</strong></p>
-                    <% } %>
+                <div class="x_content">
+                  <div class="dashboard-widget-content">
 
-                  </ul>
+                    <ul class="list-unstyled timeline widget">
+                      <% for (var i = 0; i < user.upcomingSessions.length; i++) { %>
+                      <li>
+                        <div class="block">
+                          <div class="block_content">
+                            <h2 class="title">
+                                <%= user.upcomingSessions[i].type %> Session - <%= user.upcomingSessions[i].purpose %>
+                            </h2>
+                            <div class="byline">
+                                Mentor: <a href='/mentor-details?id=<%= user.upcomingSessions[i].mentor._id %>'><%= user.upcomingSessions[i].mentor.profile.first_name + ' ' + user.upcomingSessions[i].mentor.profile.last_name %></a>
+                            </div>
+                            <p class="excerpt">
+                              Date: <%= user.upcomingSessions[i].date.toDateString() %>
+                            </p>
+                            <p class="excerpt">
+                              Start Time: <%= user.upcomingSessions[i].startTime %>
+                            </p>
+                            <p class="excerpt">
+                              End Time: <%= user.upcomingSessions[i].endTime %>
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <% } %>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-            <!-- End Upcoming Sessions -->
+            <!-- End upcoming sessions -->
 
             <!-- Naviagations -->
             <div class="col-md-4 col-sm-4 col-xs-12">

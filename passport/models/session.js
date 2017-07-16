@@ -9,7 +9,7 @@ sessionSchema.add({
   creation_date: Date,
   type: String,
   purpose: String,
-  date: String,
+  date: Date,
   startTime: String,
   endTime: String,
   mentor : {
