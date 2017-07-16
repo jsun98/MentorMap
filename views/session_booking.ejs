@@ -56,6 +56,7 @@
                   <div class="x_content">
                     <br />
                     <form id="booking-form" method="post" action="/booking" class="form-horizontal form-label-left" novalidate>
+                      <input type="hidden" name="session_id" value="<%= session._id %>">
                       <input type="hidden" name="mentee_id" value="<%= mentee._id %>">
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Mentee Name <span class="required">*</span>
@@ -70,10 +71,10 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <select class="required select2_single form-control" tabindex="-1" name="type" style="width: 100%;">
                             <option></option>
-                            <option value='Google Hangout'>Google Hangout</option>
-                            <option value='Skype'>Skype Session</option>
-                            <option value='Phone'>Phone Session</option>
-                            <option value='In-Person'>In Person</option>
+                            <option value='Google Hangout' <%= session.type === 'Google Hangout' ? 'selected' : ''; %> >Google Hangout</option>
+                            <option value='Skype' <%= session.type === 'Skype' ? 'selected' : ''; %> >Skype Session</option>
+                            <option value='Phone' <%= session.type === 'Phone' ? 'selected' : ''; %> >Phone Session</option>
+                            <option value='In-Person' <%= session.type === 'In-Person' ? 'selected' : ''; %> >In Person</option>
                           </select>
                         </div>
                       </div>
@@ -82,38 +83,43 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <select class="required select2_single form-control" tabindex="-1" name="purpose" style="width: 100%;" style="width: 100%;">
                             <option></option>
-                            <option value='General'>General Discussion</option>
-                            <option value='Admissions'>Admissions Advice</option>
-                            <option value='Extracurriculars'>Extracurriculars Advice</option>
-                            <option value='Other'>Other</option>
+                            <option value='General' <%= session.purpose === 'General' ? 'selected' : ''; %> >General Discussion</option>
+                            <option value='Admissions' <%= session.purpose === 'Admissions' ? 'selected' : ''; %> >Admissions Advice</option>
+                            <option value='Extracurriculars' <%= session.purpose === 'Extracurriculars' ? 'selected' : ''; %> >Extracurriculars Advice</option>
+                            <option value='Other' <%= session.purpose === 'Other' ? 'selected' : ''; %> >Other</option>
                           </select>
                         </div>
                       </div>
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Scheduled Date <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="hasDatepicker" class="form-control col-md-7 col-xs-12" required type="text" name="date">
+                          <input id="hasDatepicker" class="form-control col-md-7 col-xs-12" required type="text" name="date" >
                         </div>
                       </div>
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Start Time <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="timepicker1" class="form-control col-md-7 col-xs-12" name="startTime" required="required" type="text">
+                          <input id="timepicker1" class="form-control col-md-7 col-xs-12" name="startTime" required="required" type="text" value=<%= session.startTime; %>>
                         </div>
                       </div>
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">End Time <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input  id="timepicker2" class="form-control col-md-7 col-xs-12" name="endTime" required="required" type="text">
+                          <input  id="timepicker2" class="form-control col-md-7 col-xs-12" name="endTime" required="required" type="text" value=<%= session.endTime; %>>
                         </div>
                       </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <button type="submit" class="btn btn-success">Submit</button>
-                          <button type="submit" class="btn btn-primary">Cancel</button>
+                          <% if (session) { %>
+                            <button type="submit" class="btn btn-success">Update Session</button>
+                            <button id='cancel' type="button" class="btn btn-danger">Cancel Session</button>
+                          <% } else { %>
+                            <button type="submit" class="btn btn-success">Submit Booking</button>
+                            <a type='button' class="btn btn-primary" href='./..'>Back to Profiles</a>
+                          <% } %>
                         </div>
                       </div>
 
@@ -150,9 +156,19 @@
     <script src="vendor/jquery-ui/jquery-ui.min.js"></script>
     <!-- TimePicker -->
     <script src="vendor/timepicker/timepicker.min.js"></script>
+    <!-- Moment.js -->
+    <script src="vendor/moment/moment.min.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="vendor/gentelella/js/custom.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+      var session_date = '<%= session.date %>';
+      if (session_date)
+        $('#hasDatepicker').val(moment(session_date).format('MM/DD/YYYY'));
+    });
+    </script>
 
     <!-- Timepicker -->
     <script>
@@ -262,6 +278,26 @@
 
     </script>
     <!-- /validator -->
+
+    <!-- bind cancel button -->
+    <script>
+      $('#cancel').click(function() {
+        $.ajax({
+         type: "POST",
+         url: '/cancelBooking',
+         data: {session_id: '<%= session._id %>'}
+        })
+        .done(function (res) {
+          alert(res);
+          window.location.href = '/dashboard';
+        })
+        .fail(function (err) {
+          console.error(err);
+          alert(err);
+        });
+      });
+    </script>
+    <!-- /bind cancel button -->
 
   </body>
 </html>

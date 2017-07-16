@@ -166,33 +166,52 @@ router.get('/inbox', isLoggedIn, isRegCompleted, function(req, res, next) {
 // Session Booking Page  =====================
 // =====================================
 router.get('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
-  if (!req.query.mentee_id)
-    next(new Error("Unable to Fetch Profile Data"));
-  User.findById(req.query.mentee_id, function (err, mentee){
-    if (err)
-      next(err);
-    res.render('session_booking', { user: req.user, mentee: mentee });
-  });
+  if (!req.query.mentee_id && !req.query.session_id)
+    next(new Error("Unable to Fetch Booking Page Data"));
+  if (req.query.mentee_id) {
+    User.findById(req.query.mentee_id, function (err, mentee){
+      if (err)
+        next(err);
+      res.render('session_booking', { user: req.user, mentee: mentee, session: '' });
+    });
+  } else {
+    Session.findById(req.query.session_id)
+      .populate('mentee')
+      .exec(function (err, session){
+        if (err)
+          next(err);
+        console.log(typeof session.date);
+        res.render('session_booking', { user: req.user, mentee: session.mentee, session: session });
+      });
+  }
 });
 
 router.post('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
 
+  if (req.body.session_id) {
 
+    Session.findByIdAndUpdate(req.body.session_id, {
+      $set:
+        {
+          'creation_date' : new Date(),
+          'type' : req.body.type,
+          'purpose' : req.body.purpose,
+          'date' : new Date(req.body.date),
+          'startTime' : req.body.startTime,
+          'endTime' : req.body.endTime,
+          'mentor ': req.user._id,
+          'mentee' : req.body.mentee_id
+        }
+      },
+      function (err) {
+        if (err)
+          next(err);
+        res.end();
+      });
 
-  Session.findOne({ mentee: req.body.mentee_id }, function (err, result) {
-    if (err)
-      next(err);
-
-    var newSession;
-    var exists = false;
-    if (result) {
-      newSession = result;
-      exists = true;
-    } else {
-      newSession = new Session();
-    }
-
-    newSession.creation_date = Date();
+  } else {
+    var newSession = new Session();
+    newSession.creation_date = new Date();
     newSession.type = req.body.type;
     newSession.purpose = req.body.purpose;
     newSession.date = new Date(req.body.date);
@@ -203,30 +222,60 @@ router.post('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, 
 
     // save the session
     newSession.save(function(err, savedSession) {
+      if (err)
+        next(err);
+      User.update({_id: req.body.mentee_id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
         if (err)
           next(err);
-        if (!exists) {
-          User.update({_id: req.body.mentee_id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
+        else {
+          User.update({_id: req.user._id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
             if (err)
               next(err);
-            else {
-              User.update({_id: req.user._id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
-                if (err)
-                  next(err);
-                else
-                  res.send('Created New Session');
-              });
-            }
+            else
+              res.send('Created New Session').end();
           });
-        } else {
-          res.send('Updated Session');
         }
+      });
     });
-  })
+  }
 
 
 
 
+});
+
+router.post('/cancelBooking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
+
+  Session.findById(req.body.session_id)
+    .populate('mentee')
+    .populate('mentor')
+    .exec(function (err, session) {
+      if (err)
+        next(err);
+      var menteeSessions = session.mentee.upcomingSessions
+      menteeSessions.splice(menteeSessions.indexOf(session._id), 1);
+      var mentorSessions = session.mentor.upcomingSessions
+      mentorSessions.splice(mentorSessions.indexOf(session._id), 1);
+      session.remove(function(err) {
+        if (err)
+          console.log(err);
+      });
+
+      session.save(function(err) {
+          if (err)
+              next(err);
+          session.mentee.save(function (err) {
+            if (err)
+                next(err);
+            session.mentor.save(function (err) {
+              if (err)
+                  next(err);
+              res.send("Session Deleted");
+            })
+          })
+      });
+
+    });
 });
 
 // =====================================

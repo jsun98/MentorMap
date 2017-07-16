@@ -74,7 +74,7 @@ module.exports = function(passport) {
                 // save the user
                 newUser.save(function(err) {
                     if (err)
-                        throw err;
+                        next(err);
                     return done(null, newUser);
                 });
             }
@@ -104,6 +104,20 @@ module.exports = function(passport) {
 
         User.findOne({ 'email' :  email })
           .populate('upcomingSessions')
+          .populate({
+           path: 'upcomingSessions',
+           populate: {
+             path: 'mentor',
+             model: 'User'
+           }
+          })
+          .populate({
+           path: 'upcomingSessions',
+           populate: {
+             path: 'mentee',
+             model: 'User'
+           }
+          })
           .exec(function(err, user) {
             // if there are any errors, return the error before anything else
             if (err)
@@ -120,14 +134,21 @@ module.exports = function(passport) {
             //promise
             for (var i = 0; i < user.upcomingSessions.length; i++) {
               if (user.upcomingSessions[i].date < new Date()) {
+                user.upcomingSessions[i].mentee.upcomingSessions.splice(i, 1);
+                user.upcomingSessions[i].mentee.save();
+                user.upcomingSessions[i].mentor.upcomingSessions.splice(i, 1);
+                user.upcomingSessions[i].mentor.save();
                 user.upcomingSessions[i].remove(function(err) {
                   if (err)
                     console.log(err);
                 });
               }
+
+
             }
-            // all is well, return successful user
             return done(null, user);
+
+
         });
 
     }));
