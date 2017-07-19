@@ -72,7 +72,6 @@ body {
 	font-family: "merriweather-regular", serif;
 	font-size: 1.6rem;
 	line-height: 3rem;
-	color: #737373;
 }
 
 /**
@@ -156,7 +155,6 @@ p.lead {
 	font-family: "merriweather-light", serif;
 	font-size: 1.8rem;
 	line-height: 1.8;
-	color: #737373;
 }
 @media only screen and (max-width:768px) {
 	p.lead {
@@ -727,7 +725,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 .section-intro h1 {
 	font-family: "merriweather-bold", serif;
-	font-size: 4.8rem;
+	font-size: 4.2rem;
 	color: #252525;
 	line-height: 1.25;
 	margin-bottom: 1.2rem;
@@ -738,9 +736,6 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 	line-height: 1.875;
 	margin-bottom: 0.3rem;
 	letter-spacing: .4rem;
-}
-.section-intro .lead {
-	color: rgba(0, 0, 0, 0.45);
 }
 .section-intro .with-bottom-line {
 	position: relative;
@@ -1210,7 +1205,7 @@ a.menu-toggle {
 .intro-content h2 {
 	color: #FFFFFF;
 	font-family: "merriweather-bold", serif;
-	font-size: 3.5rem;
+	font-size: 3.0rem;
 	line-height: 1.334;
 	max-width: 800px;
 	margin-left: auto;
@@ -2004,16 +1999,25 @@ a.menu-toggle {
  *
  * -------------------------------------------------------------------
  */
-#portfolio{
-	background: #EAEAED;
-	padding-top: 10.2rem;
-	padding-bottom: 12rem;
-	position: relative;
-	min-height: 20.4rem;
-	width: 100%;
-	overflow: hidden;
-	text-align: center;
-}
+
+#portfolio {
+ 	background: #090909 url(../images/features-bg.jpg) no-repeat center;
+ 	-webkit-background-size: cover;
+ 	-moz-background-size: cover;
+ 	background-size: cover;
+ 	padding-top: 12rem;
+ 	padding-bottom: 12rem;
+ 	color: white;
+ }
+#portfolio .section-intro h1 {
+ 	color: white;
+ }
+#portfolio .section-intro h5 {
+ 	color: rgba(255, 255, 255, 0.5);
+ }
+#portfolio .section-intro p {
+ 	color: rgba(255, 255, 255, 0.7);
+ }
 
 #portfolio .row.items {
 	max-width: 1260px;

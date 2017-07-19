@@ -5,6 +5,29 @@ var User = require('../passport/models/user');
 var Session = require('../passport/models/session');
 var random = require('mongoose-random');
 
+
+router.use(function (req, res, next) {
+  if (req.isAuthenticated() && !req.user.verified)
+    req.logout();
+  next();
+});
+
+// =====================================
+// verify =====================
+// =====================================
+// verify if email is correct
+router.get('/verify', function(req, res, next) {
+  console.log(req.query.id);
+  User.findByIdAndUpdate(req.query.id, {
+    $set: { 'verified' : true }
+  }, function (err, user) {
+    if (err)
+      next(err);
+    console.log(user);
+    res.redirect('/');
+  });
+});
+
 //set up the Mongoose-Random plugin
 User.syncRandom(function (err, result) {
   if (err)
@@ -360,9 +383,6 @@ router.post('/choose-mentor', isLoggedIn, isRegCompleted, isMenteeOnly, function
 
 });
 
-// =====================================
-// Auxillary Functions =====================
-// =====================================
 
 function isMentorOnly (req, res, next) {
   if (req.user.role === "mentor")
@@ -391,8 +411,9 @@ function isRegCompleted (req, res, next) {
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()) {
         return next();
+    }
 
     // if they aren't redirect them to the home page
     res.redirect('/');

@@ -6,6 +6,20 @@ var LocalStrategy   = require('passport-local').Strategy;
 // load up the user model
 var User            = require('../models/user');
 
+var nodemailer = require('nodemailer');
+
+// create reusable transporter object using the default SMTP transport
+var transporter = nodemailer.createTransport({
+    host: 'smtp.zoho.com',
+    port: 465,
+    secure: true, // secure:true for port 465, secure:false for port 587
+    auth: {
+        user: 'admin@mentormap.ca',
+        pass: 'Mentormap$1'
+    }
+});
+
+
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
@@ -66,15 +80,34 @@ module.exports = function(passport) {
                 newUser.email     = email;
                 newUser.password  = newUser.generateHash(password);
                 newUser.role      = req.body.role;
+                newUser.verified  = false;
                 newUser.creation_date = new Date();
                 newUser.completed = false;
                 newUser.profile.first_name = req.body.first_name;
                 newUser.profile.last_name  = req.body.last_name;
 
                 // save the user
-                newUser.save(function(err) {
+                newUser.save(function(err, savedUser) {
                     if (err)
                         next(err);
+
+
+                    // setup email data with unicode symbols
+                    var mailOptions = {
+                        from: '"MentorMap Admin" <admin@mentormap.ca>', // sender address
+                        to: email, // list of receivers
+                        subject: 'Welcome to MentorMap, Please Verify Your Email Address', // Subject line
+                        html: '<a href="http://localhost:3000/verify?id='+savedUser._id+'">Click On This Link To Verify Your Email</a>' // html body
+                    };
+
+                    // send mail with defined transport object
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            return console.log(error);
+                        }
+                        console.log('Message %s sent: %s', info.messageId, info.response);
+                    });
+
                     return done(null, newUser);
                 });
             }
@@ -130,6 +163,11 @@ module.exports = function(passport) {
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+                // if the user is found but the password is wrong
+
+            //if email not verified
+            if (!user.verified)
+                return done(null, false, req.flash('loginMessage', 'Please verify your email first!'));
 
             //promise
             for (var i = 0; i < user.upcomingSessions.length; i++) {

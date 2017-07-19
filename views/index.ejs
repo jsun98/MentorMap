@@ -36,101 +36,101 @@
   <div id="indexModal" class="modal">
     <div class="form">
 
-    <ul class="tab-group">
-      <li class="tab active"><a id="signup-tab-link" href="#signup">Sign Up</a></li>
-      <li class="tab"><a id="login-tab-link" href="#login">Log In</a></li>
-    </ul>
+      <ul class="tab-group">
+        <li class="tab active"><a id="signup-tab-link" href="#signup">Sign Up</a></li>
+        <li class="tab"><a id="login-tab-link" href="#login">Log In</a></li>
+      </ul>
 
-    <div class="tab-content">
-      <div id="signup">
-        <h1>Sign Up for Free</h1>
+      <div class="tab-content">
+        <div id="signup">
+          <h1>Sign Up for Free</h1>
 
-        <form action="/auth/signup" method="post" novalidate>
+          <form action="/auth/signup" method="post" novalidate>
 
-        <div class="top-row">
-          <div class="item field-wrap">
-            <label>
-              First Name<span class="req">*</span>
-            </label>
-            <input type="text" name="first_name" required="required" autocomplete="off" />
+          <div class="top-row">
+            <div class="item field-wrap">
+              <label>
+                First Name<span class="req">*</span>
+              </label>
+              <input type="text" name="first_name" required="required" autocomplete="off" />
+            </div>
+
+            <div class="item field-wrap">
+              <label>
+                Last Name<span class="req">*</span>
+              </label>
+              <input type="text" name="last_name" required="required" autocomplete="off"/>
+            </div>
           </div>
 
           <div class="item field-wrap">
             <label>
-              Last Name<span class="req">*</span>
+              Email Address<span class="req">*</span>
             </label>
-            <input type="text" name="last_name" required="required" autocomplete="off"/>
+            <input type="email" type="email" name="email" required autocomplete="off"/>
           </div>
-        </div>
-
-        <div class="item field-wrap">
-          <label>
-            Email Address<span class="req">*</span>
-          </label>
-          <input type="email" type="email" name="email" required autocomplete="off"/>
-        </div>
-
-        <div class="item field-wrap">
-          <label>
-            Confirm Email Address<span class="req">*</span>
-          </label>
-          <input type="email" type="email" data-validate-linked='email' required autocomplete="off"/>
-        </div>
-
-        <div class="item field-wrap">
-          <label>
-            Set A Password<span class="req">*</span>
-          </label>
-          <input id="signupPassword" data-validate-length-range="8,25" type="password" name="password" required autocomplete="off"/>
-        </div>
-
-        <div class="item field-wrap">
-          <label>
-            Choose A Role<span class="req">*</span>
-          </label>
-          <select class="required select2_single" tabindex="-1" name="role" required>
-            <option></option>
-            <option value='mentee'>I Am A Mentee</option>
-            <option value='mentor'>I Am A Mentor</option>
-          </select>
-        </div>
-
-        <button type="submit" class="button button-block"/>Sign Up!</button>
-
-        </form>
-
-      </div>
-
-      <div id="login">
-        <h1>Welcome Back!</h1>
-
-        <form action="/auth/login" method="post" novalidate>
 
           <div class="item field-wrap">
-          <label>
-            Email Address<span class="req">*</span>
-          </label>
-          <input type="email" name="email" required autocomplete="on"/>
+            <label>
+              Confirm Email Address<span class="req">*</span>
+            </label>
+            <input type="email" type="email" data-validate-linked='email' required autocomplete="off"/>
+          </div>
+
+          <div class="item field-wrap">
+            <label>
+              Set A Password<span class="req">*</span>
+            </label>
+            <input id="signupPassword" data-validate-length-range="8,25" type="password" name="password" required autocomplete="off"/>
+          </div>
+
+          <div class="item field-wrap">
+            <label>
+              Choose A Role<span class="req">*</span>
+            </label>
+            <select class="required select2_single" tabindex="-1" name="role" required>
+              <option></option>
+              <option value='mentee'>I Am A Mentee</option>
+              <option value='mentor'>I Am A Mentor</option>
+            </select>
+          </div>
+
+          <button type="submit" class="button button-block"/>Sign Up!</button>
+
+          </form>
+
         </div>
 
-        <div class="item field-wrap">
-          <label>
-            Password<span class="req">*</span>
-          </label>
-          <input type="password" name="password" required autocomplete="on"/>
+        <div id="login">
+          <h1>Welcome Back!</h1>
+
+          <form action="/auth/login" method="post" novalidate>
+
+            <div class="item field-wrap">
+            <label>
+              Email Address<span class="req">*</span>
+            </label>
+            <input type="email" name="email" required autocomplete="on"/>
+          </div>
+
+          <div class="item field-wrap">
+            <label>
+              Password<span class="req">*</span>
+            </label>
+            <input type="password" name="password" required autocomplete="on"/>
+          </div>
+
+          <p class="forgot"><a href="#">Forgot Password?</a></p>
+
+          <button class="button button-block"/>Log In</button>
+
+          </form>
+
         </div>
 
-        <p class="forgot"><a href="#">Forgot Password?</a></p>
+      </div><!-- tab-content -->
 
-        <button class="button button-block"/>Log In</button>
-
-        </form>
-
-      </div>
-
-    </div><!-- tab-content -->
-
-  </div> <!-- /form -->
+    </div> <!-- /form -->
   </div>
 
 	<!-- header
@@ -149,10 +149,8 @@
           <li><a class="smoothscroll"  href="#process" title="">Process</a></li>
           <li><a class="smoothscroll"  href="#tutors" title="">Tutors</a></li>
           <li><a class="smoothscroll"  href="#testimonials" title="">Testimomials</a></li>
-					<li><a class="smoothscroll"  href="#features" title="">Features</a></li>
 					<li><a class="smoothscroll"  href="#pricing" title="">Pricing</a></li>
           <li><a class="smoothscroll"  href="#team" title="">Team</a></li>
-					<li><a class="smoothscroll"  href="#faq" title="">FAQ</a></li>
           <% if (user) { %>
             <li class="highlight with-sep"><a href="/dashboard" title=""><%= user.profile.first_name + ' ' + user.profile.last_name %></a></li>
           <% } else { %>
@@ -184,8 +182,8 @@
 	   			</div>
 
 	   			<h5>Don't let dreams be dreams</h5>
-          <h1>MentorMap</h1>
-	   			<h2>University Admissions Consulting.</h2>
+          <h1 style="margin-bottom: 0;">MentorMap</h1>
+	   			<h2 style="">Mentorship Service for High School Students</h2>
 
 	   			<a class="button stroke smoothscroll" href="#process" title="">Learn More</a>
 
@@ -219,7 +217,7 @@
             <h5>What is MentorMap?</h5>
             <h1>Let Us Introduce Ourselves.</h1>
 
-            <p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>
+            <p class="lead">Connecting students uncertain about their futures in university with appropriate mentors imparting valuable firsthand experience</p>
 
           </div>
 
@@ -232,32 +230,29 @@
 
               <img src= "images/01_150x150.png">
 
-              <h2>What We Do</h2>
+              <h2>Academics</h2>
 
-              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-            </p>
+              <p>Our mentors are exclusively high achieving individuals each with unique but proven effective methods of regulation and study. These habits and systems will help you achieve further academic success.</p>
 
-            </div> <!-- /bgrid -->
+            </div>
             <div class="bgrid">
 
               <img src= "images/01_150x150.png">
 
-              <h2>Who We Are</h2>
+              <h2>Professionalism</h2>
 
-              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-            </p>
+              <p>The real world is full of networking and social graces, and without effective communication skills, one may feel as a grounded bird. Learn tips from experienced mentors in professional interactions.</p>
 
-            </div> <!-- /bgrid -->
+            </div>
             <div class="bgrid">
 
               <img src= "images/01_150x150.png">
 
-              <h2>Who You Are</h2>
+              <h2>Social Ethics</h2>
 
-              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-            </p>
+              <p>Through all our hard work, the end goal of us all wish the improvement of the social status quo. Hear about stories of passion from mentors who have poured their hearts and efforts in the name of social ethics.</p>
 
-            </div> <!-- /bgrid -->
+            </div>
 
 
           </div> <!-- features-list -->
@@ -272,10 +267,8 @@
      <div class="row section-intro">
        <div class="col-twelve with-bottom-line">
 
-         <h5>Process</h5>
+         <h5>The Process</h5>
          <h1>How Does It Work?</h1>
-
-         <p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>
 
        </div>
      </div>
@@ -288,15 +281,15 @@
 
            <h5>Sign Up</h5>
 
-           <p>Lorem ipsum Cupidatat nostrud non cupidatat ut dolor id eiusmod non minim aute consectetur incididunt tempor irure aute consequat quis voluptate.</p>
+           <p>Sign up and complete the registration form. We'll need this information to match you with mentors</p>
 
          </div>
 
          <div class="item" data-item="2">
 
-           <h5>Upload</h5>
+           <h5>Subscribe</h5>
 
-           <p>Lorem ipsum Cupidatat nostrud non cupidatat ut dolor id eiusmod non minim aute consectetur incididunt tempor irure aute consequat quis voluptate.</p>
+           <p>Choose a subsciption plan that's right for you. You can choose to subscribe to a monthly plan or pay by session. </p>
 
          </div>
 
@@ -306,17 +299,17 @@
 
          <div class="item" data-item="3">
 
-           <h5>Create</h5>
+           <h5>Choose</h5>
 
-           <p>Lorem ipsum Cupidatat nostrud non cupidatat ut dolor id eiusmod non minim aute consectetur incididunt tempor irure aute consequat quis voluptate.</p>
+           <p>Choose from a list of qualified mentors who closely match your university goals.</p>
 
          </div>
 
          <div class="item" data-item="4">
 
-           <h5>Publish</h5>
+           <h5>Time For Mentoring</h5>
 
-           <p>Lorem ipsum Cupidatat nostrud non cupidatat ut dolor id eiusmod non minim aute consectetur incididunt tempor irure aute consequat quis voluptate.</p>
+           <p>Start communicating with you mentor! He/she will book mentoring sessions with you over vidoe, phone, or in person!</p>
 
          </div>
 
@@ -364,7 +357,7 @@
 
             </div>
 
-        </div> <!-- /bgrid -->
+        </div>
 
         <div class="bgrid feature">
 
@@ -383,7 +376,7 @@
 
             </div>
 
-        </div> <!-- /bgrid -->
+        </div>
 
         <div class="bgrid feature">
 
@@ -402,7 +395,7 @@
 
             </div>
 
-        </div> <!-- /bgrid -->
+        </div>
 
         <div class="bgrid feature">
 
@@ -421,7 +414,7 @@
 
             </div>
 
-        </div> <!-- /bgrid -->
+        </div>
 
         <div class="bgrid feature">
 
@@ -440,7 +433,7 @@
 
             </div>
 
-        </div> <!-- /bgrid -->
+        </div>
 
         <div class="bgrid feature">
 
@@ -459,7 +452,7 @@
 
             </div>
 
-        </div> <!-- /bgrid -->
+        </div>
 
 
       </div> <!-- features-list -->
@@ -485,7 +478,7 @@
         <div class="row items">
 
            <!-- portfolio-wrapper -->
-           <div id="portfolio-wrapper" class="block-1-4 block-s-1-3 tab-1-2">
+           <div id="portfolio-wrapper" class="block-1-6 block-s-1-4 tab-1-2">
 
              <div class="bgrid folio-item">
                 <div class="item-wrap">
@@ -527,30 +520,6 @@
                  <div class="item-wrap">
                     <a href="#modal-01">
                       <img src="images/portfolio/waterloo.jpg">
-                       <div class="overlay"></div>
-                       <div class="portfolio-item-meta">
-                          <h5>University of Waterloo</h5>
-                          <p>Best University in Canada</p>
-                       </div>
-                    </a>
-                 </div>
-              </div> <!-- item end -->
-              <div class="bgrid folio-item">
-                 <div class="item-wrap">
-                    <a href="#modal-01">
-                      <img src="images/portfolio/waterloo.jpg">
-                       <div class="overlay"></div>
-                       <div class="portfolio-item-meta">
-                          <h5>University of Waterloo</h5>
-                          <p>Best University in Canada</p>
-                       </div>
-                    </a>
-                 </div>
-              </div> <!-- item end -->
-              <div class="bgrid folio-item">
-                 <div class="item-wrap">
-                    <a href="#modal-01">
-                      <img src="images/portfolio/york.png">
                        <div class="overlay"></div>
                        <div class="portfolio-item-meta">
                           <h5>University of Waterloo</h5>
@@ -647,7 +616,7 @@
 
 
     <!-- features Section
-    ================================================== -->
+    ==================================================
    <section id="features">
 
      <div class="row section-intro">
@@ -678,7 +647,7 @@
 
              </div>
 
-         </div> <!-- /bgrid -->
+         </div>
 
          <div class="bgrid feature">
 
@@ -693,7 +662,7 @@
 
                </div>
 
-          </div> <!-- /bgrid -->
+          </div>
 
           <div class="bgrid feature">
 
@@ -708,7 +677,7 @@
 
                </div>
 
-          </div> <!-- /bgrid -->
+          </div>
 
          <div class="bgrid feature">
 
@@ -723,7 +692,7 @@
 
                </div>
 
-         </div> <!-- /bgrid -->
+         </div>
 
           <div class="bgrid feature">
 
@@ -738,7 +707,7 @@
 
                </div>
 
-          </div> <!-- /bgrid -->
+          </div>
 
           <div class="bgrid feature">
 
@@ -752,14 +721,14 @@
 
                </div>
 
-          </div> <!-- /bgrid -->
+          </div>
 
-         </div> <!-- features-list -->
+         </div>
 
-     </div> <!-- features-content -->
+     </div>
 
-   </section> <!-- /features -->
-
+   </section>
+    -->
 
 	<!-- pricing
    ================================================== -->
@@ -771,8 +740,6 @@
 
    			<h5>Our Pricing</h5>
    			<h1>Pick the best plan for you.</h1>
-
-   			<p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>
 
    		</div>
    	</div>
@@ -787,10 +754,9 @@
 
             		<div class="top-part">
 
-	            		<h3 class="plan-title">Starter</h3>
-		               <p class="plan-price"><sup>$</sup>4.99</p>
-		               <p class="price-month">Per month</p>
-		               <p class="price-meta">Billed Annually.</p>
+	            		<h3 class="plan-title">Single</h3>
+		               <p class="plan-price"><sup>$</sup>9.99</p>
+		               <p class="price-month">Per Token</p>
 
 	            	</div>
 
@@ -800,7 +766,6 @@
 		                  <li><strong>3GB</strong> Storage</li>
 		                  <li><strong>10GB</strong> Bandwidth</li>
 		                  <li><strong>5</strong> Databases</li>
-		                  <li><strong>30</strong> Email Accounts</li>
 		               </ul>
 
 		               <a class="button large" href="">Get Started</a>
@@ -811,46 +776,15 @@
 
 			   </div> <!-- /price-block -->
 
-            <div class="bgrid">
-
-            	<div class="price-block primary">
-
-            		<div class="top-part" data-info="recommended">
-
-	            		<h3 class="plan-title">Standard</h3>
-		               <p class="plan-price"><sup>$</sup>9.99</p>
-		               <p class="price-month">Per month</p>
-							<p class="price-meta">Billed Annually.</p>
-
-	            	</div>
-
-	               <div class="bottom-part">
-
-	            		<ul class="features">
-		                  <li><strong>5GB</strong> Storage</li>
-		                  <li><strong>15GB</strong> Bandwidth</li>
-		                  <li><strong>7</strong> Databases</li>
-		                  <li><strong>40</strong> Email Accounts</li>
-		               </ul>
-
-		               <a class="button large" href="">Get Started</a>
-
-	            	</div>
-
-            	</div>
-
-			  </div> <!-- /price-block -->
-
            <div class="bgrid">
 
                <div class="price-block">
 
             		<div class="top-part">
 
-	            		<h3 class="plan-title">Premium</h3>
-		               <p class="plan-price"><sup>$</sup>19.99</p>
-		               <p class="price-month">Per month</p>
-		                <p class="price-meta">Billed Annually.</p>
+	            		<h3 class="plan-title">Standard Bundle</h3>
+		               <p class="plan-price"><sup>$</sup>29.99</p>
+		               <p class="price-month">Per 4 Tokens</p>
 
 	            	</div>
 
@@ -860,7 +794,6 @@
 		                  <li><strong>10GB</strong> Storage</li>
 		                  <li><strong>30GB</strong> Bandwidth</li>
 		                  <li><strong>15</strong> Databases</li>
-		                  <li><strong>60</strong> Email Accounts</li>
 		               </ul>
 
 		               <a class="button large" href="">Get Started</a>
@@ -871,16 +804,44 @@
 
 			   </div> <!-- /price-block -->
 
+
+         <div class="bgrid">
+
+          <div class="price-block primary">
+
+            <div class="top-part" data-info="recommended">
+
+              <h3 class="plan-title">Monthly</h3>
+               <p class="plan-price"><sup>$</sup>49.99</p>
+               <p class="price-month">Per Month</p>
+
+            </div>
+
+             <div class="bottom-part">
+
+              <ul class="features">
+                  <li><strong>5GB</strong> Storage</li>
+                  <li><strong>15GB</strong> Bandwidth</li>
+                  <li><strong>7</strong> Databases</li>
+               </ul>
+
+               <a class="button large" href="">Get Started</a>
+
+            </div>
+
+          </div>
+
+        </div> <!-- /price-block -->
+
 			   <div class="bgrid">
 
                <div class="price-block">
 
             		<div class="top-part">
 
-	            		<h3 class="plan-title">Ultimate</h3>
-		               <p class="plan-price"><sup>$</sup>29.99</p>
-		               <p class="price-month">Per month</p>
-		               <p class="price-meta">Billed Annually.</p>
+	            		<h3 class="plan-title">Premium Bundle</h3>
+		               <p class="plan-price"><sup>$</sup>49.99</p>
+		               <p class="price-month">Per 6 Tokens</p>
 
 	            	</div>
 
@@ -890,7 +851,6 @@
 		                  <li><strong>20GB</strong> Storage</li>
 		                  <li><strong>40GB</strong> Bandwidth</li>
 		                  <li><strong>25</strong> Databases</li>
-		                  <li><strong>100</strong> Email Accounts</li>
 		               </ul>
 
 		               <a class="button large" href="">Get Started</a>
@@ -917,7 +877,7 @@
         <h5>Our Team</h5>
         <h1>Meet Our Awesome Team.</h1>
 
-        <p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>
+        <p class="lead">We are a team of university students consisting of aspiring business professionals, software developers and medical doctors.</p>
 
       </div>
     </div>
@@ -934,7 +894,7 @@
           <h4>League of Legends</h4>
 
           <h5>Bronze 5</h5>
-        </div> <!-- /bgrid -->
+        </div>
         <div class="bgrid">
           <img src= "images/team/kevinwu.png">
 
@@ -943,7 +903,7 @@
           <h4>League of Legends</h4>
 
           <h5>Bronze 5</h5>
-        </div> <!-- /bgrid -->
+        </div>
         <div class="bgrid">
           <img src= "images/team/kevinwu.png">
 
@@ -952,7 +912,7 @@
           <h4>League of Legends</h4>
 
           <h5>Bronze 5</h5>
-        </div> <!-- /bgrid -->
+        </div>
         <div class="bgrid">
           <img src= "images/team/kevinwu.png">
 
@@ -961,7 +921,7 @@
           <h4>League of Legends</h4>
 
           <h5>Bronze 5</h5>
-        </div> <!-- /bgrid -->
+        </div>
         <div class="bgrid">
           <img src= "images/team/kevinwu.png">
 
@@ -970,7 +930,7 @@
           <h4>League of Legends</h4>
 
           <h5>Bronze 5</h5>
-        </div> <!-- /bgrid -->
+        </div>
         <div class="bgrid">
           <img src= "images/team/kevinwu.png">
 
@@ -979,7 +939,7 @@
           <h4>League of Legends</h4>
 
           <h5>Bronze 5</h5>
-        </div> <!-- /bgrid -->
+        </div>
 
 
       </div> <!-- features-list -->
@@ -990,7 +950,7 @@
 
 
    <!-- faq
-   ================================================== -->
+   ==================================================
    <section id="faq">
 
    	<div class="row section-intro">
@@ -1056,9 +1016,10 @@
 
    			</div>
 
-   		</div> <!-- /q-and-a -->
+   		</div>
 
-   	</div> <!-- /faq-content -->
+   	</div>
+
 
    	<div class="row section-ads">
 
@@ -1071,7 +1032,7 @@
 			      <p class="lead">
 			      Looking for an awesome and reliable webhosting? Try <a href="http://www.dreamhost.com/r.cgi?287326|STYLESHOUT"><span>DreamHost</span></a>.
 					Get <span>$50 off</span> when you sign up with the promocode <span>styleshout</span>.
-					<!-- Simply type	the promocode in the box labeled “Promo Code” when placing your order. -->
+
 					</p>
 
 					<div class="action">
@@ -1082,10 +1043,13 @@
 
 			</div>
 
-		</div> <!-- /section-ads -->
+		</div>
 
 
-   </section> <!-- /faq -->
+
+
+   </section>
+           -->
 
    <!-- cta
    ================================================== -->
@@ -1095,24 +1059,16 @@
 
    		<div class="col-twelve">
 
-   			<h1 class="h01">Get started now. Try MentorMap free for 30 days.</h1>
+   			<h1 class="h01">Get started now. Try MentorMap now for free!</h1>
 
-   			<p class="lead">Download the app now. Available on the:</p>
+   			<p class="lead">Don't let your dreams be dreams</p>
 
    			<ul class="stores">
    				<li class="app-store">
    					<a href="#" class="button round large" title="">
-   						<i class="icon ion-social-apple"></i>App Store
+   						Sign Up For Free
    					</a>
    				</li>
-   				<li class="play-store">
-   					<a href="#" class="button round large" title="">
-   						<i class="icon ion-social-android"></i>Play Store</a>
-   					</li>
-   				<li class="windows-store">
-   					<a href="#" class="button round large" title="">
-   						<i class="icon ion-social-windows"></i>Win Store</a>
-   					</li>
    			</ul>
 
    		</div>
@@ -1135,9 +1091,8 @@
 	            <div class="footer-logo"></div>
 
 	            <p>
-		        	1 Infinity Loop<br>
-            	Palo Alto, CA 10001 US<br>
-		        	info@mentormap.com &nbsp; +123-456-789
+		        	info@mentormap.com<br>
+              +1 123-456-789
 		        	</p>
 
 		      </div> <!-- /footer-info -->
@@ -1145,13 +1100,13 @@
 	      	<div class="col-two tab-1-3 mob-1-2 site-links">
 
 	      		<h4>Site Links</h4>
-
 	      		<ul>
-	      			<li><a href="#">About Us</a></li>
-						<li><a href="#">Blog</a></li>
-						<li><a href="#">FAQ</a></li>
-						<li><a href="#">Terms</a></li>
-						<li><a href="#">Privacy Policy</a></li>
+	      			<li><a href="#about">About Us</a></li>
+						<li><a href="#process">Process</a></li>
+						<li><a href="#tutors">Our Tutors</a></li>
+						<li><a href="#testimonials">Testimonials</a></li>
+						<li><a href="#pricing">Pricing</a></li>
+            <li><a href="#team">Our Team</a></li>
 					</ul>
 
 	      	</div> <!-- /site-links -->
@@ -1203,8 +1158,8 @@
 
       		<div class="col-twelve">
 	      		<div class="copyright">
-		         	<span>© Copyright Joshua Sun, Bill Qi 2017.</span>
-		         	<span>Design by <a href="http://www.styleshout.com/">styleshout</a></span>
+		         	<span>© Copyright MentorMap 2017.</span>
+		         	<span>Design by <a href="/">Joshua Sun and Bill Qi</a></span>
 		         </div>
 
 		         <div id="go-top" style="display: block;">

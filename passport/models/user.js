@@ -13,6 +13,7 @@ userSchema.add({
       email                     : String,
       password                  : String,
       role                      : String,
+      verified                  : Boolean,
       completed                 : Boolean,
       creation_date             : Date,
       upcomingSessions          : [{
