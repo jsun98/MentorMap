@@ -5,29 +5,6 @@ var User = require('../passport/models/user');
 var Session = require('../passport/models/session');
 var random = require('mongoose-random');
 
-
-router.use(function (req, res, next) {
-  if (req.isAuthenticated() && !req.user.verified)
-    req.logout();
-  next();
-});
-
-// =====================================
-// verify =====================
-// =====================================
-// verify if email is correct
-router.get('/verify', function(req, res, next) {
-  console.log(req.query.id);
-  User.findByIdAndUpdate(req.query.id, {
-    $set: { 'verified' : true }
-  }, function (err, user) {
-    if (err)
-      next(err);
-    console.log(user);
-    res.redirect('/');
-  });
-});
-
 //set up the Mongoose-Random plugin
 User.syncRandom(function (err, result) {
   if (err)
@@ -38,9 +15,23 @@ User.syncRandom(function (err, result) {
 // Index PAGE =====================
 // =====================================
 router.get('/', function(req, res, next) {
-  //console.log(req.flash('loginMessage'));
-  res.render('index', { user: req.user});
+  res.render('index', { user: req.user, successMsg: req.flash('success')[0] || "", errMsg: req.flash('errMessage')[0] || ""});
 
+});
+
+// =====================================
+// verify =====================
+// =====================================
+// verify if email is correct
+router.get('/verify', function(req, res, next) {
+  User.findByIdAndUpdate(req.query.id, {
+    $set: { 'verified' : true }
+  }, function (err, user) {
+    if (err)
+      next(err);
+    req.flash('successMsg', "Thank You For Verifying Your Email! We Are Thrilled to Have You On Board! Click on 'Log In' to Access Your Account.")
+    res.redirect('/');
+  });
 });
 
 // =====================================
@@ -169,9 +160,9 @@ router.get('/dashboard', isLoggedIn, isRegCompleted, function(req, res, next) {
         return new Date(a.date) - new Date(b.date);
       });
       if (req.user.role === "mentee")
-        res.render('mentee_dashboard', { user: user });
+        res.render('mentee_dashboard', { user: user, successMsg: req.flash('successMsg')[0] || '' });
       else {
-        res.render('mentor_dashboard', { user: user });
+        res.render('mentor_dashboard', { user: user, successMsg: req.flash('successMsg')[0] || '' });
       }
     });
 
@@ -343,7 +334,7 @@ router.get('/mentor-list', isLoggedIn, isRegCompleted, function(req, res, next) 
     else {
       res.render('profile_list', { user: req.user, profiles: profiles, title: "We Selected Some Mentors For You" });
     }
-  }).limit(6);
+  }).limit(5);
 
 });
 
@@ -376,13 +367,31 @@ router.post('/choose-mentor', isLoggedIn, isRegCompleted, isMenteeOnly, function
           if (err)
             next(err);
           else
-            res.send('success');
+            res.send('You Have Successfully Chosen Your Mentor!');
         });
       }
     });
 
 });
 
+// Mentees cancels mentorship
+router.post('/cancel-mentor', isLoggedIn, isRegCompleted, isMenteeOnly, function(req, res, next) {
+
+  //might wanna change this to promise
+    User.update({_id: req.body.mentor_id}, { $pull: { 'mentees' : req.user._id }}, function (err) {
+      if (err)
+        next(err);
+      else {
+        User.update({_id: req.user._id}, { $pull: { 'mentors' : req.body.mentor_id }}, function (err) {
+          if (err)
+            next(err);
+          else
+            res.send('You Have Successfully Cancelled This Mentorship!');
+        });
+      }
+    });
+
+});
 
 function isMentorOnly (req, res, next) {
   if (req.user.role === "mentor")

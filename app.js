@@ -21,7 +21,7 @@ var app = express();
 //set port
 var PORT =  process.env.PORT || 3000;
 
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

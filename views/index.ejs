@@ -17,10 +17,17 @@
 
  	<!-- CSS
    ================================================== -->
+   <!-- Bootstrap -->
+   <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
    <link rel="stylesheet" href="vendor/Lhander/css/base.css">
    <link rel="stylesheet" href="vendor/Lhander/css/main.css">
    <link rel="stylesheet" href="vendor/Lhander/css/vendor.css">
    <link rel="stylesheet" href="css/indexmodal.css">
+   <!-- PNotify -->
+   <link href="vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+   <link href="vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+   <link href="vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+   <link href="vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
 
    <!-- script
    ================================================== -->
@@ -1186,6 +1193,10 @@
    <!-- validator -->
    <script src="vendor/validator/validator.min.js"></script>
    <script src="js/indexmodal.js"></script>
+   <!-- PNotify -->
+   <script src="vendor/pnotify/dist/pnotify.js"></script>
+   <script src="vendor/pnotify/dist/pnotify.buttons.js"></script>
+   <script src="vendor/pnotify/dist/pnotify.nonblock.js"></script>
 
 
    <!-- validator -->
@@ -1220,6 +1231,32 @@
 
    </script>
    <!-- /validator -->
+
+  <% if (errMsg) { %>
+    <script>
+    $(function(){
+      new PNotify({
+        title: 'Error!',
+        text: '<%= errMsg %>',
+        type: 'error',
+        styling: "bootstrap3"
+      });
+    });
+    </script>
+  <% } %>
+
+  <% if (successMsg) { %>
+    <script>
+    $(function(){
+      new PNotify({
+        title: 'Verify Your Email',
+        text: '<%= successMsg %>',
+        type: 'Sticky success',
+        styling: "bootstrap3"
+      });
+    });
+    </script>
+  <% } %>
 
 
 

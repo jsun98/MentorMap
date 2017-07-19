@@ -9,6 +9,11 @@
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="vendor/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link href="vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+    <link href="vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="vendor/gentelella/css/custom.min.css" rel="stylesheet">
     <link href="css/profile.css" rel="stylesheet">
@@ -29,41 +34,6 @@
 
         <!-- page content -->
         <div class="right_col" role="main" style="min-height: none">
-
-          <div class="row top_tiles">
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-              <div class="tile-stats">
-                <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
-                <div class="count">179</div>
-                <h3>Total Mentors</h3>
-                <p>Lorem ipsum psdea itgum rixt.</p>
-              </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-              <div class="tile-stats">
-                <div class="icon"><i class="fa fa-comments-o"></i></div>
-                <div class="count">16</div>
-                <h3>Different Universities</h3>
-                <p>Lorem ipsum psdea itgum rixt.</p>
-              </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-              <div class="tile-stats">
-                <div class="icon"><i class="fa fa-sort-amount-desc"></i></div>
-                <div class="count">560</div>
-                <h3>Total Mentees</h3>
-                <p>Lorem ipsum psdea itgum rixt.</p>
-              </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-              <div class="tile-stats">
-                <div class="icon"><i class="fa fa-check-square-o"></i></div>
-                <div class="count">9.9</div>
-                <h3>Average Review</h3>
-                <p>Lorem ipsum psdea itgum rixt.</p>
-              </div>
-            </div>
-          </div>
 
           <div class="row">
 
@@ -190,7 +160,10 @@
     <script src="vendor/Chart.js/dist/Chart.min.js"></script>
     <!-- jQuery Sparklines -->
     <script src="vendor/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-
+    <!-- PNotify -->
+    <script src="vendor/pnotify/dist/pnotify.js"></script>
+    <script src="vendor/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendor/pnotify/dist/pnotify.nonblock.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="vendor/gentelella/js/custom.min.js"></script>
 
@@ -284,6 +257,19 @@
       });
     </script>
     <!-- /jQuery Sparklines -->
+
+    <% if (successMsg) { %>
+      <script>
+      $(function(){
+        new PNotify({
+          title: 'Success!',
+          text: '<%= successMsg %>',
+          type: 'success',
+          styling: "bootstrap3"
+        });
+      });
+      </script>
+    <% } %>
 
   </body>
 </html>

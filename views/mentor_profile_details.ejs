@@ -7,7 +7,11 @@
     <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
+    <!-- PNotify -->
+    <link href="vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+    <link href="vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="vendor/gentelella/css/custom.min.css" rel="stylesheet">
   </head>
@@ -33,7 +37,7 @@
 
               <div class="title_right">
                   <div class="input-group pull-right">
-                    <a type="button" href="/mymentors" class="btn btn-round btn-default">Back</a>
+                    <a type="button" href="/dashboard" class="btn btn-round btn-default">Back</a>
                   </div>
               </div>
             </div>
@@ -147,7 +151,7 @@
 
                       <!-- Large modal -->
 
-                      <% if (matched == false) { %>
+                      <% if (matched == false && user.role === 'mentee') { %>
                       <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 10001;">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -174,6 +178,33 @@
                       </div>
 
                       <button id ='chooseMentor' class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-check-square-o m-right-xs"></i> &nbspChoose This Mentor</button>
+                      <% } else if (matched === true && user.role === 'mentee') { %>
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 10001;">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Confirm Cancellation</h4>
+                              </div>
+                              <div class="modal-body">
+                                <h4><strong>Are You Sure You Want To Cancel This Mentorship?</strong></h4>
+                                <p>
+                                Please keep in mind that doing so will end your mentorship with this mentor permanantly. Your mentorship fee with this mentor
+                                will not be refunded unless you have a valid reason for cancelling this mentorship. Any outstanding sessions you have with this
+                                mentor will be voided.
+                                </p>
+                                <div class="modal-footer">
+                                  <button type="button" id="btn-cancel-mentor" class="btn btn-danger" style="margin-bottom:0;" >Confirm Cancellation</button>
+                                  <button type="button" id="btn-close-modal" class="btn btn-default" data-dismiss="modal" style="margin-bottom:0;">Back</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <button id ='cancelMentor' class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-check-square-o m-right-xs"></i> &nbspCancel Mentorship</button>
                       <% } %>
                       <br />
 
@@ -194,10 +225,6 @@
                       <div class="" role="tabpanel" data-example-id="togglable-tabs">
                         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                           <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">About Me</a>
-                          </li>
-                          <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Why I Am A Great Mentor</a>
-                          </li>
-                          <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">My Skills</a>
                           </li>
                           <% if (matched === true) { %>
                           <li role="presentation" class=""><a href="#tab_content4" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Contact Information</a>
@@ -230,73 +257,6 @@
                             </ul>
                             <!-- end about -->
 
-                          </div>
-                          <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-
-                            <!-- start user projects -->
-                            <table class="data table table-striped no-margin">
-                              <thead>
-                                <tr>
-                                  <th>#</th>
-                                  <th>Project Name</th>
-                                  <th>Client Company</th>
-                                  <th class="hidden-phone">Hours Spent</th>
-                                  <th>Contribution</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>1</td>
-                                  <td>New Company Takeover Review</td>
-                                  <td>Deveint Inc</td>
-                                  <td class="hidden-phone">18</td>
-                                  <td class="vertical-align-mid">
-                                    <div class="progress">
-                                      <div class="progress-bar progress-bar-success" data-transitiongoal="35"></div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td>New Partner Contracts Consultanci</td>
-                                  <td>Deveint Inc</td>
-                                  <td class="hidden-phone">13</td>
-                                  <td class="vertical-align-mid">
-                                    <div class="progress">
-                                      <div class="progress-bar progress-bar-danger" data-transitiongoal="15"></div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>3</td>
-                                  <td>Partners and Inverstors report</td>
-                                  <td>Deveint Inc</td>
-                                  <td class="hidden-phone">30</td>
-                                  <td class="vertical-align-mid">
-                                    <div class="progress">
-                                      <div class="progress-bar progress-bar-success" data-transitiongoal="45"></div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>4</td>
-                                  <td>New Company Takeover Review</td>
-                                  <td>Deveint Inc</td>
-                                  <td class="hidden-phone">28</td>
-                                  <td class="vertical-align-mid">
-                                    <div class="progress">
-                                      <div class="progress-bar progress-bar-success" data-transitiongoal="75"></div>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <!-- end user projects -->
-
-                          </div>
-                          <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                            <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                              photo booth letterpress, commodo enim craft beer mlkshk </p>
                           </div>
 
                           <% if (matched === true) { %>
@@ -341,6 +301,10 @@
     <!-- bootstrap-daterangepicker -->
     <script src="vendor/moment/moment.min.js"></script>
     <script src="vendor/datepicker/daterangepicker.js"></script>
+    <!-- PNotify -->
+    <script src="vendor/pnotify/dist/pnotify.js"></script>
+    <script src="vendor/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendor/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="vendor/gentelella/js/custom.min.js"></script>
@@ -350,13 +314,56 @@
       $(document).ready(function() {
         $('#btn-choose-mentor').click(function() {
           $.post("/choose-mentor", {mentor_id: '<%= mentor._id %>'})
-          .done(function (data) {
-            alert('mentor successfully chosen');
-            window.location.reload();
+          .done(function (res) {
+            new PNotify({
+              title: 'Mentor Chosen!',
+              text: res,
+              type: 'success',
+              styling: "bootstrap3"
+            });
+            $("#chooseMentor").hide();
+            $('#btn-close-modal').click();
+            setTimeout(function () {
+              window.location.href = "/dashboard";
+            }, 2000);
           })
           .fail(function () {
-            alert('internal server error');
-            window.location.href = '/dashboard';
+            new PNotify({
+              title: 'Error!',
+              text: "Oops, looks like something went wrong. Please try again later.",
+              type: 'error',
+              styling: "bootstrap3"
+            });
+            setTimeout(function () {
+              window.location.href = "/dashboard";
+            }, 2000);
+          });
+        });
+        $('#btn-cancel-mentor').click(function() {
+          $.post("/cancel-mentor", {mentor_id: '<%= mentor._id %>'})
+          .done(function (res) {
+            new PNotify({
+              title: 'Mentorship Cancelled!',
+              text: res,
+              type: 'notice',
+              styling: "bootstrap3"
+            });
+            $("#cancelMentor").hide();
+            $('#btn-close-modal').click();
+            setTimeout(function () {
+              window.location.href = "/dashboard";
+            }, 2000);
+          })
+          .fail(function () {
+            new PNotify({
+              title: 'Error!',
+              text: "Oops, looks like something went wrong. Please try again later.",
+              type: 'error',
+              styling: "bootstrap3"
+            });
+            setTimeout(function () {
+              window.location.href = "/dashboard";
+            }, 2000);
           });
         });
       });
