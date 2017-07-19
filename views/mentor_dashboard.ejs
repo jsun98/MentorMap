@@ -9,6 +9,11 @@
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="vendor/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link href="vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+    <link href="vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="vendor/gentelella/css/custom.min.css" rel="stylesheet">
     <link href="css/profile.css" rel="stylesheet">
@@ -162,7 +167,10 @@
     <script src="vendor/Chart.js/dist/Chart.min.js"></script>
     <!-- jQuery Sparklines -->
     <script src="vendor/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-
+    <!-- PNotify -->
+    <script src="vendor/pnotify/dist/pnotify.js"></script>
+    <script src="vendor/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendor/pnotify/dist/pnotify.nonblock.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="vendor/gentelella/js/custom.min.js"></script>
 
@@ -265,6 +273,32 @@
       });
     </script>
     <!-- /jQuery Sparklines -->
+
+    <% if (successMsg) { %>
+      <script>
+      $(function(){
+        new PNotify({
+          title: 'Success!',
+          text: '<%= successMsg %>',
+          type: 'success',
+          styling: "bootstrap3"
+        });
+      });
+      </script>
+    <% } %>
+
+    <% if (infoMsg) { %>
+      <script>
+      $(function(){
+        new PNotify({
+          title: 'Info',
+          text: '<%= infoMsg %>',
+          type: 'warning',
+          styling: "bootstrap3"
+        });
+      });
+      </script>
+    <% } %>
 
   </body>
 </html>

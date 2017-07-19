@@ -160,9 +160,9 @@ router.get('/dashboard', isLoggedIn, isRegCompleted, function(req, res, next) {
         return new Date(a.date) - new Date(b.date);
       });
       if (req.user.role === "mentee")
-        res.render('mentee_dashboard', { user: user, successMsg: req.flash('successMsg')[0] || '' });
+        res.render('mentee_dashboard', { user: user, successMsg: req.flash('successMsg')[0] || '', infoMsg: req.flash('infoMsg')[0] || '' });
       else {
-        res.render('mentor_dashboard', { user: user, successMsg: req.flash('successMsg')[0] || '' });
+        res.render('mentor_dashboard', { user: user, successMsg: req.flash('successMsg')[0] || '', infoMsg: req.flash('infoMsg')[0] || '' });
       }
     });
 
@@ -245,8 +245,10 @@ router.post('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, 
           User.update({_id: req.user._id}, { $addToSet: { 'upcomingSessions' : savedSession._id }}, function (err) {
             if (err)
               next(err);
-            else
-              res.send('Created New Session').end();
+            else {
+              req.flash('successMsg', "Session Created Successfully")
+              res.redirect('/dashboard');
+            }
           });
         }
       });
@@ -284,7 +286,8 @@ router.post('/cancelBooking', isLoggedIn, isRegCompleted, isMentorOnly, function
             session.mentor.save(function (err) {
               if (err)
                   next(err);
-              res.send("Session Deleted");
+              req.flash('infoMsg', "Session Deleted Successfully");
+              res.send();
             })
           })
       });

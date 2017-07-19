@@ -271,5 +271,18 @@
       </script>
     <% } %>
 
+    <% if (infoMsg) { %>
+      <script>
+      $(function(){
+        new PNotify({
+          title: 'Info',
+          text: '<%= infoMsg %>',
+          type: 'warning',
+          styling: "bootstrap3"
+        });
+      });
+      </script>
+    <% } %>
+
   </body>
 </html>

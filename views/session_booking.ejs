@@ -232,7 +232,6 @@
 
       $('form').submit(function(e) {
 
-        e.preventDefault();
         var submit = true;
         // evaluate the form using generic validaing
         if( !validator.checkAll( $(this) ) ){
@@ -258,19 +257,7 @@
         }
 
         if ( submit ) {
-          $.ajax({
-           type: "POST",
-           url: '/booking',
-           data: $(this).serialize()
-          })
-          .done(function (res) {
-            alert(res);
-            window.location.href = '/dashboard';
-          })
-          .fail(function (err) {
-            console.error(err);
-            alert(err);
-          });
+          this.submit();
         }
         return false;
 
@@ -287,13 +274,11 @@
          url: '/cancelBooking',
          data: {session_id: '<%= session._id %>'}
         })
-        .done(function (res) {
-          alert(res);
+        .done(function () {
           window.location.href = '/dashboard';
         })
         .fail(function (err) {
-          console.error(err);
-          alert(err);
+          window.location.href = '/dashboard';
         });
       });
     </script>
