@@ -8,16 +8,10 @@ var User            = require('../models/user');
 
 var nodemailer = require('nodemailer');
 
-// create reusable transporter object using the default SMTP transport
-var transporter = nodemailer.createTransport({
-    host: 'smtp.zoho.com',
-    port: 465,
-    secure: true, // secure:true for port 465, secure:false for port 587
-    auth: {
-        user: 'admin@mentormap.ca',
-        pass: 'Mentormap$1'
-    }
-});
+var mailjet = require ('node-mailjet')
+    .connect('ec64965cdf208fb3897abc986fe6b36b', 'ed1ab3ce9f19eaa293436bd774809eb2')
+
+
 
 
 // expose this function to our app using module.exports
@@ -86,7 +80,7 @@ module.exports = function(passport) {
                 newUser.profile.first_name = req.body.first_name;
                 newUser.profile.last_name  = req.body.last_name;
 
-                if (process.env.NODE_ENV == 'development') {
+                if (process.env.NODE_ENV == 'development' && process.env.AUTO_SIGNUP == 'true') {
                   newUser.verified = true;
                   newUser.completed = true;
                   newUser.profile.gender = "male";
@@ -114,22 +108,27 @@ module.exports = function(passport) {
                     if (err)
                         next(err);
 
-
-                    // setup email data with unicode symbols
-                    var mailOptions = {
-                        from: '"MentorMap Admin" <admin@mentormap.ca>', // sender address
-                        to: email, // list of receivers
-                        subject: 'Welcome to MentorMap, Please Verify Your Email Address', // Subject line
-                        html: '<a href="http://localhost:3000/verify?id='+savedUser._id+'">Click On This Link To Verify Your Email</a>' // html body
-                    };
-
-                    // send mail with defined transport object
-                    transporter.sendMail(mailOptions, function (error, info) {
-                        if (error) {
-                            return console.log(error);
-                        }
-                        console.log('Message %s sent: %s', info.messageId, info.response);
-                    });
+                    var hostname = process.env.NODE_ENV === 'development' ? 'localhost:3000' : req.hostname;
+                    mailjet
+                      .post("send")
+                      .request({
+                          "FromEmail":"admin@mentormap.ca",
+                          "FromName":"MentorMap Admin",
+                          "Subject":"MentorMap - Confirm Your Email Address!",
+                          "Text-part":"",
+                          "Html-part":'<a href="http://'+hostname+'/verify?id='+savedUser._id+'">Click On This Link To Verify Your Email</a>',
+                          "Recipients":[
+                                  {
+                                    "Email": email
+                                  }
+                          ]
+                      })
+                      .then(function (response) {
+                          console.log ("Email sent to client "+savedUser._id);
+                      })
+                      .catch(function (err) {
+                          console.log (err.statusCode, err);
+                      });
 
                     return done(null, newUser);
                 });

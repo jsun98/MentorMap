@@ -94,10 +94,10 @@
     <script>
       $(document).ready(function() {
         var profiles = <%- JSON.stringify(profiles) %>;
-        var pageProfilesCount = 9;
+        var pageProfilesCount = 4;
 
         $("#page-content").children().each(function (idx, val) {
-          if (idx < 9)
+          if (idx < 4)
             $(this).show();
         });
 
@@ -107,7 +107,7 @@
           var pageStartIdx = (num - 1) * pageProfilesCount;
           var pageEndIdx = pageStartIdx + pageProfilesCount;
           $("#page-content").children().each(function (idx, val) {
-            if (idx < pageStartIdx || idx > pageEndIdx)
+            if (idx < pageStartIdx || idx >= pageEndIdx)
               $(this).hide();
             else
               $(this).show();

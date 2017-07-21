@@ -208,17 +208,6 @@
                       <% } %>
                       <br />
 
-                      <!-- start skills -->
-                      <h4>Skills</h4>
-                      <ul class="list-unstyled user_data">
-                        <% for (var i = 0; i < mentor.profile.skills.length; i++) { %>
-                        <li>
-                          <p><%= mentor.profile.skills[i] %></p>
-                        </li>
-                        <% } %>
-                      </ul>
-                      <!-- end of skills -->
-
                     </div>
                     <div class="col-md-9 col-sm-9 col-xs-12">
 
@@ -238,22 +227,25 @@
 
                             <!-- About -->
                             <ul class="messages">
-                              <li>
-                                <img src="images/img.jpg" class="avatar" alt="Avatar">
-                                <div class="message_date">
-                                  <h3 class="date text-info">24</h3>
-                                  <p class="month">May</p>
-                                </div>
-                                <div class="message_wrapper">
-                                  <h4 class="heading">Desmond Davison</h4>
-                                  <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                                  <br />
-                                  <p class="url">
-                                    <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                    <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                                  </p>
-                                </div>
-                              </li>
+                              <!-- start skills -->
+                              <h4>Skills</h4>
+                              <ul class="list-unstyled user_data">
+                                <% for (var i = 0; i < mentor.profile.skills.length; i++) { %>
+                                <li>
+                                  <p><%= mentor.profile.skills[i] %></p>
+                                </li>
+                                <% } %>
+                              </ul>
+                              <!-- end of skills -->
+                              <h4>Paragraph 1</h4>
+                              <%= mentor.profile.paragraphs[0] %>
+                              <h4>Paragraph 2</h4>
+                              <%= mentor.profile.paragraphs[1] %>
+                              <h4>Paragraph 3</h4>
+                              <%= mentor.profile.paragraphs[2] %>
+                              <h4>Paragraph 4</h4>
+                              <%= mentor.profile.paragraphs[3] %>
+
                             </ul>
                             <!-- end about -->
 

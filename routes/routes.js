@@ -29,7 +29,7 @@ router.get('/verify', function(req, res, next) {
   }, function (err, user) {
     if (err)
       next(err);
-    req.flash('successMsg', "Thank You For Verifying Your Email! We Are Thrilled to Have You On Board! Click on 'Log In' to Access Your Account.")
+    req.flash('success', "Thank You For Verifying Your Email! We Are Thrilled to Have You On Board! Click on 'Log In' to Access Your Account.")
     res.redirect('/');
   });
 });
