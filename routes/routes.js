@@ -4,6 +4,11 @@ var passport = require('passport');
 var User = require('../passport/models/user');
 var Session = require('../passport/models/session');
 var random = require('mongoose-random');
+var Zoom = require("zoomus")({
+    key : "pwwYMDrJRYifTZ2qN4jSpw",
+    secret : "xgzQt2w5wpNMxqUsA2zMbLbqkCpum60K5GZi"
+});
+
 
 //set up the Mongoose-Random plugin
 User.syncRandom(function (err, result) {
@@ -169,6 +174,42 @@ router.get('/dashboard', isLoggedIn, isRegCompleted, function(req, res, next) {
 
 });
 
+
+/*
+router.get('/availability', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
+  res.render('free_time_slots', { user: req.user });
+});
+
+router.post('/availability', isLoggedIn, isRegCompleted, isMentorOnly, function(req, res, next) {
+
+
+  User.findByIdAndUpdate(req.user.id, {
+    $set:
+      { 'availability.monday' : req.body.mondayStartTime +,
+        'profile.gender' : req.body.gender,
+        'profile.phone' : req.body.phone,
+        'profile.high_school_program': req.body.high_school_program,
+        'profile.skills' : req.body.skills,
+        'profile.linkedin' : req.body.linkedin,
+        'profile.paragraphs' : req.body.paragraphs,
+        'profile.gpa' : parseInt(req.body.gpa),
+        'profile.age' : req.body.age,
+        'profile.curr_school' : req.body.curr_school,
+        'profile.curr_major' : req.body.curr_major,
+        'profile.curr_minor' : req.body.curr_minor,
+        'profile.grad_year' : parseInt(req.body.grad_year)
+     }
+    },
+    function (err, tank) {
+      if (err)
+        next(err);
+
+    }
+  );
+
+});
+*/
+
 // =====================================
 // Inbox Page  =====================
 // =====================================
@@ -246,8 +287,24 @@ router.post('/booking', isLoggedIn, isRegCompleted, isMentorOnly, function(req, 
             if (err)
               next(err);
             else {
-              req.flash('successMsg', "Session Created Successfully")
-              res.redirect('/dashboard');
+              var meeting = {
+                  host_id: 3638201174,
+                  type: 2,
+                  topic: "Mentoring Session",
+                  start_time: newSession.date.setHours(req.body.startTime.split(':')[0],req.body.startTime.split(':')[1]),
+                  timezone: 'America/New_York'
+              }
+
+              Zoom.meeting.create(meeting, function(res){
+                  if(res.error){
+                    next(res.error);
+                  } else {
+                    console.log("new meeting scheduled");
+                    console.log(res);
+                    req.flash('successMsg', "Session Created Successfully")
+                    res.redirect('/dashboard');
+                  }
+              });
             }
           });
         }
