@@ -1,0 +1,53 @@
+<div class="col-md-6 col-sm-6 col-xs-12 profile_details" hidden>
+  <div class="well profile_view">
+    <div class="col-sm-12">
+      <div class="left col-xs-7">
+        <h2><%= profile.profile.first_name + ' ' + profile.profile.last_name %></h2>
+        <p><strong>About: </strong> </p>
+        <ul class="list-unstyled">
+          <% if (profile.role == "mentor") { %>
+          <li><i class="fa fa-book"></i> <%= profile.profile.curr_school %> </li>
+          <li><i class="fa fa-book"></i> <%= profile.profile.curr_major %> </li>
+          <% } else { %>
+          <li><i class="fa fa-book"></i> <%= profile.profile.high_school %> </li>
+          <li><i class="fa fa-book"></i> Grade: <%= profile.profile.grade %> </li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="right col-xs-5 text-center">
+        <img src="images/user.png" alt="" class="img-circle img-responsive">
+      </div>
+    </div>
+    <div class="col-xs-12 bottom">
+      <!--
+      <div class="col-xs-12 col-sm-6 emphasis">
+        <p class="ratings">
+          <a>4.0</a>
+          <a href="#"><span class="fa fa-star"></span></a>
+          <a href="#"><span class="fa fa-star"></span></a>
+          <a href="#"><span class="fa fa-star"></span></a>
+          <a href="#"><span class="fa fa-star"></span></a>
+          <a href="#"><span class="fa fa-star-o"></span></a>
+        </p>
+      </div>
+    -->
+      <div class="col-xs-12 col-sm-12 col-md-12 emphasis">
+        <!--
+        <button type="button" class="btn btn-success btn-xs message pull-right">
+          <i class="fa fa-user"></i> Message
+        </button>
+      -->
+        <% if (profile.role == "mentor") { %>
+          <a type="button" class="btn btn-primary btn-xs details pull-right" href = "/mentor-details?id=<%= profile._id %>" >
+            <i class="fa fa-user"></i> Profile
+          </a>
+        <% } else { %>
+          <a type="button" class="btn btn-primary btn-xs details pull-right" href="/booking?mentee_id=<%= profile._id %>" >
+            <i class="fa fa-user"></i> Book a Session
+          </a>
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+</div>

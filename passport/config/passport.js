@@ -6,6 +6,14 @@ var LocalStrategy   = require('passport-local').Strategy;
 // load up the user model
 var User            = require('../models/user');
 
+var nodemailer = require('nodemailer');
+
+var mailjet = require ('node-mailjet')
+    .connect('ec64965cdf208fb3897abc986fe6b36b', 'ed1ab3ce9f19eaa293436bd774809eb2')
+
+
+
+
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
@@ -40,7 +48,7 @@ module.exports = function(passport) {
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) {
-        //console.log(req.body);
+        console.log(req.body);
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
@@ -55,7 +63,7 @@ module.exports = function(passport) {
 
             // check to see if theres already a user with that email
             if (user) {
-                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                return done(null, false, req.flash('errMessage', 'That Email is Already Taken!'));
             } else {
 
                 // if there is no user with that email
@@ -66,15 +74,62 @@ module.exports = function(passport) {
                 newUser.email     = email;
                 newUser.password  = newUser.generateHash(password);
                 newUser.role      = req.body.role;
+                newUser.verified  = false;
                 newUser.creation_date = new Date();
                 newUser.completed = false;
                 newUser.profile.first_name = req.body.first_name;
                 newUser.profile.last_name  = req.body.last_name;
 
+                if (process.env.NODE_ENV == 'development' && process.env.AUTO_SIGNUP == 'true') {
+                  newUser.verified = true;
+                  newUser.completed = true;
+                  newUser.profile.gender = "male";
+                  newUser.profile.phone = "4166667777";
+                  newUser.profile.age = "19";
+                  newUser.profile.avg_11 = "4";
+                  newUser.profile.avg_12 = "4";
+                  newUser.profile.high_school = "Unionville High School";
+                  newUser.profile.grade = "12";
+                  newUser.profile.skills = ["President of DECA", "VP of CS Club"];
+                  newUser.profile.linkedin = "www.google.ca";
+                  newUser.profile.paragraphs = ["hi","hi","hi","hi"];
+                  newUser.profile.high_school_program= ["AP","IB"];
+                  newUser.profile.preferred_program = ["Medicine","Engineering"];
+                  newUser.profile.preferred_school = ["Waterloo","University of Toronto"];
+                  newUser.profile.gpa = "4.0";
+                  newUser.profile.curr_school = "Univerisity of Waterloo";
+                  newUser.profile.curr_major = "Software Engineering";
+                  newUser.profile.curr_minor = "Applied Health Sciences";
+                  newUser.profile.grad_year = 2021
+                }
+
                 // save the user
-                newUser.save(function(err) {
+                newUser.save(function(err, savedUser) {
                     if (err)
-                        throw err;
+                        next(err);
+
+                    var hostname = process.env.NODE_ENV === 'development' ? 'localhost:3000' : req.hostname;
+                    mailjet
+                      .post("send")
+                      .request({
+                          "FromEmail":"admin@mentormap.ca",
+                          "FromName":"MentorMap Admin",
+                          "Subject":"MentorMap - Confirm Your Email Address!",
+                          "Text-part":"",
+                          "Html-part":'<a href="http://'+hostname+'/verify?id='+savedUser._id+'">Click On This Link To Verify Your Email</a>',
+                          "Recipients":[
+                                  {
+                                    "Email": email
+                                  }
+                          ]
+                      })
+                      .then(function (response) {
+                          console.log ("Email sent to client "+savedUser._id);
+                      })
+                      .catch(function (err) {
+                          console.log (err.statusCode, err);
+                      });
+
                     return done(null, newUser);
                 });
             }
@@ -102,21 +157,58 @@ module.exports = function(passport) {
     function(req, email, password, done) { // callback with email and password from our form
         // find a user whose email is the same as the forms email
 
-        User.findOne({ 'email' :  email }, function(err, user) {
+        User.findOne({ 'email' :  email })
+          .populate('upcomingSessions')
+          .populate({
+           path: 'upcomingSessions',
+           populate: {
+             path: 'mentor',
+             model: 'User'
+           }
+          })
+          .populate({
+           path: 'upcomingSessions',
+           populate: {
+             path: 'mentee',
+             model: 'User'
+           }
+          })
+          .exec(function(err, user) {
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);
 
             // if no user is found, return the message
             if (!user)
-                return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+                return done(null, false, req.flash('errMessage', 'Email Not Found')); // req.flash is the way to set flashdata using connect-flash
 
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
-                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+                return done(null, false, req.flash('errMessage', 'Wrong Password')); // create the loginMessage and save it to session as flashdata
+                // if the user is found but the password is wrong
 
-            // all is well, return successful user
+            //if email not verified
+            if (!user.verified)
+                return done(null, false, req.flash('errMessage', 'Please Verify Your Email First!'));
+
+            //promise
+            for (var i = 0; i < user.upcomingSessions.length; i++) {
+              if (user.upcomingSessions[i].date < new Date()) {
+                user.upcomingSessions[i].mentee.upcomingSessions.splice(i, 1);
+                user.upcomingSessions[i].mentee.save();
+                user.upcomingSessions[i].mentor.upcomingSessions.splice(i, 1);
+                user.upcomingSessions[i].mentor.save();
+                user.upcomingSessions[i].remove(function(err) {
+                  if (err)
+                    console.log(err);
+                });
+              }
+
+
+            }
             return done(null, user);
+
+
         });
 
     }));

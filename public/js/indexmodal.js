@@ -2,32 +2,20 @@
 /* Authentication buttons
 ------------------------------------------------------ */
 function handleLoginClick() {
-  $("#auth-overlay").fadeIn();
+  $("#indexModal").fadeIn();
   $('#login-tab-link').click();
-  $('html, body').css({
-    overflow: 'hidden',
-    height: '100%'
-  });
 }
 
 function handleSignupClick() {
-  $("#auth-overlay").fadeIn();
+  $("#indexModal").fadeIn();
   $('#signup-tab-link').click();
-  $('html, body').css({
-    overflow: 'hidden',
-    height: '100%'
-  });
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-   if (event.target == document.getElementById('auth-overlay')) {
-       $("#auth-overlay").fadeOut();
-       $('html, body').css({
-          overflow: 'auto',
-          height: 'auto'
-        });
-   }
+   if (event.target == document.getElementById('indexModal'))
+       $("#indexModal").fadeOut();
+
 }
 
 $('.form').find('input, textarea, select').on('keyup blur focus change', function (e) {

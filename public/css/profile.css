@@ -1,9 +1,9 @@
-.tutor-buttons button {
+.tutor-buttons button,  .tutor-buttons a{
   width: 100%;
 
 }
 
 .x_content {
-  height: 40vh;
+  height: 50vh;
   overflow: auto;
 }

@@ -8,7 +8,7 @@ var passport = require('passport');
 
 // process the login form
 router.post('/login', passport.authenticate('user-login', {
-    successRedirect : '/profile', // redirect to the secure profile section
+    successRedirect : '/dashboard', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));
@@ -19,9 +19,10 @@ router.post('/login', passport.authenticate('user-login', {
 
 // process the signup form
 router.post('/signup', passport.authenticate('user-signup', {
-    successRedirect : '/register', // redirect to the secure profile section
+    successRedirect : '/auth/logout', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
+    failureFlash : true, // allow flash messages
+    successFlash: 'Welcome to MentorMap! We Have Sent You An Email With A Verification Link. You Must Verify Your Email Before Accessing Your Account.'
 }));
 
 // =====================================

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/meta', {pageTitle: 'List All Mentors'}); %>
+
+    <!-- Bootstrap -->
+    <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="vendor/select2/dist/css/select2.min.css" rel="stylesheet">
+    <!-- jQuery UI -->
+    <link href="vendor/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="vendor/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet">
+    <!-- timePicker -->
+    <link href="vendor/timepicker/timepicker.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="vendor/gentelella/css/custom.min.css" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <!-- left navigation -->
+        <%- include('./partials/left_nav', {user: user}); %>
+        <!-- /left navigation -->
+
+        <!-- top navigation -->
+        <%- include('./partials/top_nav', {user: user}); %>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Book a Mentoring Session</h3>
+              </div>
+
+              <div class="title_right">
+                  <div class="input-group pull-right">
+                    <a type="button" href="/dashboard" class="btn btn-round btn-default">Back</a>
+                  </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Fill Out This Form</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form id="booking-form" method="post" action="/booking" class="form-horizontal form-label-left" novalidate>
+                      <input type="hidden" name="session_id" value="<%= session._id %>">
+                      <input type="hidden" name="mentee_id" value="<%= mentee._id %>">
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Mentee Name <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" id="name" value="<%= mentee.profile.first_name + ' ' + mentee.profile.last_name %>" required="required" class="form-control col-md-7 col-xs-12" disabled>
+                        </div>
+                      </div>
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Session Type <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="required select2_single form-control" tabindex="-1" name="type" style="width: 100%;">
+                            <option></option>
+                            <option value='Google Hangout' <%= session.type === 'Google Hangout' ? 'selected' : ''; %> >Google Hangout</option>
+                            <option value='Skype' <%= session.type === 'Skype' ? 'selected' : ''; %> >Skype Session</option>
+                            <option value='Phone' <%= session.type === 'Phone' ? 'selected' : ''; %> >Phone Session</option>
+                            <option value='In-Person' <%= session.type === 'In-Person' ? 'selected' : ''; %> >In Person</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="item form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Purpose <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="required select2_single form-control" tabindex="-1" name="purpose" style="width: 100%;" style="width: 100%;">
+                            <option></option>
+                            <option value='General' <%= session.purpose === 'General' ? 'selected' : ''; %> >General Discussion</option>
+                            <option value='Admissions' <%= session.purpose === 'Admissions' ? 'selected' : ''; %> >Admissions Advice</option>
+                            <option value='Extracurriculars' <%= session.purpose === 'Extracurriculars' ? 'selected' : ''; %> >Extracurriculars Advice</option>
+                            <option value='Other' <%= session.purpose === 'Other' ? 'selected' : ''; %> >Other</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Scheduled Date <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="hasDatepicker" class="form-control col-md-7 col-xs-12" required type="text" name="date" >
+                        </div>
+                      </div>
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Start Time <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="timepicker1" class="form-control col-md-7 col-xs-12" name="startTime" required="required" type="text" value=<%= session.startTime; %>>
+                        </div>
+                      </div>
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">End Time <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input  id="timepicker2" class="form-control col-md-7 col-xs-12" name="endTime" required="required" type="text" value=<%= session.endTime; %>>
+                        </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                          <% if (session) { %>
+                            <button type="submit" class="btn btn-success">Update Session</button>
+                            <button id='cancel' type="button" class="btn btn-danger">Cancel Session</button>
+                          <% } else { %>
+                            <button type="submit" class="btn btn-success">Submit Booking</button>
+                            <a type='button' class="btn btn-primary" href='./..'>Back to Profiles</a>
+                          <% } %>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <%- include('./partials/footer'); %>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="vendor/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="vendor/nprogress/nprogress.js"></script>
+    <!-- Bootpag -->
+    <script src="vendor/bootpag/jquery.bootpag.min.js"></script>
+    <!-- Select2 -->
+    <script src="vendor/select2/dist/js/select2.full.min.js"></script>
+    <!-- validator -->
+    <script src="vendor/validator/validator.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="vendor/jquery-ui/jquery-ui.min.js"></script>
+    <!-- TimePicker -->
+    <script src="vendor/timepicker/timepicker.min.js"></script>
+    <!-- Moment.js -->
+    <script src="vendor/moment/moment.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="vendor/gentelella/js/custom.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+      var session_date = '<%= session.date %>';
+      if (session_date)
+        $('#hasDatepicker').val(moment(session_date).format('MM/DD/YYYY'));
+    });
+    </script>
+
+    <!-- Timepicker -->
+    <script>
+      $(document).ready(function() {
+        var timepicker = new TimePicker(["#timepicker1","#timepicker2"], {
+          theme: 'dark',
+          lang: 'en'
+        });
+        timepicker.on('change', function(evt){
+          var value = (evt.hour || '00') + ':' + (evt.minute || '00');
+          evt.element.value = value;
+        });
+
+        $( "#timepicker1 #timepicker2" ).keydown(function(e) {
+           e.preventDefault();
+           return false;
+        });
+      });
+    </script>
+    <!-- Timepicker -->
+
+    <!-- Jquery datepicker -->
+    <script>
+      $(document).ready(function() {
+        $( "#hasDatepicker" ).datepicker({
+          changeMonth: true,
+          changeYear: true,
+          showButtonPanel: true,
+          minDate: new Date(),
+          maxDate: '+3M'
+        }).keydown(function(e) {
+           e.preventDefault();
+           return false;
+        });
+      });
+    </script>
+    <!-- /jquery datepicker -->
+
+    <!-- Select2 -->
+    <script>
+      $(document).ready(function() {
+        $(".select2_single").select2({
+          placeholder: "Choose One...",
+          allowClear: true,
+          minimumResultsForSearch: -1
+        });
+      });
+    </script>
+    <!-- /Select2 -->
+
+    <!-- validator -->
+    <script>
+
+      // initialize the validator function
+      validator.message.date = 'not a real date';
+
+      // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
+      $('form')
+        .on('change', 'select.required', validator.checkField)
+        //.on('keypress', 'input[required][pattern]', validator.keypress);
+
+      $('form').submit(function(e) {
+
+        var submit = true;
+        // evaluate the form using generic validaing
+        if( !validator.checkAll( $(this) ) ){
+          submit = false;
+        }
+
+        var startTime = $("#timepicker1").val().split(':');
+        startTime = (+startTime[0]) * 60 + (+startTime[1]);
+
+        var endTime = $("#timepicker2").val().split(':');
+        endTime = (+endTime[0]) * 60 + (+endTime[1]);
+
+
+        if (startTime > endTime) {
+          validator.mark($("#timepicker1"),"Invalid Time Range!");
+          submit = false;
+        } else if (endTime - startTime < 30) {
+          validator.mark($("#timepicker1"),"Shorter Than 30 Mins!");
+          submit = false;
+        } else if (endTime - startTime > 240) {
+          validator.mark($("#timepicker1"),"Longer Than 4 Hours!");
+          submit = false;
+        }
+
+        if ( submit ) {
+          this.submit();
+        }
+        return false;
+
+      });
+
+    </script>
+    <!-- /validator -->
+
+    <!-- bind cancel button -->
+    <script>
+      $('#cancel').click(function() {
+        $.ajax({
+         type: "POST",
+         url: '/cancelBooking',
+         data: {session_id: '<%= session._id %>'}
+        })
+        .done(function () {
+          window.location.href = '/dashboard';
+        })
+        .fail(function (err) {
+          window.location.href = '/dashboard';
+        });
+      });
+    </script>
+    <!-- /bind cancel button -->
+
+  </body>
+</html>

@@ -21,7 +21,7 @@ var app = express();
 //set port
 var PORT =  process.env.PORT || 3000;
 
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,14 +44,18 @@ mongoose.connect(process.env.MONGODB_URI || devDBUrl); // connect to our databas
 require('./passport/config/passport')(passport); // pass passport for configuration
 
 // required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(session({
+   secret: 'ilovescotchscotchyscotchscotch',
+   resave: true,
+   saveUninitialized: false
+ })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 //======end passport=========================================================================================
 
 //route handlers
-app.use('/auth', require('./routes/passport.js'));
+app.use('/auth', require('./routes/authentication.js'));
 app.use('/', require('./routes/routes.js'));
 
 
@@ -65,6 +69,8 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
+  console.log(err);
+
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/meta', {pageTitle: 'Complete Registration'}); %>
+
+    <!-- Bootstrap -->
+    <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="vendor/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="vendor/select2/dist/css/select2.min.css" rel="stylesheet">
+    <!-- Dropzone.js -->
+    <link href="vendor/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="vendor/gentelella/css/custom.min.css" rel="stylesheet">
+    <link href="css/overrides.css" rel="stylesheet">
+
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+
+        <!-- left navigation -->
+        <%- include('./partials/left_nav', {user: user}); %>
+        <!-- /left navigation -->
+
+        <!-- top navigation -->
+        <%- include('./partials/top_nav', {user: user}); %>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+
+          <!-- complete profile -->
+          <div class="complete-registration">
+
+            <div class="row">
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Complete Registration<small>You must complete registration to start mentor matching</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+
+                    <!-- Smart Wizard -->
+                    <p>This wizard will walk you through the sign up process.</p>
+                    <div id="wizard" class="form_wizard wizard_horizontal">
+                      <ul class="wizard_steps">
+                        <li>
+                          <a href="#step-1">
+                            <span class="step_no">1</span>
+                            <span class="step_descr">
+                                              Step 1<br />
+                                              <small>Personal Profile</small>
+                                          </span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-2">
+                            <span class="step_no">2</span>
+                            <span class="step_descr">
+                                              Step 2<br />
+                                              <small>Academic Information</small>
+                                          </span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-3">
+                            <span class="step_no">3</span>
+                            <span class="step_descr">
+                                              Step 3<br />
+                                              <small>Additional Information</small>
+                                          </span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-4">
+                            <span class="step_no">4</span>
+                            <span class="step_descr">
+                                              Step 4<br />
+                                              <small>Terms of Service</small>
+                                          </span>
+                          </a>
+                        </li>
+                      </ul>
+                      <div id="step-1">
+                        <h2 class="StepTitle">Step 1 - Personal Profile</h2>
+                        <p>Just for our information</p>
+                        <form id="form-step-1" method="post" class="form-horizontal form-label-left" novalidate>
+
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="first-name" readonly value=<%= user.profile.first_name %> >
+                              <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="last-name" readonly value=<%= user.profile.last_name %> >
+                              <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Email
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <input id="email" type="email" name=email class="form-control col-md-7 col-xs-12 has-feedback-left" readonly value=<%= user.email %> >
+                              <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                          </div>
+
+                          <div class="item multi required form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              <select class="required select2_single form-control" tabindex="-1" name="gender" style="width: 100%;" style="width: 100%;">
+                                <option></option>
+                                <option value='male'>Male</option>
+                                <option value='female'>Female</option>
+                                <option value='other'>Other</option>
+                                <option value='na'>Prefer Not To Disclose</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Age <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <input id="age" class="form-control col-md-7 col-xs-12 has-feedback-left" required="required" type="number" data-validate-minmax="15, 28" name="age">
+                              <span class="fa fa-birthday-cake form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone Number <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <input id="phone" name="phone" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. (999) 999-9999" required="required" type="tel">
+                              <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">High School <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <input id="school" name="high_school" class="form-control col-md-7 col-xs-12 has-feedback-left" required="required" type="text" placeholder="e.g. Bayview Secondary School">
+                              <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Grade <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              <select class="required select2_single form-control" tabindex="-1" name="grade" style="width: 100%;">
+                                <option></option>
+                                <option value=9>9</option>
+                                <option value=10>10</option>
+                                <option value=11>11</option>
+                                <option value=12>12</option>
+                                <option value=13>13</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Linkedin &nbsp
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <input id="linkedin" name="linkedin" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. www.example.com" type="text">
+                              <span class="fa fa-linkedin form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                          </div>
+
+                        </form>
+
+                      </div>
+                      <div id="step-2">
+                        <h2 class="StepTitle">Step 2 - Academic Information</h2>
+                        <p>Let us get to know you better</p>
+                        <form id="form-step-2" action="/mentee-complete" method="post" class="form-horizontal form-label-left" target="_self" novalidate>
+
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Grade 11 Average <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <select class="required select2_single form-control" tabindex="-1" name="avg_11" style="width: 100%;">
+                                <option></option>
+                                <option value='4'>100%-95%</option>
+                                <option value='3'>94%-90%</option>
+                                <option value='2'>89%-85%</option>
+                                <option value='1'>84%-75%</option>
+                                <option value='0'>Below 75%</option>
+                                <option value='-1'>N/A</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Grade 12 Average <span class="required">*</span></label>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <select class="required select2_single form-control" tabindex="-1" name="avg_12" style="width: 100%;">
+                                <option></option>
+                                <option value='4'>100%-95%</option>
+                                <option value='3'>94%-90%</option>
+                                <option value='2'>89%-85%</option>
+                                <option value='1'>84%-75%</option>
+                                <option value='0'>Below 75%</option>
+                                <option value='-1'>N/A</option>
+                              </select>
+                            </div>
+                          </div>
+
+
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">You Are A Part Of <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                              <select class="required select2_multiple_4 form-control" multiple="multiple" name="high_school_program" style="width: 100%;">
+                                <option></option>
+                                <option value="AP">AP (Advanced Placement)</option>
+                                <option value="IB">IB (International Baccalaureate)</option>
+                                <option value="TOPS">TOPS (Talented Offerings for Programs in the Sciences)</option>
+                                <option value="ESL">ESL (English as a Second Language)</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Your Skills And Extracurriculars <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              <input id="tags_1" type="text" required="required" class="tags form-control" name="skills" />
+                            </div>
+                          </div>
+
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Preferred Post Secondary Institutions <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              <select class="required select2_multiple_3 form-control" multiple="multiple" name="preferred_school" style="width: 100%;">
+                                <option></option>
+                                <option value="University of Waterloo">University of Waterloo</option>
+                                <option value="University of Toronto">University of Toronto</option>
+                                <option value="University of Western Ontario">University of Western Ontario</option>
+                                <option value="University of British Columbia">University of British Columbia</option>
+                                <option value="York University">York University</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Preferred Major Fields of Study <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              <select class="required select2_multiple_2 form-control" multiple="multiple" name="preferred_program" style="width: 100%;">
+                                <option></option>
+                                <option value="Medicine and Health Sciences">Medicine and Health Sciences</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Engineering and Applied Sciences">Engineering and Applied Sciences</option>
+                                <option value="Mathematics and Physics">Mathematics and Physics</option>
+                                <option value="Accounting, Finance and Financial Mathematics">Accounting, Finance and Financial Mathematics</option>
+                                <option value="Business, Economics and Commerce">Business, Economics and Commerce</option>
+                                <option value="Arts and Humanities">Arts and Humanities</option>
+                                <option value="Natural Sciences">Natural Sciences (Biology, Chemistry, Earth and Space)</option>
+                                <option value="Political Science, Law and Societal Studies">Political Science, Law and Societal Studies</option>
+                                <option value="Social Sciences">Social Sciences (Psychology, Sociology, Nutrition Science)</option>
+                              </select>
+                            </div>
+                          </div>
+
+
+
+                        </form>
+                      </div>
+                      <div id="step-3">
+                        <h2 class="StepTitle">Step 3 Additional Information</h2>
+                        <p>Provide us with some more information to help us better match you with a suitable mentor</p>
+                        <form id="form-step-3" class="form-horizontal form-label-left" novalidate>
+
+                          <div class="item form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                              <label class="control-label" for="textarea">What are you looking for in a mentor? (min. 200 chars) <span class="required">*</span></label>
+                              <textarea id="additional-info1" data-validate-length-range="200,500" required="required" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                              <label class="control-label" for="textarea">Tell us more about your future goals. (min. 200 chars) <span class="required">*</span></label>
+                              <textarea id="additional-info2" data-validate-length-range="200,500" required="required" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                              <label class="control-label" for="textarea">What Motivated You to Look For a Mentor? (min. 200 chars) <span class="required">*</span></label>
+                              <textarea id="additional-info2" data-validate-length-range="200,500" required="required" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+                            </div>
+                          </div>
+                          <div class="item form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                              <label class="control-label" for="textarea">Feel Free to Tell Us Anything Else. </label>
+                              <textarea id="additional-info3" name="paragraphs" class="form-control col-md-7 col-xs-12"></textarea>
+                            </div>
+                          </div>
+                        </form>
+                        <!--
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <label class="control-label" for="textarea">Drop Us Your Resume If You Have One</label>
+                          <form action="form_upload.html" class="dropzone"></form>
+                        </div>
+                      -->
+                      </div>
+                      <div id="step-4">
+                        <h2 class="StepTitle">Step 4 Terms of Service</h2>
+                        <h2>The MIT License</h2>
+                        <p>Copyright 2017 MentorMap</p>
+                        <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+                          and associated documentation files (the "Software"), to deal in the Software without restriction,
+                          including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+                          and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+                          subject to the following conditions:
+                        </p>
+                        <p>The above copyright notice and this permission notice shall be included in all copies or substantial
+                          portions of the Software.</p>
+                        <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+                          LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+                          IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+                          WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+                          OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+                      </div>
+
+                    </div>
+                    <!-- End SmartWizard Content -->
+
+
+
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end complete profile -->
+
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <%- include('./partials/footer'); %>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="vendor/fastclick/lib/fastclick.js"></script>
+    <!-- iCheck -->
+    <script src="vendor/iCheck/icheck.min.js"></script>
+    <!-- Select2 -->
+    <script src="vendor/select2/dist/js/select2.full.min.js"></script>
+    <!-- Dropzone.js -->
+    <script src="vendor/dropzone/dist/min/dropzone.min.js"></script>
+    <!-- validator -->
+    <script src="vendor/validator/validator.min.js"></script>
+    <script src="vendor/validator/multifield.js"></script>
+    <!-- jQuery Smart Wizard -->
+    <script src="vendor/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+    <!-- jquery.inputmask -->
+    <script src="vendor/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- jQuery Tags Input -->
+    <script src="vendor/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="vendor/gentelella/js/custom.min.js"></script>
+
+    <!-- Select2 -->
+    <script>
+      $(document).ready(function() {
+        $(".select2_single").select2({
+          placeholder: "Choose One...",
+          allowClear: true
+        });
+        $(".select2_multiple_2").select2({
+          maximumSelectionLength: 2,
+          placeholder: "Choose up to 2",
+          allowClear: true
+        });
+        $(".select2_multiple_3").select2({
+          maximumSelectionLength: 3,
+          placeholder: "Choose up to 3",
+          allowClear: true
+        });
+        $(".select2_multiple_4").select2({
+          maximumSelectionLength: 4,
+          placeholder: "Choose up to 4",
+          allowClear: true
+        });
+      });
+    </script>
+    <!-- /Select2 -->
+
+    <!-- jquery.inputmask -->
+    <script>
+      $(document).ready(function() {
+        $(":input").inputmask();
+      });
+    </script>
+    <!-- /jquery.inputmask -->
+
+
+    <!-- validator -->
+    <script>
+
+      // initialize the validator function
+      validator.message.date = 'not a real date';
+
+      // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
+      $('form')
+        .on('blur', 'input[required], input.optional, textarea[required], select.required', validator.checkField)
+        .on('change', 'select.required', validator.checkField)
+        //.on('keypress', 'input[required][pattern]', validator.keypress);
+
+      $('#form-step-2').submit(function(e) {
+
+        e.preventDefault();
+  			var submit = true;
+  			// evaluate the form using generic validaing
+  			if( !validator.checkAll( $('form') ) ){
+  				submit = false;
+  			}
+
+  			if ( submit ) {
+          var form2SelectCount = $('#form-step-2').find("select").length;
+
+          $('#form-step-1 :input, #form-step-1 textarea, #form-step-1 select').clone().hide().appendTo('#form-step-2');
+          $('#form-step-3 :input, #form-step-3 textarea').clone().hide().appendTo('#form-step-2');
+
+          var selects = $('#form-step-1').find("select");
+
+          $(selects).each(function(i) {
+              var select = this;
+              $('#form-step-2').find("select").eq(i+form2SelectCount).val($(select).val());
+          });
+
+  				this.submit();
+        }
+  			return false;
+
+      });
+
+    </script>
+    <!-- /validator -->
+
+
+    <!-- jQuery Tags Input -->
+    <script>
+      function onAddTag(tag) {
+        alert("Added a tag: " + tag);
+      }
+
+      function onRemoveTag(tag) {
+        alert("Removed a tag: " + tag);
+      }
+
+      function onChangeTag(input, tag) {
+        alert("Changed a tag: " + tag);
+      }
+
+      $(document).ready(function() {
+        $('#tags_1').tagsInput({
+          width: '100%',
+          maxTags: 10
+        });
+      });
+    </script>
+    <!-- /jQuery Tags Input -->
+
+    <!-- jQuery Smart Wizard -->
+    <script>
+      $(document).ready(function() {
+        $('#wizard').smartWizard({
+          onLeaveStep: function() {
+            return validator.checkAll($('form'));
+          },
+          onFinish: function() {
+            $('#form-step-2').submit();
+          },
+          hideButtonsOnDisabled: true,
+          transitionEffect: 'slide',
+          labelFinish:'Accept'
+        });
+
+        $('.buttonNext').addClass('btn btn-success');
+        $('.buttonPrevious').addClass('btn btn-primary');
+        $('.buttonFinish').addClass('btn btn-default');
+      });
+    </script>
+    <!-- /jQuery Smart Wizard -->
+  </body>
+</html>
