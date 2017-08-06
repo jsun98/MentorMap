@@ -54,7 +54,7 @@ module.exports = function (passport) {
 			newUser.profile.first_name = req.body.first_name
 			newUser.profile.last_name = req.body.last_name
 
-			if (process.env.NODE_ENV === 'development' && process.env.AUTO_SIGNUP) {
+			if (process.env.NODE_ENV === 'development') {
 				newUser.verified = true
 				newUser.completed = true
 				newUser.profile.gender = 'male'
@@ -101,7 +101,7 @@ module.exports = function (passport) {
 						console.log(err.statusCode, err)
 					})
 
-				return done(null, null)
+				return done(null, savedUser)
 			})
 
 
@@ -121,21 +121,6 @@ module.exports = function (passport) {
 		passReqToCallback: true,
 	}, (req, email, password, done) => {
 		User.findOne({ email })
-			.populate('upcomingSessions')
-			.populate({
-				path: 'upcomingSessions',
-				populate: {
-					path: 'mentor',
-					model: 'User',
-				},
-			})
-			.populate({
-				path: 'upcomingSessions',
-				populate: {
-					path: 'mentee',
-					model: 'User',
-				},
-			})
 			.exec((err, user) => {
 				// if there are any errors, return the error before anything else
 				if (err)
@@ -155,6 +140,7 @@ module.exports = function (passport) {
 					return done(null, false, req.flash('errMessage', 'Please Verify Your Email First!'))
 
 				// promise
+				/*
 				for (var i = 0; i < user.upcomingSessions.length; i++)
 					if (user.upcomingSessions[i].date < new Date()) {
 						user.upcomingSessions[i].mentee.upcomingSessions.splice(i, 1)
@@ -166,6 +152,7 @@ module.exports = function (passport) {
 								console.log(err)
 						})
 					}
+					*/
 				return done(null, user)
 			})
 

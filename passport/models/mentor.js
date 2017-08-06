@@ -1,64 +1,60 @@
-// app/models/user.js
-// load the things we need
-var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
-var random = require('mongoose-random');
+const mongoose = require('mongoose'),
+	bcrypt = require('bcrypt-nodejs'),
+	sessionSchema = require('./session'),
+	random = require('mongoose-random')
 
 
 
 // define the schema for our user model
 
-var userSchema = new mongoose.Schema();
+var userSchema = new mongoose.Schema()
 
-userSchema.plugin(random, { path: 'r' });
+userSchema.plugin(random, { path: 'r' })
 
 userSchema.add({
-      email                     : String,
-      password                  : String,
-      completed                 : Boolean,
-      creation_date             : Date,
-      upcomingSessions          : [{
-                                    type: mongoose.Schema.ObjectId,
-                                    ref: 'userSchema'
-                                  }],
-      mentees                   : [{
-                                    type: mongoose.Schema.ObjectId,
-                                    ref: 'userSchema'
-                                  }],
+	email: String,
+	password: String,
+	completed: Boolean,
+	creation_date: Date,
+	upcomingSessions: [ sessionSchema ],
+	mentees: [ {
+		type: mongoose.Schema.ObjectId,
+		ref: 'userSchema',
+	} ],
 
-      profile : {
-        //common info
+	profile: {
+		// common info
 
-        gender                    : String,
-        first_name                : String,
-        last_name                 : String,
-        phone                     : String,
-        age                       : Number,
-        linkedin                  : String,
-        high_school_program       : [String],
-        skills                    : [String],
-        paragraphs                : [String],
+		gender: String,
+		first_name: String,
+		last_name: String,
+		phone: String,
+		age: Number,
+		linkedin: String,
+		high_school_program: [ String ],
+		skills: [ String ],
+		paragraphs: [ String ],
 
 
-        //mentor
-        gpa                       : Number,
-        curr_school               : String,
-        curr_major                : String,
-        curr_minor                : String,
-        grad_year                 : Number
-      }
-});
+		// mentor
+		gpa: Number,
+		curr_school: String,
+		curr_major: String,
+		curr_minor: String,
+		grad_year: Number,
+	},
+})
 
 // methods ======================
 // generating a hash
-userSchema.methods.generateHash = function(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
+userSchema.methods.generateHash = function (password) {
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
+}
 
 // checking if password is valid
-userSchema.methods.validPassword = function(password) {
-    return bcrypt.compareSync(password, this.password);
-};
+userSchema.methods.validPassword = function (password) {
+	return bcrypt.compareSync(password, this.password)
+}
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('Mentor', userSchema);
+module.exports = mongoose.model('Mentor', userSchema)

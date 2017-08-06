@@ -15,8 +15,7 @@ const
 	PORT = process.env.PORT || 3000
 
 // DEVELOPMENT VARIABLES
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-process.env.AUTO_SIGNUP = true
+process.env.NODE_ENV = 'development'
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -51,6 +50,8 @@ app.use(flash()) // use connect-flash for flash messages stored in session
 
 // route handlers
 app.use('/auth', require('./routes/authentication.js'))
+app.use('/mentee', require('./routes/mentee.js'))
+app.use('/mentor', require('./routes/mentor.js'))
 app.use('/', require('./routes/index.js'))
 
 

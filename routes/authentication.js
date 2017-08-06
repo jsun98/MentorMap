@@ -7,19 +7,28 @@ const express = require('express'),
 // =====================================
 
 router.get('/login', (req, res, next) => {
-	res.render('login', { user: req.user })
+	console.log(req.flash('error'))
+	res.render('login', {
+		user: req.user,
+		message: req.flash('error') || req.flash('success'),
+	})
 })
 
 router.post('/login', passport.authenticate('user-login', {
-	successRedirect: '/dashboard',
-	failureRedirect: '/login',
+	successRedirect: '/mentee/dashboard',
+	failureRedirect: '/auth/login',
 	failureFlash: true,
 }))
 
+router.get('/email-confirm', (req, res, next) => {
+	res.render('email-confirm')
+})
+
 router.post('/signup', passport.authenticate('user-signup', {
-	successRedirect: '/signup-success',
-	failureRedirect: '/login',
+	successRedirect: '/auth/email-confirm',
+	failureRedirect: '/auth/login',
 	failureFlash: true,
+	successFlash: true,
 }))
 
 router.get('/logout', (req, res) => {
