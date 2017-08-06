@@ -14,7 +14,9 @@ const
 	app = express(),
 	PORT = process.env.PORT || 3000
 
+// DEVELOPMENT VARIABLES
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+process.env.AUTO_SIGNUP = true
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -49,7 +51,7 @@ app.use(flash()) // use connect-flash for flash messages stored in session
 
 // route handlers
 app.use('/auth', require('./routes/authentication.js'))
-app.use('/', require('./routes/routes.js'))
+app.use('/', require('./routes/index.js'))
 
 
 
@@ -62,7 +64,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-	// console.log(err)
+	console.log(err)
 
 	// set locals, only providing error in development
 	res.locals.message = err.message

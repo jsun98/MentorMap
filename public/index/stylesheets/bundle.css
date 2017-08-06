@@ -11,6 +11,11 @@ h2 {
   font-size: 4.5rem;
 }
 
+.btn-link, .btn-link:hover, .btn-link:active, .btn-link:visited {
+  color: white;
+  text-decoration: none;
+}
+
 .bottom-break {
   padding-bottom: 35px;
 }

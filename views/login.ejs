@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/meta'); %>
+
+<body>
+
+	<div class="login-page">
+	  <div class="form">
+	    <form class="register-form" method="POST" action="/auth/signup" novalidate>
+			<h2 class="title">Create an Account</h2>
+			<input type="email" name="email" placeholder="Email" />
+			<input type="text" name="first_name" placeholder="First Name" />
+			<input type="text" name="last_name" placeholder="Last Name" />
+			<input type="password" name="password" placeholder="Password" />
+			<button type='submit'>Create My Account</button>
+			<p class="message">Already registered? <a href="#">Sign In</a></p>
+	    </form>
+	    <form class="login-form" method="POST" action="/auth/login" novalidate>
+			<h2 class="title">Sign In</h2>
+			<input type="email" name="email" placeholder="Email" />
+			<input type="password" name="password" placeholder="Password" />
+			<button type='submit'>Log In</button>
+	      	<p class="message">Not registered? <a href="#">Create an account</a></p>
+	    </form>
+	  </div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+	        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	        crossorigin="anonymous"></script>
+
+	<!-- validator -->
+	<script src="/vendor/validator/validator.min.js"></script>
+
+	<!-- validator -->
+	<script>
+
+	  // initialize the validator function
+	  validator.message.date = 'not a real date';
+
+	  // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
+	  $('form')
+		.on('blur', 'input[required], input.optional, textarea[required], select.required', validator.checkField)
+		.on('change', 'select.required', validator.checkField)
+		//.on('keypress', 'input[required][pattern]', validator.keypress);
+
+	  $('form').submit(function(e) {
+
+		e.preventDefault();
+
+		var submit = true;
+		// evaluate the form using generic validaing
+		if( !validator.checkAll( $('form') ) ){
+			submit = false;
+		}
+
+		if ( submit ) {
+			this.submit();
+		}
+		return false;
+
+	  });
+
+	</script>
+	<!-- /validator -->
+
+
+	<script>
+		$('.message a').click(function(){
+		   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+		});
+	</script>
+
+</body>
+
+</html>

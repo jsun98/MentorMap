@@ -69,22 +69,37 @@ function css () {
 		.pipe(browserSync.stream())
 }
 
+function ejs () {
+	return gulp.src('views/*.ejs')
+		.pipe(browserSync.stream())
+}
+
 // watch for changes
 gulp.task('watch', done => {
 	// gulp.watch(folder.src + 'images/**/*', images)
-	gulp.watch(folder.src + 'javascript/**/*', js)
-	gulp.watch(folder.src + 'scss/**/*', css)
+	gulp.watch([ 'views/*.ejs', 'routes/*.js' ], ejs)
+	gulp.watch(folder.src + '**/javascript/*.js', js)
+	gulp.watch(folder.src + '**/stylesheets/*.scss', css)
 	done()
 })
 
 gulp.task('serve', done => {
+	var started = false
 	nodemon({
 		script: 'app.js',
-		ignore: 'public/**/*',
+		ignore: [ 'public/**/*', 'src/**/*', 'views/*', 'views/**/*' ],
 		ext: 'js ejs scss',
 		verbose: true,
 		env: { NODE_ENV: process.env.NODE_ENV },
-	}).on('start', () => setTimeout(() => done(), 1000))
+	}).on('start', () => {
+		// to avoid nodemon being started multiple times
+		// thanks @matthisk
+		if (!started) {
+			started = true
+			setTimeout(() => done(), 1000)
+		}
+
+	})
 })
 
 gulp.task('sync-local', done => {
@@ -100,7 +115,7 @@ gulp.task('sync-local', done => {
 
 gulp.task('clean', () => del([
 	// folder.build + 'images/**/*',
-	folder.build + 'javascript/**/*',
+	folder.build + 'build/*',
 	folder.build + '**/stylesheets/**/*',
 ]))
 
