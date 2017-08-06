@@ -4,19 +4,21 @@
     <%- include('./partials/meta', {pageTitle: 'Dashboard'}); %>
 
     <!-- Bootstrap -->
-    <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- iCheck -->
-    <link href="vendor/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="/vendor/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- PNotify -->
-    <link href="vendor/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
-    <link href="vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+	<!-- FullCalendar -->
+	<link href="/vendor/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+	<link href="/vendor/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
     <!-- Custom Theme Style -->
-    <link href="vendor/gentelella/css/custom.min.css" rel="stylesheet">
-    <link href="css/profile.css" rel="stylesheet">
+    <link href="/dashboard/stylesheets/bundle.min.css" rel="stylesheet">
 
   </head>
 
@@ -25,19 +27,65 @@
       <div class="main_container">
 
         <!-- left navigation -->
-        <%- include('./partials/left_nav', {user: user}); %>
+        <%- include('./partials/mentee_left_nav', {user: user}); %>
         <!-- /left navigation -->
 
         <!-- top navigation -->
         <%- include('./partials/top_nav', {user: user}); %>
         <!-- /top navigation -->
 
-        <!-- page content -->
+		<!-- page content -->
+		<div class="right_col" role="main">
+		  <div class="">
+			<div class="page-title">
+			  <div class="title_left">
+				<h3>My Schedule <small>Any sessions you booked will show up here</small></h3>
+			  </div>
+			</div>
+
+			<div class="clearfix"></div>
+
+			<div class="row">
+			  <div class="col-md-12">
+				<div class="x_panel">
+				  <div class="x_title">
+					<h2>Calendar</h2>
+					<ul class="nav navbar-right panel_toolbox">
+					  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+					  </li>
+					  <li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+						  <li><a href="#">Settings 1</a>
+						  </li>
+						  <li><a href="#">Settings 2</a>
+						  </li>
+						</ul>
+					  </li>
+					  <li><a class="close-link"><i class="fa fa-close"></i></a>
+					  </li>
+					</ul>
+					<div class="clearfix"></div>
+				  </div>
+				  <div class="x_content">
+
+					<div id='calendar'></div>
+
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<!-- /page content -->
+
+<!--
         <div class="right_col" role="main" style="min-height: none">
 
           <div class="row">
 
-            <!-- Settings widget -->
+
+
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
@@ -70,9 +118,9 @@
                 </div>
               </div>
             </div>
-            <!-- End Settngs Widget -->
 
-            <!-- Start upcoming sessions -->
+
+
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
@@ -111,9 +159,9 @@
                 </div>
               </div>
             </div>
-            <!-- End upcoming sessions -->
 
-            <!-- Naviagations -->
+
+
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
@@ -131,13 +179,13 @@
                 </div>
               </div>
             </div>
-            <!-- End Navigations -->
+
 
 
           </div>
 
         </div>
-
+-->
         <!-- /page content -->
 
         <!-- footer content -->
@@ -146,29 +194,162 @@
       </div>
     </div>
 
+	<!-- calendar modal -->
+    <div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" id="myModalLabel">New Calendar Entry</h4>
+          </div>
+          <div class="modal-body">
+            <div id="testmodal" style="padding: 5px 20px;">
+              <form id="antoform" class="form-horizontal calender" role="form">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Title</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="title" name="title">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Description</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" style="height:55px;" id="descr" name="descr"></textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary antosubmit">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" id="myModalLabel2">Edit Calendar Entry</h4>
+          </div>
+          <div class="modal-body">
+
+            <div id="testmodal2" style="padding: 5px 20px;">
+              <form id="antoform2" class="form-horizontal calender" role="form">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Title</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="title2" name="title2">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Description</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" style="height:55px;" id="descr2" name="descr"></textarea>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary antosubmit2">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
+    <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
+    <!-- /calendar modal -->
+
     <!-- jQuery -->
-    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
-    <script src="vendor/fastclick/lib/fastclick.js"></script>
+    <script src="/vendor/fastclick/lib/fastclick.js"></script>
     <!-- iCheck -->
-    <script src="vendor/iCheck/icheck.min.js"></script>
-    <!-- gauge.js -->
-    <script src="vendor/bernii/gauge.js/dist/gauge.min.js"></script>
-    <!-- Chart.js -->
-    <script src="vendor/Chart.js/dist/Chart.min.js"></script>
+    <script src="/vendor/iCheck/icheck.min.js"></script>
+    <!-- gauge.js
+    <script src="/vendor/bernii/gauge.js/dist/gauge.min.js"></script>
+
+    <script src="/vendor/Chart.js/dist/Chart.min.js"></script>
+	-->
     <!-- jQuery Sparklines -->
-    <script src="vendor/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="/vendor/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
     <!-- PNotify -->
-    <script src="vendor/pnotify/dist/pnotify.js"></script>
-    <script src="vendor/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="vendor/pnotify/dist/pnotify.nonblock.js"></script>
+    <script src="/vendor/pnotify/dist/pnotify.js"></script>
+    <script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+	<!-- FullCalendar -->
+	<script src="/vendor/moment/min/moment.min.js"></script>
+	<script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
     <!-- Custom Theme Scripts -->
-    <script src="vendor/gentelella/js/custom.min.js"></script>
+    <script src="/vendor/gentelella/js/custom.min.js"></script>
 
 
-    <!-- gauge.js -->
+
+	<!-- FullCalendar -->
+	<script>
+	  $(window).load(function() {
+		var date = new Date(),
+			d = date.getDate(),
+			m = date.getMonth(),
+			y = date.getFullYear(),
+			started,
+			categoryClass;
+
+		var calendar = $('#calendar').fullCalendar({
+		  header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		  },
+		  selectable: false,
+		  selectHelper: false,
+		  editable: false,
+		  /*
+		  events: [{
+				title: 'All Day Event',
+				start: new Date(y, m, 1)
+			  }, {
+				title: 'Long Event',
+				start: new Date(y, m, d - 5),
+				end: new Date(y, m, d - 2)
+			  }, {
+				title: 'Meeting',
+				start: new Date(y, m, d, 10, 30),
+				allDay: false
+			  }, {
+				title: 'Lunch',
+				start: new Date(y, m, d + 14, 12, 0),
+				end: new Date(y, m, d, 14, 0),
+				allDay: false
+			  }, {
+				title: 'Birthday Party',
+				start: new Date(y, m, d + 1, 19, 0),
+				end: new Date(y, m, d + 1, 22, 30),
+				allDay: false
+			  }, {
+				title: 'Click for Google',
+				start: new Date(y, m, 28),
+				end: new Date(y, m, 29),
+				url: 'http://google.com/'
+		  }]
+		  */
+		});
+	  });
+	</script>
+	<!-- /FullCalendar -->
+
+
+    <!--
     <script>
       var opts = {
           lines: 12,
@@ -193,9 +374,9 @@
       gauge.set(85);
       gauge.setTextField(document.getElementById("gauge-text"));
     </script>
-    <!-- /gauge.js -->
 
-    <!-- Chart2.js -->
+
+
     <script>
       var ctx = document.getElementById("canvasRadar");
       if (ctx) {
@@ -228,7 +409,7 @@
         });
       }
     </script>
-    <!-- End Chart2.js -->
+ 	-->
 
     <!-- jQuery Sparklines -->
     <script>
@@ -257,32 +438,6 @@
       });
     </script>
     <!-- /jQuery Sparklines -->
-
-    <% if (successMsg) { %>
-      <script>
-      $(function(){
-        new PNotify({
-          title: 'Success!',
-          text: '<%= successMsg %>',
-          type: 'success',
-          styling: "bootstrap3"
-        });
-      });
-      </script>
-    <% } %>
-
-    <% if (infoMsg) { %>
-      <script>
-      $(function(){
-        new PNotify({
-          title: 'Info',
-          text: '<%= infoMsg %>',
-          type: 'warning',
-          styling: "bootstrap3"
-        });
-      });
-      </script>
-    <% } %>
 
   </body>
 </html>
