@@ -14,11 +14,22 @@ router.get('/login', (req, res, next) => {
 	})
 })
 
-router.post('/login', passport.authenticate('user-login', {
-	successRedirect: '/mentee/dashboard',
-	failureRedirect: '/auth/login',
-	failureFlash: true,
-}))
+router.post('/login', (req, res, next) => {
+	passport.authenticate('user-login', (err, user, info) => {
+		if (err) return next(err)
+		if (!user) {
+			req.flash('error', info)
+			return res.redirect('/auth/login')
+		}
+		req.logIn(user, err => {
+			if (err) return next(err)
+			if (user.role === 'mentor')
+				return res.redirect('/mentor/dashboard')
+			return res.redirect('/mentee/dashboard')
+
+		})
+	})(req, res, next)
+})
 
 router.get('/email-confirm', (req, res, next) => {
 	res.render('index/email-confirm')

@@ -14,11 +14,9 @@ router.use('*', isRegCompleted)
 
 router.get('/dashboard', (req, res, next) => {
 	User.findById(req.user._id)
-		.sort({ 'upcomingSessions.date': -1 })
 		.exec((err, user) => {
 			if (err)
 				next(err)
-			user.upcomingSessions.sort((a, b) => new Date(a.date) - new Date(b.date))
 			res.render('mentee/dashboard', { user })
 
 			// res.render('mentor_dashboard', {
@@ -84,7 +82,10 @@ router.get('/mentor-details/:id', (req, res, next) => {
 router.get('/mentor-availability/:id', (req, res, next) => {
 	User.findById(req.params.id, (err, mentor) => {
 		if (err) next(err)
-		res.render('mentee/mentor_availability', { user: req.user })
+		res.render('mentee/mentor_availability', {
+			user: req.user,
+			mentor,
+		})
 	})
 })
 
