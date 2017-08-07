@@ -8,7 +8,7 @@ const express = require('express'),
 
 router.get('/login', (req, res, next) => {
 	console.log(req.flash('error'))
-	res.render('login', {
+	res.render('index/login', {
 		user: req.user,
 		message: req.flash('error') || req.flash('success'),
 	})
@@ -21,7 +21,7 @@ router.post('/login', passport.authenticate('user-login', {
 }))
 
 router.get('/email-confirm', (req, res, next) => {
-	res.render('email-confirm')
+	res.render('index/email-confirm')
 })
 
 router.post('/signup', passport.authenticate('user-signup', {

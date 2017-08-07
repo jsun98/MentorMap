@@ -47,7 +47,7 @@ module.exports = function (passport) {
 
 			newUser.email = email
 			newUser.password = newUser.generateHash(password)
-			newUser.role = 'mentee'
+			newUser.role = 'mentor'
 			newUser.verified = false
 			newUser.creation_date = new Date()
 			newUser.completed = false

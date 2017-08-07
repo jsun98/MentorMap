@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('./partials/meta', {pageTitle: 'View Mentor Detail'}); %>
+    <%- include('../partials/meta', {pageTitle: 'View Mentor Detail'}); %>
 
     <!-- Bootstrap -->
-    <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- PNotify -->
-    <link href="vendor/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
-    <link href="vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
     <!-- Custom Theme Style -->
-    <link href="vendor/gentelella/css/custom.min.css" rel="stylesheet">
+    <link href="/vendor/gentelella/css/custom.min.css" rel="stylesheet">
   </head>
 
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
         <!-- left navigation -->
-        <%- include('./partials/left_nav', {user: user}); %>
+        <%- include('../partials/left_nav', {user: user}); %>
         <!-- /left navigation -->
 
         <!-- top navigation -->
-        <%- include('./partials/top_nav', {user: user}); %>
+        <%- include('../partials/top_nav', {user: user}); %>
         <!-- /top navigation -->
 
         <!-- page content -->
@@ -56,7 +56,7 @@
                         <!-- end of image cropping -->
                         <div id="crop-avatar">
                           <!-- Current avatar -->
-                          <img class="img-responsive avatar-view" src="images/picture.jpg" alt="Avatar" title="Change the avatar">
+                          <img class="img-responsive avatar-view" src="/base/images/picture.jpg" alt="Avatar" title="Change the avatar">
 
                           <!-- Cropping modal -->
                           <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
@@ -272,40 +272,40 @@
         <!-- /page content -->
 
         <!-- footer content -->
-        <%- include('./partials/footer'); %>
+        <%- include('../partials/footer'); %>
         <!-- /footer content -->
       </div>
     </div>
 
     <!-- jQuery -->
-    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
-    <script src="vendor/fastclick/lib/fastclick.js"></script>
+    <script src="/vendor/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
-    <script src="vendor/nprogress/nprogress.js"></script>
+    <script src="/vendor/nprogress/nprogress.js"></script>
     <!-- morris.js -->
-    <script src="vendor/raphael/raphael.min.js"></script>
-    <script src="vendor/morris.js/morris.min.js"></script>
+    <script src="/vendor/raphael/raphael.min.js"></script>
+    <script src="/vendor/morris.js/morris.min.js"></script>
     <!-- bootstrap-progressbar -->
-    <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- bootstrap-daterangepicker -->
-    <script src="vendor/moment/moment.min.js"></script>
-    <script src="vendor/datepicker/daterangepicker.js"></script>
+    <script src="/vendor/moment/moment.min.js"></script>
+    <script src="/vendor/datepicker/daterangepicker.js"></script>
     <!-- PNotify -->
-    <script src="vendor/pnotify/dist/pnotify.js"></script>
-    <script src="vendor/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="vendor/pnotify/dist/pnotify.nonblock.js"></script>
+    <script src="/vendor/pnotify/dist/pnotify.js"></script>
+    <script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="vendor/gentelella/js/custom.min.js"></script>
+    <script src="/vendor/gentelella/js/custom.min.js"></script>
 
     <!-- bind buttons -->
     <script>
       $(document).ready(function() {
         $('#btn-choose-mentor').click(function() {
-          $.post("/choose-mentor", {mentor_id: '<%= mentor._id %>'})
+          $.post("/mentee/choose-mentor", {mentor_id: '<%= mentor._id %>'})
           .done(function (res) {
             new PNotify({
               title: 'Mentor Chosen!',
@@ -316,7 +316,7 @@
             $("#chooseMentor").hide();
             $('#btn-close-modal').click();
             setTimeout(function () {
-              window.location.href = "/dashboard";
+              window.location.href = "/mentee/dashboard";
             }, 2000);
           })
           .fail(function () {
@@ -327,12 +327,12 @@
               styling: "bootstrap3"
             });
             setTimeout(function () {
-              window.location.href = "/dashboard";
+              window.location.href = "/mentee/dashboard";
             }, 2000);
           });
         });
         $('#btn-cancel-mentor').click(function() {
-          $.post("/cancel-mentor", {mentor_id: '<%= mentor._id %>'})
+          $.post("/mentee/cancel-mentor", {mentor_id: '<%= mentor._id %>'})
           .done(function (res) {
             new PNotify({
               title: 'Mentorship Cancelled!',
@@ -343,7 +343,7 @@
             $("#cancelMentor").hide();
             $('#btn-close-modal').click();
             setTimeout(function () {
-              window.location.href = "/dashboard";
+              window.location.href = "/mentee/dashboard";
             }, 2000);
           })
           .fail(function () {
@@ -354,7 +354,7 @@
               styling: "bootstrap3"
             });
             setTimeout(function () {
-              window.location.href = "/dashboard";
+              window.location.href = "/mentee/dashboard";
             }, 2000);
           });
         });

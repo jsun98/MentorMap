@@ -214,13 +214,6 @@ router.post('/availability', isLoggedIn, isRegCompleted, isMentorOnly, function(
 */
 
 // =====================================
-// Inbox Page  =====================
-// =====================================
-router.get('/inbox', isLoggedIn, isRegCompleted, (req, res, next) => {
-	res.render('inbox', { user: req.user })
-})
-
-// =====================================
 // Session Booking Page  =====================
 // =====================================
 router.get('/booking', isLoggedIn, isRegCompleted, isMentorOnly, (req, res, next) => {
@@ -383,43 +376,13 @@ router.get('/mymentees', isLoggedIn, isRegCompleted, isMentorOnly, (req, res, ne
 // =====================================
 // List all the mentees's current mentor =====================
 // =====================================
-router.get('/mymentors', isLoggedIn, isRegCompleted, isMenteeOnly, (req, res, next) => {
-	User.findById(req.user._id)
-		.populate('mentors')
-		.exec((err, user) => {
-			if (err)
-				next(err)
-			res.render('profile_list', {
-				user: req.user,
-				profiles: user.mentors,
-				title: 'My Mentors',
-			})
-		})
-})
+
 
 // =====================================
 // Mentor list page =====================
 // =====================================
 
-router.get('/mentor-list', isLoggedIn, isRegCompleted, (req, res, next) => {
 
-	User.findRandom({
-		role: 'mentor',
-		completed: true,
-		mentees: { $ne: req.user._id },
-	}, (err, profiles) => {
-		if (err)
-			next(err)
-		else
-			res.render('profile_list', {
-				user: req.user,
-				profiles,
-				title: 'We Selected Some Mentors For You',
-			})
-
-	}).limit(5)
-
-})
 
 // =====================================
 // Mentor profile details  =====================
@@ -430,7 +393,7 @@ router.get('/mentor-details', isLoggedIn, isRegCompleted, (req, res, next) => {
 	User.findById(req.query.id, (err, mentor) => {
 		if (err)
 			next(err)
-		if (mentor.mentees.indexOf(req.user._id) != -1)
+		if (mentor.mentees.indexOf(req.user._id) !== -1)
 			res.render('mentor_profile_details', {
 				user: req.user,
 				mentor,
@@ -446,43 +409,7 @@ router.get('/mentor-details', isLoggedIn, isRegCompleted, (req, res, next) => {
 	})
 })
 
-// Mentees choose mentor
-router.post('/choose-mentor', isLoggedIn, isRegCompleted, isMenteeOnly, (req, res, next) => {
 
-	// might wanna change this to promise
-	User.update({ _id: req.body.mentor_id }, { $addToSet: { mentees: req.user._id } }, err => {
-		if (err)
-			next(err)
-		else
-			User.update({ _id: req.user._id }, { $addToSet: { mentors: req.body.mentor_id } }, err => {
-				if (err)
-					next(err)
-				else
-					res.send('You Have Successfully Chosen Your Mentor!')
-			})
-
-	})
-
-})
-
-// Mentees cancels mentorship
-router.post('/cancel-mentor', isLoggedIn, isRegCompleted, isMenteeOnly, (req, res, next) => {
-
-	// might wanna change this to promise
-	User.update({ _id: req.body.mentor_id }, { $pull: { mentees: req.user._id } }, err => {
-		if (err)
-			next(err)
-		else
-			User.update({ _id: req.user._id }, { $pull: { mentors: req.body.mentor_id } }, err => {
-				if (err)
-					next(err)
-				else
-					res.send('You Have Successfully Cancelled This Mentorship!')
-			})
-
-	})
-
-})
 
 function isMentorOnly (req, res, next) {
 	if (req.user.role === 'mentor')

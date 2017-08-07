@@ -9,7 +9,7 @@
   <!-- menu profile quick info -->
   <div class="profile">
     <div class="profile_pic">
-      <img src="/common/images/user.png" alt="..." class="img-circle profile_img">
+      <img src="/base/images/user.png" alt="..." class="img-circle profile_img">
     </div>
     <div class="profile_info">
       <span>Welcome,</span>
@@ -32,12 +32,14 @@
     <div class="menu_section">
       <h3>Menu</h3>
       <ul class="nav side-menu">
-		<li><a><i class="fa fa-sitemap"></i> My Dashboard <span class="fa"></span></a></li>
-        <li><a><i class="fa fa-sitemap"></i> View My Mentors <span class="fa"></span></a></li>
-        <li><a><i class="fa fa-sitemap"></i> Choose A Mentor <span class="fa"></span></a></li>
-		<li><a><i class="fa fa-sitemap"></i> Request A Session <span class="fa"></span></a></li>
+		 <% if (user.role === 'mentee' && user.completed) { %>
+		<li><a href='/mentee/dashboard'><i class="fa fa-sitemap"></i> My Dashboard <span class="fa"></span></a></li>
+        <li><a href="/mentee/mymentors"><i class="fa fa-sitemap"></i> View My Mentors /<br>Request A Session <span class="fa"></span></a></li>
+        <li><a href="/mentee/mentor-list"><i class="fa fa-sitemap"></i> Find A New Mentor <span class="fa"></span></a></li>
         <li><a><i class="fa fa-sitemap"></i> Pricing <span class="fa"></span></a></li>
+		<li><a><i class="fa fa-sitemap"></i> Leave Us A Review <span class="fa"></span></a></li>
         <li><a><i class="fa fa-sitemap"></i> Help <span class="fa"></span></a></li>
+		<% } %>
       </ul>
     </div>
 
