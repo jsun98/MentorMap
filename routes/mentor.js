@@ -16,6 +16,20 @@ router.use('*', isRegCompleted)
 router.get('/dashboard', (req, res, next) => {
 	User.findById(req.user._id)
 		.populate('upcomingSessions')
+		.populate({
+			path: 'upcomingSessions',
+			populate: {
+				path: 'mentor',
+				model: 'User',
+			},
+		})
+		.populate({
+			path: 'upcomingSessions',
+			populate: {
+				path: 'mentee',
+				model: 'User',
+			},
+		})
 		.exec((err, user) => {
 			if (err)
 				next(err)
@@ -37,7 +51,7 @@ router.post('/availability', (req, res, next) => {
 	newSession.start = req.body.start
 	newSession.end = req.body.end
 	newSession.mentor = req.user._id
-	newSession.title = req.body.title
+	newSession.type = req.body.type
 	newSession.save()
 		.then(savedSession => {
 			User.findByIdAndUpdate(req.user._id, { $addToSet: { upcomingSessions: savedSession._id } })

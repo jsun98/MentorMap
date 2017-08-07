@@ -1,384 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('../partials/meta', {pageTitle: 'Dashboard'}); %>
+<head>
+	<%- include('../partials/meta', {pageTitle: 'Dashboard'}); %>
 
-    <!-- Bootstrap -->
-    <link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="/vendor/iCheck/skins/flat/green.css" rel="stylesheet">
-    <!-- PNotify -->
-    <link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
-    <link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+	<!-- Bootstrap -->
+	<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<!-- iCheck -->
+	<link href="/vendor/iCheck/skins/flat/green.css" rel="stylesheet">
+	<!-- PNotify -->
+	<link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
 	<!-- FullCalendar -->
 	<link href="/vendor/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
 	<link href="/vendor/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
-    <!-- Custom Theme Style -->
-    <link href="/base/stylesheets/bundle.min.css" rel="stylesheet">
+	<!-- Custom Theme Style -->
+	<link href="/base/stylesheets/bundle.min.css" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body class="nav-md">
-    <div class="container body">
-      <div class="main_container">
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
 
-        <!-- left navigation -->
-        <%- include('../partials/left_nav', {user: user}); %>
-        <!-- /left navigation -->
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
 
-        <!-- top navigation -->
-        <%- include('../partials/top_nav', {user: user}); %>
-        <!-- /top navigation -->
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
 
-		<!-- page content -->
-		<div class="right_col" role="main">
-		  <div class="">
-			<div class="page-title">
-			  <div class="title_left">
-				<h3>See My Mentor's Availability <small>Click On Any Available Time Slot to Request A Session With the Mentor</small></h3>
-			  </div>
-			</div>
+			<!-- page content -->
+			<div class="right_col" role="main">
+				<div class="">
+					<div class="page-title">
+						<div class="title_left" style="width: 100%;">
+							<h3>See My Mentor's Availability <small>Click On Any Available Time Slot to Request A Session With the Mentor</small></h3>
+						</div>
+					</div>
 
-			<div class="clearfix"></div>
-
-			<div class="row">
-			  <div class="col-md-12">
-				<div class="x_panel">
-				  <div class="x_title">
-					<h2>Schedule</h2>
-					<ul class="nav navbar-right panel_toolbox">
-					  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-					  </li>
-					  <li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-						<ul class="dropdown-menu" role="menu">
-						  <li><a href="#">Settings 1</a>
-						  </li>
-						  <li><a href="#">Settings 2</a>
-						  </li>
-						</ul>
-					  </li>
-					  <li><a class="close-link"><i class="fa fa-close"></i></a>
-					  </li>
-					</ul>
 					<div class="clearfix"></div>
-				  </div>
-				  <div class="x_content">
 
-					<div id='calendar'></div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="x_panel">
+								<div class="x_title">
+									<h2><%= mentor.profile.first_name + " " + mentor.profile.last_name %>'s availability </h2>
+									<ul class="nav navbar-right panel_toolbox">
+										<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+										</li>
+										<li class="dropdown">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="#">Settings 1</a>
+												</li>
+												<li><a href="#">Settings 2</a>
+												</li>
+											</ul>
+										</li>
+										<li><a class="close-link"><i class="fa fa-close"></i></a>
+										</li>
+									</ul>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
 
-				  </div>
+									<div id='calendar'></div>
+
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-			  </div>
 			</div>
-		  </div>
+			<!-- /page content -->
+
+			<!-- footer content -->
+			<%- include('../partials/footer'); %>
+			<!-- /footer content -->
 		</div>
-		<!-- /page content -->
+	</div>
+
+	<div id="CalenderModalEventDetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close close2" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title" id="myModalLabel2">Session Details</h4>
+				</div>
+				<div class="modal-body">
+
+					<div id="testmodal2" style="padding: 5px 20px;">
+						<form id="antoform2" class="form-horizontal calender" role="form">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Start</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="start" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">End</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="end" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Mentor</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="mentor" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Mentee</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="mentee" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Zoom Link</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="zoom" disabled>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
+					<button type="button" id='choose' class="btn btn-success antoupdate" style="margin: 0;">Choose This Slot</button>
+					<button type="button" id='cancel' class="btn btn-danger antoupdate" style="margin: 0;">Cancel Appointment</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="event_details" data-toggle="modal" data-target="#CalenderModalEventDetails"></div>
+	<!-- /calendar modal -->
+
+	<!-- jQuery -->
+	<script src="/vendor/jquery/dist/jquery.min.js"></script>
+	<!-- Bootstrap -->
+	<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+	<!-- FastClick -->
+	<script src="/vendor/fastclick/lib/fastclick.js"></script>
+	<!-- iCheck -->
+	<script src="/vendor/iCheck/icheck.min.js"></script>
+	<!-- gauge.js
+	<script src="/vendor/bernii/gauge.js/dist/gauge.min.js"></script>
+
+	<script src="/vendor/Chart.js/dist/Chart.min.js"></script>
+-->
+<!-- jQuery Sparklines -->
+<script src="/vendor/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- PNotify -->
+<script src="/vendor/pnotify/dist/pnotify.js"></script>
+<script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
+<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+<!-- FullCalendar -->
+<script src="/vendor/moment/min/moment.min.js"></script>
+<script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="/vendor/gentelella/js/custom.min.js"></script>
+
+
+
+<!-- FullCalendar -->
+<script>
+$(window).load(function() {
+	var mentor = <%- JSON.stringify(mentor) %>
+	var user = <%- JSON.stringify(user) %>
+
+	var calendar = $('#calendar').fullCalendar({
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		},
+		defaultView: 'agendaWeek',
+		selectable: true,
+		selectHelper: false,
+		eventClick: function(calEvent, jsEvent, view) {
+			console.log(calEvent)
+			if (calEvent.type === 'expired' || (calEvent.type === 'taken' && calEvent.mentee._id !== user._id))
+			return false;
+
+			$('#event_details').click();
+			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
+			$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
+
+			if (calEvent.type === 'taken') {
+				$("#choose").hide()
+				$("#cancel").off().on("click", function() {
+					$.post( "/mentee/cancel-time-slot", { session_id: calEvent._id } )
+					.done((res) => {
+						new PNotify({
+							title: 'Cancelled',
+							text: 'Your Session Has Been Canceled',
+							type: 'warning',
+							styling: "bootstrap3"
+						});
+						$('.close').click();
+						calendar.fullCalendar('refetchEvents')
+					})
+				}).show();
+			} else {
+				$("#cancel").hide()
+				$("#choose").off().on("click", function() {
+					$.post( "/mentee/pick-time-slot", { session_id: calEvent._id } )
+					.done((res) => {
+						new PNotify({
+							title: 'Success',
+							text: 'Your Session Has Been Confirmed!',
+							type: 'success',
+							styling: "bootstrap3"
+						});
+						$('.close').click();
+						calendar.fullCalendar('refetchEvents')
+					})
+				}).show();
+			}
+
+			calendar.fullCalendar('unselect');
+
+		},
+		editable: false,
+		events:	{
+			url: '/db/sessions',
+			type: 'GET',
+			data: {
+				userId: mentor._id
+			},
+		}
+	});
+});
+</script>
+<!-- /FullCalendar -->
+
 
 <!--
-        <div class="right_col" role="main" style="min-height: none">
+<script>
+var opts = {
+lines: 12,
+angle: 0,
+lineWidth: 0.4,
+pointer: {
+length: 0.75,
+strokeWidth: 0.042,
+color: '#1D212A'
+},
+limitMax: 'false',
+colorStart: '#1ABC9C',
+colorStop: '#1ABC9C',
+strokeColor: '#F0F3F3',
+generateGradient: true
+};
+var target = document.getElementById('foo'),
+gauge = new Gauge(target).setOptions(opts);
 
-          <div class="row">
-
-
-
-            <div class="col-md-4 col-sm-4 col-xs-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>My Profile</h2>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                  <div class="dashboard-widget-content">
-                    <ul class="quick-list">
-                      <li><i class="fa fa-calendar-o"></i><a href="#">Account Settings</a>
-                      </li>
-                      <li><i class="fa fa-calendar-o"></i><a href="#">View/Edit My Profile</a>
-                      </li>
-                      <li><i class="fa fa-calendar-o"></i><a href="#">My Payments</a>
-                      </li>
-                      <li><i class="fa fa-area-chart"></i><a href="#">Logout</a>
-                      </li>
-                    </ul>
-
-                    <div class="sidebar-widget">
-                      <h4>Profile Completion</h4>
-                      <canvas width="150" height="80" id="foo" class="" style="width: 160px; height: 100px;"></canvas>
-                      <div class="goal-wrapper">
-                        <span id="gauge-text" class="gauge-value pull-left">0</span>
-                        <span class="gauge-value pull-left">%</span>
-                        <span id="goal-text" class="goal-value pull-right">100%</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+gauge.maxValue = 100;
+gauge.animationSpeed = 32;
+gauge.set(85);
+gauge.setTextField(document.getElementById("gauge-text"));
+</script>
 
 
 
-            <div class="col-md-4 col-sm-4 col-xs-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>Upcoming Sessions<small>You have <%= user.upcomingSessions.length %> Sessions</small></h2>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                  <div class="dashboard-widget-content">
+<script>
+var ctx = document.getElementById("canvasRadar");
+if (ctx) {
+var data = {
+labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+datasets: [{
+label: "My First dataset",
+backgroundColor: "rgba(3, 88, 106, 0.2)",
+borderColor: "rgba(3, 88, 106, 0.80)",
+pointBorderColor: "rgba(3, 88, 106, 0.80)",
+pointBackgroundColor: "rgba(3, 88, 106, 0.80)",
+pointHoverBackgroundColor: "#fff",
+pointHoverBorderColor: "rgba(220,220,220,1)",
+data: [65, 59, 90, 81, 56, 55, 40]
+}, {
+label: "My Second dataset",
+backgroundColor: "rgba(38, 185, 154, 0.2)",
+borderColor: "rgba(38, 185, 154, 0.85)",
+pointColor: "rgba(38, 185, 154, 0.85)",
+pointStrokeColor: "#fff",
+pointHighlightFill: "#fff",
+pointHighlightStroke: "rgba(151,187,205,1)",
+data: [28, 48, 40, 19, 96, 27, 100]
+}]
+};
 
-                    <ul class="list-unstyled timeline widget">
-                      <% for (var i = 0; i < user.upcomingSessions.length; i++) { %>
-                      <li>
-                        <div class="block">
-                          <div class="block_content">
-                            <h2 class="title">
-                                <%= user.upcomingSessions[i].type %> Session - <%= user.upcomingSessions[i].purpose %>
-                            </h2>
-                            <div class="byline">
-                                Mentor: <a href='/mentor-details?id=<%= user.upcomingSessions[i].mentor._id %>'><%= user.upcomingSessions[i].mentor.profile.first_name + ' ' + user.upcomingSessions[i].mentor.profile.last_name %></a>
-                            </div>
-                            <p class="excerpt">
-                              Date: <%= user.upcomingSessions[i].date.toDateString() %>
-                            </p>
-                            <p class="excerpt">
-                              Start Time: <%= user.upcomingSessions[i].startTime %>
-                            </p>
-                            <p class="excerpt">
-                              End Time: <%= user.upcomingSessions[i].endTime %>
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                      <% } %>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-            <div class="col-md-4 col-sm-4 col-xs-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>Navigation</h2>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-
-                  <div class="tutor-buttons">
-                    <a type="button" href="/mentor-list" class="btn btn-success btn-lg" id="btn-listmentors">Choose A Mentor</a>
-                    <a type="button" href="/mymentors" class="btn btn-info btn-lg" id="btn-mymentors">See My Mentors</a>
-                    <button type="button" class="btn btn-primary btn-lg" disabled>Leave a Review</button>
-                    <button type="button" class="btn btn-dark btn-lg" disabled>Help</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-          </div>
-
-        </div>
+var canvasRadar = new Chart(ctx, {
+type: 'radar',
+data: data,
+});
+}
+</script>
 -->
-        <!-- /page content -->
 
-        <!-- footer content -->
-        <%- include('../partials/footer'); %>
-        <!-- /footer content -->
-      </div>
-    </div>
-
-	<!-- calendar modal -->
-    <div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h4 class="modal-title" id="myModalLabel2">Confirm Time Slot Choice</h4>
-          </div>
-          <div class="modal-body">
-
-            <div id="testmodal2" style="padding: 5px 20px;">
-				<p>Are you sure you want to choose this time slot?</p>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger antoclose2" data-dismiss="modal" style="margin: 0;">Cancel</button>
-            <button type="button" class="btn btn-success antosubmit2">Confirm</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
-    <!-- /calendar modal -->
-
-    <!-- jQuery -->
-    <script src="/vendor/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="/vendor/fastclick/lib/fastclick.js"></script>
-    <!-- iCheck -->
-    <script src="/vendor/iCheck/icheck.min.js"></script>
-    <!-- gauge.js
-    <script src="/vendor/bernii/gauge.js/dist/gauge.min.js"></script>
-
-    <script src="/vendor/Chart.js/dist/Chart.min.js"></script>
-	-->
-    <!-- jQuery Sparklines -->
-    <script src="/vendor/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-    <!-- PNotify -->
-    <script src="/vendor/pnotify/dist/pnotify.js"></script>
-    <script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
-	<!-- FullCalendar -->
-	<script src="/vendor/moment/min/moment.min.js"></script>
-	<script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
-    <!-- Custom Theme Scripts -->
-    <script src="/vendor/gentelella/js/custom.min.js"></script>
-
-
-
-	<!-- FullCalendar -->
-    <script>
-      $(window).load(function() {
-        var date = new Date(),
-            d = date.getDate(),
-            m = date.getMonth(),
-            y = date.getFullYear(),
-            started,
-            categoryClass;
-
-        var calendar = $('#calendar').fullCalendar({
-          header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-          },
-          selectable: true,
-          selectHelper: false,
-          eventClick: function(calEvent, jsEvent, view) {
-			  $('#fc_edit').click();
-              $(".antosubmit2").on("click", function() {
-				  $.post( "/mentee/pick-time-slot", { mentee_id: <%= user._id %>, session_id: calEvent.id } )
-				  .done(() => {
-					  new PNotify({
-						title: 'Success',
-						text: 'Your Session Has Been Confirmed!',
-						type: 'success',
-						styling: "bootstrap3"
-					  });
-					  $('.antoclose2').click();
-				  })
-                //calendar.fullCalendar('updateEvent', calEvent);
-              });
-
-              calendar.fullCalendar('unselect');
-
-          },
-          editable: false,
-          events: [{
-            title: 'All Day Event',
-            start: new Date(y, m, 1)
-          }, {
-            title: 'Long Event',
-            start: new Date(y, m, d - 5),
-            end: new Date(y, m, d - 2)
-          }, {
-            title: 'Meeting',
-            start: new Date(y, m, d, 10, 30),
-            allDay: false
-          }, {
-            title: 'Lunch',
-            start: new Date(y, m, d + 14, 12, 0),
-            end: new Date(y, m, d, 14, 0),
-            allDay: false
-          }, {
-            title: 'Birthday Party',
-            start: new Date(y, m, d + 1, 19, 0),
-            end: new Date(y, m, d + 1, 22, 30),
-            allDay: false
-          }, {
-            title: 'Click for Google',
-            start: new Date(y, m, 28),
-            end: new Date(y, m, 29),
-            url: 'http://google.com/'
-          }]
-        });
-      });
-    </script>
-    <!-- /FullCalendar -->
-
-
-    <!--
-    <script>
-      var opts = {
-          lines: 12,
-          angle: 0,
-          lineWidth: 0.4,
-          pointer: {
-              length: 0.75,
-              strokeWidth: 0.042,
-              color: '#1D212A'
-          },
-          limitMax: 'false',
-          colorStart: '#1ABC9C',
-          colorStop: '#1ABC9C',
-          strokeColor: '#F0F3F3',
-          generateGradient: true
-      };
-      var target = document.getElementById('foo'),
-          gauge = new Gauge(target).setOptions(opts);
-
-      gauge.maxValue = 100;
-      gauge.animationSpeed = 32;
-      gauge.set(85);
-      gauge.setTextField(document.getElementById("gauge-text"));
-    </script>
-
-
-
-    <script>
-      var ctx = document.getElementById("canvasRadar");
-      if (ctx) {
-        var data = {
-          labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
-          datasets: [{
-            label: "My First dataset",
-            backgroundColor: "rgba(3, 88, 106, 0.2)",
-            borderColor: "rgba(3, 88, 106, 0.80)",
-            pointBorderColor: "rgba(3, 88, 106, 0.80)",
-            pointBackgroundColor: "rgba(3, 88, 106, 0.80)",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            data: [65, 59, 90, 81, 56, 55, 40]
-          }, {
-            label: "My Second dataset",
-            backgroundColor: "rgba(38, 185, 154, 0.2)",
-            borderColor: "rgba(38, 185, 154, 0.85)",
-            pointColor: "rgba(38, 185, 154, 0.85)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: [28, 48, 40, 19, 96, 27, 100]
-          }]
-        };
-
-        var canvasRadar = new Chart(ctx, {
-          type: 'radar',
-          data: data,
-        });
-      }
-    </script>
- 	-->
-
-  </body>
+</body>
 </html>

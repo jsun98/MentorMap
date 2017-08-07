@@ -1,6 +1,7 @@
 const express = require('express'),
 	router = express.Router(),
-	User = require('../passport/models/user')
+	User = require('../passport/models/user'),
+	Session = require('../passport/models/session')
 
 router.use('*', isLoggedIn, isEmailVerified)
 
@@ -14,6 +15,7 @@ router.use('*', isRegCompleted)
 
 router.get('/dashboard', (req, res, next) => {
 	User.findById(req.user._id)
+		.populate('upcomingSessions')
 		.exec((err, user) => {
 			if (err)
 				next(err)
@@ -80,13 +82,37 @@ router.get('/mentor-details/:id', (req, res, next) => {
 })
 
 router.get('/mentor-availability/:id', (req, res, next) => {
-	User.findById(req.params.id, (err, mentor) => {
-		if (err) next(err)
-		res.render('mentee/mentor_availability', {
-			user: req.user,
-			mentor,
+	User.findById(req.params.id)
+		.populate('upcomingSessions')
+		.populate({
+			path: 'upcomingSessions',
+			populate: {
+				path: 'mentor',
+				model: 'User',
+			},
 		})
-	})
+		.populate({
+			path: 'upcomingSessions',
+			populate: {
+				path: 'mentee',
+				model: 'User',
+			},
+		})
+		.exec((err, mentor) => {
+			console.log(mentor)
+			if (err)
+				next(err)
+			res.render('mentee/mentor_availability', {
+				user: req.user,
+				mentor,
+			})
+
+			// res.render('mentor_dashboard', {
+			// 	user,
+			// 	successMsg: req.flash('successMsg')[0] || '',
+			// 	infoMsg: req.flash('infoMsg')[0] || '',
+			// })
+		})
 })
 
 // Mentees choose mentor
@@ -126,6 +152,50 @@ router.post('/cancel-mentor', (req, res, next) => {
 	})
 
 })
+
+router.post('/pick-time-slot', (req, res, next) => {
+	const sessionId = req.body.session_id
+	let newSession
+	Session.findByIdAndUpdate(sessionId, {
+		mentee: req.user._id,
+		type: 'taken',
+		color: 'red',
+	}, { new: true })
+		.then(session => {
+			newSession = session
+			return User.findByIdAndUpdate(req.user._id, { $addToSet: { upcomingSessions: session._id } }).exec()
+		})
+		.then(() => {
+			res.status(200).send(newSession)
+		})
+		.then(null, err => {
+			res.status(500).send(err)
+		})
+
+})
+
+router.post('/cancel-time-slot', (req, res, next) => {
+	const sessionId = req.body.session_id
+	let newSession
+	Session.findByIdAndUpdate(sessionId, {
+		mentee: undefined,
+		color: 'green',
+		type: 'available',
+	}, { new: true })
+		.then(session => {
+			newSession = session
+			return User.findByIdAndUpdate(req.user._id, { $pull: { upcomingSessions: sessionId } }).exec()
+		})
+		.then(() => {
+			res.status(200).send(newSession)
+		})
+		.then(null, err => {
+			console.log(err)
+			res.status(500).send(err)
+		})
+
+})
+
 
 function isEmailVerified (req, res, next) {
 	if (req.user.verified)

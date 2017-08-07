@@ -8,7 +8,11 @@ var sessionSchema = new mongoose.Schema({
 	},
 	title: {
 		type: String,
-		enum: [ 'available', 'taken', 'completed' ],
+		default: 'Session',
+	},
+	type: {
+		type: String,
+		enum: [ 'available', 'taken', 'expired' ],
 		default: 'available',
 	},
 	start: {
@@ -26,6 +30,12 @@ var sessionSchema = new mongoose.Schema({
 	mentee: {
 		type: mongoose.Schema.ObjectId,
 		ref: 'User',
+	},
+	color: {
+		type: String,
+		required: true,
+		enum: [ 'red', 'green', 'orange' ],
+		default: 'green',
 	},
 })
 
