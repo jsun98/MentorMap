@@ -155,6 +155,49 @@ router.delete('/availability', (req, res, next) => {
 		})
 })
 
+router.get('/mymentees', (req, res, next) => {
+	User.findById(req.user._id)
+		.populate('mentees')
+		.exec((err, user) => {
+			if (err)
+				next(err)
+			res.render('common/profile_list', {
+				user: req.user,
+				profiles: user.mentees,
+				title: 'My Mentees',
+			})
+		})
+})
+
+router.get('/mentor-list', (req, res, next) => {
+	User.find({
+		role: 'mentor',
+		completed: true,
+		_id: { $ne: req.user._id },
+	}, (err, profiles) => {
+		if (err)
+			next(err)
+		else
+			res.render('common/profile_list', {
+				user: req.user,
+				profiles,
+				title: 'Mentor Search',
+			})
+	})
+
+})
+
+router.get('/mentor-details/:id', (req, res, next) => {
+	User.findById(req.params.id, (err, mentor) => {
+		if (err) next(err)
+		res.render('common/mentor_profile_details', {
+			user: req.user,
+			mentor,
+		})
+
+	})
+})
+
 function isEmailVerified (req, res, next) {
 	if (req.user.verified)
 		return next()

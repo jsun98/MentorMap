@@ -8,7 +8,7 @@ var sessionSchema = new mongoose.Schema({
 	},
 	title: {
 		type: String,
-		default: 'Session',
+		default: 'Session Slot',
 	},
 	type: {
 		type: String,

@@ -234,9 +234,9 @@ $(window).load(function() {
 						// });
 						$('.close').click()
 						new PNotify({
-							title: 'Success',
+							title: 'Item Deleted',
 							text: 'Time Slot Deleted',
-							type: 'success',
+							type: 'warning',
 							styling: "bootstrap3"
 						});
 						calendar.fullCalendar('refetchEvents')
@@ -294,15 +294,12 @@ $(window).load(function() {
 				});
 			})
 		},
+		eventRender: function(event, element) {
+			element.append('Click for more details<br>Status: '+event.type)
+		},
 		editable: true,
 		eventOverlap: false,
-		events: {
-			url: '/db/sessions',
-			type: 'GET',
-			data: {
-				userId: user._id
-			},
-		},
+		events: '/db/sessions/'+ user._id,
 	});
 });
 </script>

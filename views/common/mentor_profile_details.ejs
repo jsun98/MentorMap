@@ -151,7 +151,7 @@
 
                       <!-- Large modal -->
 
-                      <% if (matched == false && user.role === 'mentee') { %>
+                      <% if (user.role === 'mentee' && matched == false) { %>
                       <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 10001;">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -178,7 +178,7 @@
                       </div>
 
                       <button id ='chooseMentor' class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-check-square-o m-right-xs"></i> &nbspChoose This Mentor</button>
-                      <% } else if (matched === true && user.role === 'mentee') { %>
+                      <% } else if (user.role === 'mentee' && matched === true) { %>
                         <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 10001;">
                           <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -215,7 +215,7 @@
                         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                           <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">About Me</a>
                           </li>
-                          <% if (matched === true) { %>
+                          <% if ((user.role === 'mentee' && matched === true) || user.role === 'mentor') { %>
                           <li role="presentation" class=""><a href="#tab_content4" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Contact Information</a>
                           </li>
                           <% } %>
@@ -251,12 +251,12 @@
 
                           </div>
 
-                          <% if (matched === true) { %>
+                          <% if ((user.role === 'mentee' && matched === true) || user.role === 'mentor') { %>
                           <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="home-tab">
                             <div>
-                              <p>Email: <%= mentor.email %></p>
-                              <p>Phone: <%= mentor.profile.phone %></p>
-                              <p>LinkedIn: <%= mentor.profile.linkedin %></p>
+                              <h4>Email: <%= mentor.email %></h4>
+                              <h4>Phone: <%= mentor.profile.phone %></h4>
+                              <h4>LinkedIn: <%= mentor.profile.linkedin %></h4>
                             </div>
                           </div>
                           <% } %>

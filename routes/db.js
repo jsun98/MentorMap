@@ -3,8 +3,8 @@ const express = require('express'),
 	//	User = require('../passport/models/user'),
 	Session = require('../passport/models/session')
 
-router.get('/sessions', (req, res) => {
-	const userId = req.query.userId
+router.get('/sessions/:id', (req, res) => {
+	const userId = req.params.id
 	Session.find({
 		$and: [
 			{ $or: [ { mentor: userId }, { mentee: userId } ] },

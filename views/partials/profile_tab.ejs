@@ -38,20 +38,23 @@
         </button>
       -->
 
-	  <% if (profile.role == "mentor") { %>
-		  <% if (title === 'My Mentors') { %>
-		  <a type="button" class="btn btn-success btn-xs details pull-right" href = "/mentee/mentor-availability/<%= profile._id %>" >
-			<i class="fa fa-user"></i> Availability
-		  </a>
+		  <% if (title === 'My Mentors' && user.role === 'mentee') { %>
+			  <a type="button" class="btn btn-success btn-xs details pull-right" href = "/mentee/mentor-availability/<%= profile._id %>" >
+				<i class="fa fa-user"></i> Availability
+			  </a>
+			  <a type="button" class="btn btn-primary btn-xs details pull-right" href = "/mentee/mentor-details/<%= profile._id %>" >
+				  <i class="fa fa-user"></i> Profile
+			  </a>
+		  <% } else if (title === 'Mentor Search' && user.role === 'mentor') { %>
+			  <a type="button" class="btn btn-primary btn-xs details pull-right" href = "/mentor/mentor-details/<%= profile._id %>" >
+				  <i class="fa fa-user"></i> Profile
+			  </a>
+		  <% } else if (title === 'Mentor Search' && user.role === 'mentee') { %>
+			  <a type="button" class="btn btn-primary btn-xs details pull-right" href = "/mentee/mentor-details/<%= profile._id %>" >
+				  <i class="fa fa-user"></i> Profile
+			  </a>
 		  <% } %>
-		  <a type="button" class="btn btn-primary btn-xs details pull-right" href = "/mentee/mentor-details/<%= profile._id %>" >
-			  <i class="fa fa-user"></i> Profile
-		  </a>
-	  <% } else { %>
-		  <a type="button" class="btn btn-primary btn-xs details pull-right" href="/booking?mentee_id=<%= profile._id %>" >
-			<i class="fa fa-user"></i> Book a Session
-		  </a>
-	  <% } %>
+
 
       </div>
     </div>
