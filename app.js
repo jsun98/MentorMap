@@ -6,6 +6,7 @@ const
 	favicon = require('serve-favicon'),
 	flash = require('connect-flash'),
 	logger = require('morgan'),
+	mailjet = require('node-mailjet').connect('ec64965cdf208fb3897abc986fe6b36b', 'ed1ab3ce9f19eaa293436bd774809eb2'),
 	mongoose = require('mongoose'),
 	morgan = require('morgan'),
 	passport = require('passport'),
@@ -35,7 +36,7 @@ app.use(morgan('dev')) // log every request to the console
 // ======passport configuration ===============================================================
 mongoose.connect(process.env.MONGODB_URI || devDBUrl, { useMongoClient: true }) // connect to our database
 
-require('./passport/config/passport')(passport) // pass passport for configuration
+require('./passport/config/passport')(passport, mailjet) // pass passport for configuration
 
 // required for passport
 app.use(session({

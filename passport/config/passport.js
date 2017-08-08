@@ -2,15 +2,10 @@
 
 // load all the things we need
 const LocalStrategy = require('passport-local').Strategy,
-	User = require('../models/user'),
-	mailjet = require('node-mailjet')
-		.connect('ec64965cdf208fb3897abc986fe6b36b', 'ed1ab3ce9f19eaa293436bd774809eb2')
-
-
-
+	User = require('../models/user')
 
 // expose this function to our app using module.exports
-module.exports = function (passport) {
+module.exports = function (passport, mailjet) {
 
 	// =========================================================================
 	// passport session setup ==================================================
@@ -54,6 +49,7 @@ module.exports = function (passport) {
 			newUser.profile.first_name = req.body.first_name
 			newUser.profile.last_name = req.body.last_name
 
+			console.log('node_env is' + process.env.NODE_ENV)
 			if (process.env.NODE_ENV === 'development') {
 				newUser.verified = true
 				newUser.completed = true
@@ -84,16 +80,7 @@ module.exports = function (passport) {
 				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:3000' : req.hostname
 				mailjet
 					.post('send')
-					.request({
-						FromEmail: 'admin@mentormap.ca',
-						FromName: 'MentorMap Admin',
-						Subject: 'MentorMap - Confirm Your Email Address!',
-						'Text-part': '',
-						'Html-part': '<a href="http://' + hostname + '/verify?id=' + savedUser._id + '">Click On This Link To Verify Your Email</a>',
-						Recipients: [
-							{ Email: email },
-						],
-					})
+					.request(require('../../email_templates/confirmation')(savedUser, hostname))
 					.then(response => {
 						console.log('Email sent to client ' + savedUser._id)
 					})
