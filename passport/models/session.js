@@ -12,7 +12,7 @@ var sessionSchema = new mongoose.Schema({
 	},
 	type: {
 		type: String,
-		enum: [ 'available', 'taken', 'pending', 'finished', 'noshow' ],
+		enum: [ 'available', 'taken', 'confirmed', 'pending', 'finished', 'noshow' ],
 		default: 'available',
 	},
 	confirmation_email_sent: {

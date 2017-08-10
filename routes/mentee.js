@@ -197,6 +197,24 @@ router.post('/cancel-time-slot', isInMentorship, (req, res, next) => {
 
 })
 
+router.get('/tokens', (req, res, next) => {
+	Session.find({
+		mentee: req.user._id,
+		type: { $in: [ 'pending', 'taken' ] },
+	}).count()
+		.then(count => {
+			console.log(count)
+			const amt = req.user.tokens - count
+			res.render('common/tokens', {
+				user: req.user,
+				tokens: amt,
+			})
+		})
+		.catch(err => {
+			next(err)
+		})
+})
+
 function isInMentorship (req, res, next) {
 	Mentorship.findOne({
 		mentee: req.user._id,
