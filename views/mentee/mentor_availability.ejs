@@ -199,11 +199,11 @@ $(window).load(function() {
 			if (calEvent.type === 'taken') {
 				$("#choose").hide()
 				$("#cancel").off().on("click", function() {
-					$.post( "/mentee/cancel-time-slot", { session_id: calEvent._id } )
+					$.post( "/mentee/cancel-time-slot", { session_id: calEvent._id, mentor_id: calEvent.mentor._id } )
 					.done((res) => {
 						new PNotify({
 							title: 'Cancelled',
-							text: 'Your Session Has Been Canceled',
+							text: res,
 							type: 'warning',
 							styling: "bootstrap3"
 						});
@@ -214,11 +214,12 @@ $(window).load(function() {
 			} else {
 				$("#cancel").hide()
 				$("#choose").off().on("click", function() {
-					$.post( "/mentee/pick-time-slot", { session_id: calEvent._id } )
+					console.log(calEvent)
+					$.post( "/mentee/pick-time-slot", { session_id: calEvent._id, mentor_id: calEvent.mentor._id } )
 					.done((res) => {
 						new PNotify({
 							title: 'Success',
-							text: 'Your Session Has Been Confirmed!',
+							text: res,
 							type: 'success',
 							styling: "bootstrap3"
 						});

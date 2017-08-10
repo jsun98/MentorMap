@@ -4496,6 +4496,10 @@ jpegtran-bin@^3.0.0:
     bin-wrapper "^3.0.0"
     logalot "^2.0.0"
 
+jquery-deferred@^0.3.0:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/jquery-deferred/-/jquery-deferred-0.3.1.tgz#596eca1caaff54f61b110962b23cafea74c35355"
+
 jquery@>=1.6:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
@@ -5328,12 +5332,27 @@ mongodb-core@2.1.11:
     bson "~1.0.4"
     require_optional "~1.0.0"
 
+mongodb-core@2.1.14:
+  version "2.1.14"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.1.14.tgz#13cba2764226b5be3d18992af0c963ce5ea0f0fd"
+  dependencies:
+    bson "~1.0.4"
+    require_optional "~1.0.0"
+
 mongodb@2.2.27:
   version "2.2.27"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.27.tgz#34122034db66d983bcf6ab5adb26a24a70fef6e6"
   dependencies:
     es6-promise "3.2.1"
     mongodb-core "2.1.11"
+    readable-stream "2.2.7"
+
+mongodb@2.2.30:
+  version "2.2.30"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.30.tgz#8ccd801f676c8172040c2f2b47e9602a0d5634ab"
+  dependencies:
+    es6-promise "3.2.1"
+    mongodb-core "2.1.14"
     readable-stream "2.2.7"
 
 mongoose-deep-populate@^3.0.0:
@@ -5344,6 +5363,18 @@ mongoose-random@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/mongoose-random/-/mongoose-random-0.1.1.tgz#9ab163f11d4644f2f1b0562b2ebe94b05b201f7a"
 
+mongoose-transaction@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/mongoose-transaction/-/mongoose-transaction-0.0.3.tgz#0e5fceade9a081c4053a0615cefb83148dab74df"
+  dependencies:
+    jquery-deferred "^0.3.0"
+
+mongoose-transactions@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/mongoose-transactions/-/mongoose-transactions-1.0.4.tgz#9047295af124c0788ceb2bc100acbc7ba27a60dd"
+  dependencies:
+    mongoose "^4.11.1"
+
 mongoose@^4.10.7:
   version "4.11.5"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.11.5.tgz#59e4a1d84dcd36cc51f3e639b771cb8359f539aa"
@@ -5353,6 +5384,23 @@ mongoose@^4.10.7:
     hooks-fixed "2.0.0"
     kareem "1.5.0"
     mongodb "2.2.27"
+    mpath "0.3.0"
+    mpromise "0.5.5"
+    mquery "2.3.1"
+    ms "2.0.0"
+    muri "1.2.2"
+    regexp-clone "0.0.1"
+    sliced "1.0.1"
+
+mongoose@^4.11.1:
+  version "4.11.6"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.11.6.tgz#d0ebdd5f5f34fca9b0f1b86e13cf7e532e939a09"
+  dependencies:
+    async "2.1.4"
+    bson "~1.0.4"
+    hooks-fixed "2.0.0"
+    kareem "1.5.0"
+    mongodb "2.2.30"
     mpath "0.3.0"
     mpromise "0.5.5"
     mquery "2.3.1"

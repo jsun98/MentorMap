@@ -25,14 +25,7 @@ User.syncRandom((err, result) => {
 // verify =====================
 // =====================================
 // verify if email is correct
-router.get('/verify', (req, res, next) => {
-	User.findByIdAndUpdate(req.query.id, { $set: { verified: true } }, (err, user) => {
-		if (err)
-			next(err)
-		req.flash('success', "Thank You For Verifying Your Email! We Are Thrilled to Have You On Board! Click on 'Log In' to Access Your Account.")
-		res.redirect('/')
-	})
-})
+
 
 // =====================================
 // Register =====================

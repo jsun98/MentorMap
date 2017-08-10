@@ -24,7 +24,7 @@ app.set('view engine', 'ejs')
 
 // serve statics
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(favicon(path.join(__dirname, 'public', 'favicon.png')))
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 // setup middleware
 app.use(logger('dev'))

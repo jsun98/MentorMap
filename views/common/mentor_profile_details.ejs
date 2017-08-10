@@ -37,7 +37,7 @@
 
               <div class="title_right">
                   <div class="input-group pull-right">
-                    <a type="button" href="/dashboard" class="btn btn-round btn-default">Back</a>
+                    <a type="button" href="/mentee/dashboard" class="btn btn-round btn-default">Back</a>
                   </div>
               </div>
             </div>
@@ -315,9 +315,6 @@
             });
             $("#chooseMentor").hide();
             $('#btn-close-modal').click();
-            setTimeout(function () {
-              window.location.href = "/mentee/dashboard";
-            }, 2000);
           })
           .fail(function () {
             new PNotify({
@@ -326,9 +323,7 @@
               type: 'error',
               styling: "bootstrap3"
             });
-            setTimeout(function () {
-              window.location.href = "/mentee/dashboard";
-            }, 2000);
+			$("#chooseMentor").show();
           });
         });
         $('#btn-cancel-mentor').click(function() {
@@ -342,9 +337,6 @@
             });
             $("#cancelMentor").hide();
             $('#btn-close-modal').click();
-            setTimeout(function () {
-              window.location.href = "/mentee/dashboard";
-            }, 2000);
           })
           .fail(function () {
             new PNotify({
@@ -353,9 +345,7 @@
               type: 'error',
               styling: "bootstrap3"
             });
-            setTimeout(function () {
-              window.location.href = "/mentee/dashboard";
-            }, 2000);
+			$("#chooseMentor").show();
           });
         });
       });

@@ -14,8 +14,24 @@ h2 {
   font-size: 4.5rem;
 }
 
-.btn-link, .btn-link:hover, .btn-link:active, .btn-link:visited {
+.navbar-left-logo {
+	float: left;
+	color: #FF0077;
+	font-weight: bold;
+	margin: 0;
+}
+
+.btn-link, .btn-link:active, .btn-link:visited {
 	color: white;
+	text-decoration: none;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+	text-decoration: none;
+}
+.btn-link:hover {
+	color: #FF0077;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
 	text-decoration: none;
 }
 .bottom-break {
@@ -453,6 +469,8 @@ ul {
 
 .team-social-icon {
     padding: 7px;
+	max-height: 30px;
+	
 }
 
 .red-section {
@@ -556,7 +574,6 @@ ul {
 }
 
 .carousel {
-  height: 30vh;
   padding: 0, 15px;
 }
 
@@ -596,6 +613,10 @@ blockquote cite:before {
   content: "\2014 \2009";
 }
 
+#testimonials {
+	overflow-x: hidden;
+}
+
 .testimonials-carousel {
   height: 65vh;
   margin: 0 15vw;
@@ -614,6 +635,12 @@ img {
   border-radius: 50%;
   height: 124px;
   width: 124px;
+}
+
+.headshot2 {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
 }
 
 .feature-section-text {

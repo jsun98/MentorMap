@@ -2,12 +2,7 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MentorMap</title>
-    <meta name="Nova theme" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+	<%- include('../partials/meta'); %>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -35,9 +30,13 @@
       <!-- Navigation
         ================================================== -->
         <div class="header-container header">
-            <a class="navbar-brand logo" href="#"> <img class="logo" src="index/images/logo.svg"/> </a>
+            <h1 class="navbar-left-logo" href="#">MentorMap </h1>
             <a href="#email-form">
-                <button class="header-btn" onclick="window.location.href='/auth/login'">JOIN US NOW!</button>
+				<% if (authenticated) { %>
+					<button class="header-btn" onclick="window.location.href='/mentee/dashboard'">Welcome, <%= user.profile.first_name %>!</button>
+				<% } else { %>
+                	<button class="header-btn" onclick="window.location.href='/auth/login'">JOIN US NOW!</button>
+				<% } %>
             </a>
             <div class="header-right">
                 <a class="navbar-item" href="#features">Features</a>
@@ -53,7 +52,7 @@
                 <h1 class="header-headline bold"> Mentorship Service For High School Students <br></h1>
                 <h4 class="header-running-text light"> Get quality mentorship from students studying at Canada's best universities.</h4>
                 <a href="#email-form">
-                    <button class="hero-btn"> Learn More</button>
+                    <button class="hero-btn" id='learn-more'> Learn More</button>
                 </a>
             </div><!--hero-left-->
 
@@ -125,7 +124,7 @@
 <!-- why mentormap
   ================================================== -->
 
-<div class="white-section row">
+<div id='why' class="white-section row">
 
     <div class="col-sm-8">
 
@@ -257,7 +256,32 @@
 <div id="testimonials" class="grey-section">
   <h2 class="pricing-section-header strong text-center">DISCOVER <span class='theme-color'>MENTORMAP</span> STORIES</h2>
   <h4 class=" pricing-section-sub text-center light bottom-break">listen to what our customers say</h4>
-      <div class="testimonials-carousel">
+  <div class="team-container row">
+
+	  <div class="col-sm-6 team-member">
+		  <img class="headshot2" src="index/images/kevin.png">
+		  <div class="team-member-text">
+			  <h4 class="team-member-position light">Mentee</h4>
+			  <h5 class="bold">Kevin Wu</h5>
+			  <h6>Unionville High School</h6>
+			  <p class="light">Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah </p>
+		  </div>
+	  </div>
+
+	  <div class="col-sm-6 team-member">
+		  <img class="headshot2" src="index/images/france.png">
+		  <div class="team-member-text">
+			  <h4 class="team-member-position light">Mentor</h4>
+			  <h5 class="bold">France Song</h5>
+			  <h6>Western University</h6>
+			  <p class="light">Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah </p>
+		  </div>
+	  </div>
+  </div>
+      <!-- <div class="testimonials-carousel">
+		  <div>
+	        <img class="img-responsive" src="index/images/p1.jpg">
+	      </div>
         <div class='row'>
           <div class="col-sm-6 .hidden-xs">
             <div class="carousel-img">
@@ -297,7 +321,7 @@
 
         </div>
 
-  </div>
+  </div> -->
 </div><!--white-section-text-section--->
 
 <!-- Pricing
@@ -388,11 +412,10 @@
                 <h5 class="bold">Kevin Wu</h5>
                 <h6>York University</h6>
                 <p class="light">Schulich School of Business</p>
-                <a href="http://www.twitter.com"><img class="team-social-icon" src="index/images/team-twitter.svg"></a>
-                <a href="http://www.facebook.com"><img class="team-social-icon"
+				<a href="https://www.facebook.com/kevin.wu.90"><img class="team-social-icon"
                                                        src="index/images/team-facebook.svg"></a>
-                <a href="https://plus.google.com/"><img class="team-social-icon"
-                                                        src="index/images/team-google.svg"></a>
+                <a href="https://www.linkedin.com/in/kevinwu98/"><img class="team-social-icon"
+                                                        src="index/images/team-linkedin.png"></a>
             </div>
         </div>
 
@@ -403,11 +426,10 @@
                 <h5 class="bold">France Song</h5>
                 <h6>Western University</h6>
                 <p class="light">Medical Sciences</p>
-                <a href="http://www.twitter.com"><img class="team-social-icon" src="index/images/team-twitter.svg"></a>
-                <a href="http://www.facebook.com"><img class="team-social-icon"
+				<a href="https://www.facebook.com/francisco.song"><img class="team-social-icon"
                                                        src="index/images/team-facebook.svg"></a>
-                <a href="https://plus.google.com/"><img class="team-social-icon"
-                                                        src="index/images/team-google.svg"></a>
+                <a href="https://www.linkedin.com/in/france-song-138338135"><img class="team-social-icon"
+                                                        src="index/images/team-linkedin.png"></a>
             </div>
         </div>
 
@@ -418,11 +440,11 @@
               <h5 class="bold">Joshua Sun</h5>
               <h6>University of Waterloo</h6>
               <p class="light">Software Engineering</p>
-                <a href="http://www.twitter.com"><img class="team-social-icon" src="index/images/team-twitter.svg"></a>
-                <a href="http://www.facebook.com"><img class="team-social-icon"
+                <a href="https://github.com/jsun98"><img class="team-social-icon" src="index/images/team-github.png"></a>
+                <a href="https://www.facebook.com/joshua.sun.75"><img class="team-social-icon"
                                                        src="index/images/team-facebook.svg"></a>
-                <a href="https://plus.google.com/"><img class="team-social-icon"
-                                                        src="index/images/team-google.svg"></a>
+                <a href="https://www.linkedin.com/in/josh-sun/"><img class="team-social-icon"
+                                                        src="index/images/team-linkedin.png"></a>
             </div>
 
         </div>
@@ -440,7 +462,7 @@
     <h4 class="red-section-subtext light">Don't let dreams be dreams.</h4>
 
     <div class="email-form-div">
-      <button type="button" class="btn submit-btn">Sign Up</button>
+      <button type="button" class="btn submit-btn" onclick="window.location.href='/auth/login'">Sign Up</button>
     </div>
     <!--email-form-div-->
 
@@ -460,16 +482,16 @@
             <div class="col-sm-2"></div>
 
             <div class="col-sm-8 webscope">
-                <span class="webscope-text"> This website is designed by </span>
-                <a href=""> <img src="index/images/webscope.svg"/> </a>
+                <span class="webscope-text"> This website is designed by
+                <a class='btn-link' href="https://github.com/jsun98"> Joshua Sun and Bill Qi </a></span>
             </div>
             <!--webscope-->
 
             <div class="col-sm-2">
                 <div class="social-links">
-                    <a href="https://twitter.com/webscopeapp"> <img class="social-link"
+                    <a href="javascript:void"> <img class="social-link"
                                                                     src="index/images/twitter.svg"/> </a>
-                    <a href="https://www.facebook.com/webscopeapp/?ref=aymt_homepage_panel"> <img
+                    <a href="javascript:void"> <img
                             src="index/images/facebook.svg"/> </a>
                 </div>
                 <!--social-links-->
@@ -530,16 +552,6 @@
   ]
 
   });
-
-  $('.testimonials-carousel').slick({
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 4000,
-    dots: true,
-    infinite: true,
-    arrows: false
-  });
 </script>
 
 <script>
@@ -559,6 +571,16 @@
   $(function() {
       $('#logos div').matchHeight(false);
   });
+</script>
+
+<script>
+	$(function() {
+		$("#learn-more").click(function() {
+		    $('html,body').animate({
+		        scrollTop: $("#why").offset().top},
+		     'slow');
+		});
+	})
 </script>
 
 </body>

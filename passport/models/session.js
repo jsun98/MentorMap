@@ -12,8 +12,18 @@ var sessionSchema = new mongoose.Schema({
 	},
 	type: {
 		type: String,
-		enum: [ 'available', 'taken', 'expired' ],
+		enum: [ 'available', 'taken', 'pending', 'finished', 'noshow' ],
 		default: 'available',
+	},
+	confirmation_email_sent: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
+	transaction_confirmed: {
+		type: Boolean,
+		required: true,
+		default: false,
 	},
 	start: {
 		type: Date,

@@ -7,13 +7,6 @@ const LocalStrategy = require('passport-local').Strategy,
 // expose this function to our app using module.exports
 module.exports = function (passport, mailjet) {
 
-	// =========================================================================
-	// passport session setup ==================================================
-	// =========================================================================
-	// required for persistent login sessions
-	// passport needs ability to serialize and unserialize users out of session
-
-	// used to serialize the user for the session
 	passport.serializeUser((user, done) => {
 		done(null, user.id)
 	})
@@ -42,15 +35,12 @@ module.exports = function (passport, mailjet) {
 
 			newUser.email = email
 			newUser.password = newUser.generateHash(password)
-			newUser.role = 'mentor'
-			newUser.verified = false
-			newUser.creation_date = new Date()
-			newUser.completed = false
 			newUser.profile.first_name = req.body.first_name
 			newUser.profile.last_name = req.body.last_name
 
-			console.log('node_env is' + process.env.NODE_ENV)
+			console.log('node_env is ' + process.env.NODE_ENV)
 			if (process.env.NODE_ENV === 'development') {
+				newUser.tokens = 100
 				newUser.verified = true
 				newUser.completed = true
 				newUser.profile.gender = 'male'
@@ -83,12 +73,12 @@ module.exports = function (passport, mailjet) {
 					.request(require('../../email_templates/confirmation')(savedUser, hostname))
 					.then(response => {
 						console.log('Email sent to client ' + savedUser._id)
+						return done(null, savedUser)
 					})
 					.catch(err => {
 						console.log(err.statusCode, err)
+						return done(err)
 					})
-
-				return done(null, savedUser)
 			})
 
 
@@ -108,22 +98,22 @@ module.exports = function (passport, mailjet) {
 		passReqToCallback: true,
 	}, (req, email, password, done) => {
 		User.findOne({ email })
-			.exec((err, user) => {
+			.exec((err, User) => {
 				// if there are any errors, return the error before anything else
 				if (err)
 					return done(err)
 
 				// if no user is found, return the message
-				if (!user)
-					return done(null, false, req.flash('errMessage', 'Email Not Found')) // req.flash is the way to set flashdata using connect-flash
+				if (!User)
+					return done(null, false, req.flash('errMessage', 'Email Not Found'))
 
 				// if the user is found but the password is wrong
-				if (!user.validPassword(password))
+				if (!User.validPassword(password))
 					return done(null, false, req.flash('errMessage', 'Wrong Password')) // create the loginMessage and save it to session as flashdata
 				// if the user is found but the password is wrong
 
 				// if email not verified
-				if (!user.verified)
+				if (!User.verified)
 					return done(null, false, req.flash('errMessage', 'Please Verify Your Email First!'))
 
 				// promise
@@ -140,9 +130,8 @@ module.exports = function (passport, mailjet) {
 						})
 					}
 					*/
-				return done(null, user)
+				return done(null, User)
 			})
-
 	}))
 
 }

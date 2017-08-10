@@ -7,35 +7,70 @@ const mongoose = require('mongoose'),
 // define the schema for our user model
 
 var userSchema = new mongoose.Schema({
-	email: String,
-	password: String,
-	role: String,
-	verified: Boolean,
-	completed: Boolean,
-	creation_date: Date,
-	upcomingSessions: [ {
-		type: mongoose.Schema.ObjectId,
-		ref: 'Session',
-	} ],
-	mentors: [ {
-		type: mongoose.Schema.ObjectId,
-		ref: 'User',
-	} ],
-	mentees: [ {
-		type: mongoose.Schema.ObjectId,
-		ref: 'User',
-	} ],
+	email: {
+		type: String,
+		unique: true,
+		lowercase: true,
+		required: true,
+	},
+	password: {
+		type: String,
+		required: true,
+	},
+	role: {
+		type: String,
+		enum: [ 'mentor', 'mentee' ],
+		required: true,
+		default: 'mentee',
+	},
+	verified: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
+	completed: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
+	creation_date: {
+		type: Date,
+		required: true,
+		default: Date(),
+	},
+	tokens: {
+		type: Number,
+		required: true,
+		min: 0,
+		default: 0,
+	},
 
 	profile: {
 		// common info
 
-		gender: String,
-		first_name: String,
-		last_name: String,
+		gender: {
+			type: String,
+			enum: [ 'male', 'female' ],
+		},
+		first_name: {
+			type: String,
+			required: true,
+		},
+		last_name: {
+			type: String,
+			required: true,
+		},
 		phone: String,
-		age: Number,
+		age: {
+			type: Number,
+			min: 14,
+			max: 29,
+		},
 		linkedin: String,
-		high_school_program: [ String ],
+		high_school_program: [ {
+			type: String,
+			enum: [ 'AP', 'IB', 'TOPS', 'ESL' ],
+		} ],
 		skills: [ String ],
 		paragraphs: [ String ],
 

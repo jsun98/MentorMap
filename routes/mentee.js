@@ -1,200 +1,239 @@
 const express = require('express'),
 	router = express.Router(),
 	User = require('../passport/models/user'),
-	Session = require('../passport/models/session')
+	Session = require('../passport/models/session'),
+	Mentorship = require('../passport/models/mentorship')
 
-router.use('*', isLoggedIn, isEmailVerified)
+router.use('*', isLoggedIn, isEmailVerified, isMentee)
 
 router.get('/register', (req, res, next) => {
-	// if (req.user.completed)
-	// 	res.redirect('/mentee/dashboard')
+	if (req.user.completed)
+		return res.redirect('/mentee/dashboard')
 	res.render('mentee/register', { user: req.user })
 })
 
 router.use('*', isRegCompleted)
 
 router.get('/dashboard', (req, res, next) => {
-	User.findById(req.user._id)
-		.populate('upcomingSessions')
-		.exec((err, user) => {
-			if (err)
-				next(err)
-			res.render('mentee/dashboard', { user })
-
-			// res.render('mentor_dashboard', {
-			// 	user,
-			// 	successMsg: req.flash('successMsg')[0] || '',
-			// 	infoMsg: req.flash('infoMsg')[0] || '',
-			// })
-		})
+	res.render('mentee/dashboard', { user: req.user })
 })
 
-router.get('/mymentors', (req, res, next) => {
-	User.findById(req.user._id)
-		.populate('mentors')
-		.exec((err, user) => {
-			if (err)
-				next(err)
+router.get('/my-mentors', (req, res, next) => {
+	Mentorship.find({ mentee: req.user._id })
+		.populate('mentor')
+		.exec()
+		.then(mentorships => {
+			const mentorsArr = []
+			for (var i = 0; i < mentorships.length; i++)
+				mentorsArr.push(mentorships[i].mentor)
 			res.render('common/profile_list', {
 				user: req.user,
-				profiles: user.mentors,
+				profiles: mentorsArr,
 				title: 'My Mentors',
 			})
 		})
+		.catch(err => {
+			next(err)
+		})
 })
 
-router.get('/mentor-list', (req, res, next) => {
-	User.findRandom({
-		role: 'mentor',
-		completed: true,
-		mentees: { $ne: req.user._id },
-	}, (err, profiles) => {
-		if (err)
-			next(err)
-		else
+router.get('/new-mentors', (req, res, next) => {
+	Mentorship.find({ mentee: req.user._id }).exec()
+		.then(mentorships => {
+			const mentorsArr = [ ]
+			for (var i = 0; i < mentorships.length; i++)
+				mentorsArr.push(mentorships[i].mentor)
+			return User.findRandom({
+				role: 'mentor',
+				completed: true,
+				verified: true,
+				$or: [ { mentorsArr: { $size: 0 } }, { _id: { $nin: mentorsArr } } ],
+			}).limit(4)
+		})
+		.then(mentors => {
 			res.render('common/profile_list', {
 				user: req.user,
-				profiles,
+				profiles: mentors,
 				title: 'Mentor Search',
 			})
-
-	}).limit(5)
-
+		})
+		.catch(err => {
+			next(err)
+		})
 })
 
-router.get('/mentor-details/:id', (req, res, next) => {
-	User.findById(req.params.id, (err, mentor) => {
-		if (err) next(err)
-		if (mentor.mentees.indexOf(req.user._id) !== -1)
+router.get('/mentor-profile/:id', (req, res, next) => {
+	let temp
+	User.findOne({
+		_id: req.params.id,
+		completed: true,
+		verified: true,
+		role: 'mentor',
+	}).exec()
+		.then(mentor => {
+			if (!mentor) return res.status(200).send('Mentor Not Found')
+			temp = mentor
+			return Mentorship.findOne({
+				mentee: req.user._id,
+				mentor: mentor._id,
+			}).exec()
+		})
+		.then(mentorship => {
+			var matched = !!mentorship
 			res.render('common/mentor_profile_details', {
 				user: req.user,
-				mentor,
-				matched: true,
+				mentor: temp,
+				matched,
 			})
-		else
-			res.render('common/mentor_profile_details', {
-				user: req.user,
-				mentor,
-				matched: false,
-			})
-
-	})
+		})
+		.catch(err => {
+			next(err)
+		})
 })
 
 router.get('/mentor-availability/:id', (req, res, next) => {
-	User.findById(req.params.id)
-		.populate('upcomingSessions')
-		.populate({
-			path: 'upcomingSessions',
-			populate: {
-				path: 'mentor',
-				model: 'User',
-			},
+	let temp
+	User.findOne({
+		_id: req.params.id,
+		role: 'mentor',
+	}).exec()
+		.then(mentor => {
+			if (!mentor) return res.status(200).send('Mentor Not Found')
+			temp = mentor
+			return Mentorship.findOne({
+				mentor: mentor._id,
+				mentee: req.user._id,
+			}).exec()
 		})
-		.populate({
-			path: 'upcomingSessions',
-			populate: {
-				path: 'mentee',
-				model: 'User',
-			},
-		})
-		.exec((err, mentor) => {
-			console.log(mentor)
-			if (err)
-				next(err)
+		.then(mentorship => {
+			if (!mentorship) return res.status(200).send('You Are Not In A Mentorship with this mentor!')
 			res.render('mentee/mentor_availability', {
 				user: req.user,
-				mentor,
+				mentor: temp,
 			})
-
-			// res.render('mentor_dashboard', {
-			// 	user,
-			// 	successMsg: req.flash('successMsg')[0] || '',
-			// 	infoMsg: req.flash('infoMsg')[0] || '',
-			// })
+		})
+		.catch(err => {
+			next(err)
 		})
 })
 
 // Mentees choose mentor
 router.post('/choose-mentor', (req, res, next) => {
-
-	// might wanna change this to promise
-	User.update({ _id: req.body.mentor_id }, { $addToSet: { mentees: req.user._id } }, err => {
-		if (err)
+	Mentorship.findOne({
+		mentee: req.user._id,
+		mentor: req.body.mentor_id,
+	}).exec()
+		.then(mentorship => {
+			if (mentorship) return res.status(200).send('already in mentorship')
+			const newMentorship = new Mentorship()
+			newMentorship.mentor = req.body.mentor_id
+			newMentorship.mentee = req.user._id
+			return newMentorship.save()
+		})
+		.then(() => {
+			res.status(200).send()
+		})
+		.catch(err => {
 			next(err)
-		else
-			User.update({ _id: req.user._id }, { $addToSet: { mentors: req.body.mentor_id } }, err => {
-				if (err)
-					next(err)
-				else
-					res.send('You Have Successfully Chosen Your Mentor!')
-			})
-
-	})
-
+		})
 })
 
 // Mentees cancels mentorship
-router.post('/cancel-mentor', (req, res, next) => {
-
-	// might wanna change this to promise
-	User.update({ _id: req.body.mentor_id }, { $pull: { mentees: req.user._id } }, err => {
-		if (err)
-			next(err)
-		else
-			User.update({ _id: req.user._id }, { $pull: { mentors: req.body.mentor_id } }, err => {
-				if (err)
-					next(err)
-				else
-					res.send('You Have Successfully Cancelled This Mentorship!')
-			})
-
+router.post('/cancel-mentor', isInMentorship, (req, res, next) => {
+	Session.find({
+		mentee: req.user._id,
+		mentor: req.body.mentor_id,
+		type: { $in: [ 'available', 'pending', 'taken' ] },
 	})
+		.then(sessions => {
+			if (sessions.length > 0) return res.status(200).send('You have outstanding sessions with this mentor')
+			return Mentorship.findOneAndRemove({
+				mentee: req.user._id,
+				mentor: req.body.mentor_id,
+			}).exec()
+		})
+		.then(() => {
+			res.status(200).send()
+		})
+		.catch(err => {
+			next(err)
+		})
 
 })
 
-router.post('/pick-time-slot', (req, res, next) => {
-	const sessionId = req.body.session_id
-	let newSession
-	Session.findByIdAndUpdate(sessionId, {
+router.post('/pick-time-slot', isInMentorship, hasSufficientTokens, (req, res, next) => {
+	Session.findByIdAndUpdate(req.body.session_id, {
 		mentee: req.user._id,
 		type: 'taken',
 		color: 'red',
-	}, { new: true })
+	}, { new: true }).exec()
 		.then(session => {
-			newSession = session
-			return User.findByIdAndUpdate(req.user._id, { $addToSet: { upcomingSessions: session._id } }).exec()
+			console.log(session)
+			if (!session) return res.status(200).send('Session not found')
+			res.status(200).send()
 		})
-		.then(() => {
-			res.status(200).send(newSession)
-		})
-		.then(null, err => {
-			res.status(500).send(err)
+		.catch(err => {
+			next(err)
 		})
 
 })
 
-router.post('/cancel-time-slot', (req, res, next) => {
-	const sessionId = req.body.session_id
-	let newSession
-	Session.findByIdAndUpdate(sessionId, {
+router.post('/cancel-time-slot', isInMentorship, (req, res, next) => {
+	Session.findOneAndUpdate({
+		_id: req.body.session_id,
+		mentee: req.user._id,
+	}, {
 		mentee: undefined,
 		color: 'green',
 		type: 'available',
-	}, { new: true })
+	}, { new: true }).exec()
 		.then(session => {
-			newSession = session
-			return User.findByIdAndUpdate(req.user._id, { $pull: { upcomingSessions: sessionId } }).exec()
+			if (!session) return res.status(200).send('Session not found')
+			res.status(200).send()
 		})
-		.then(() => {
-			res.status(200).send(newSession)
-		})
-		.then(null, err => {
-			console.log(err)
-			res.status(500).send(err)
+		.catch(err => {
+			next(err)
 		})
 
 })
+
+function isInMentorship (req, res, next) {
+	Mentorship.findOne({
+		mentee: req.user._id,
+		mentor: req.body.mentor_id,
+	}).exec()
+		.then(mentorship => {
+			if (!mentorship)
+				return res.status(200).send('not in mentorship!')
+			next()
+		})
+		.catch(err => {
+			next(err)
+		})
+}
+
+function hasSufficientTokens (req, res, next) {
+	Session.find({
+		mentee: req.user._id,
+		type: { $in: [ 'pending', 'taken' ] },
+	}).count()
+		.then(count => {
+			console.log(count)
+			const amt = req.user.tokens - count
+			if (amt > 0)
+				return next()
+			return res.status(200).send('Insufficient tokens')
+		})
+		.catch(err => {
+			next(err)
+		})
+}
+
+function isMentee (req, res, next) {
+	if (req.user.role === 'mentee')
+		return next()
+	res.redirect('/mentor/dashboard')
+}
 
 
 function isEmailVerified (req, res, next) {

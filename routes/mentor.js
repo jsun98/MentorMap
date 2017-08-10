@@ -1,83 +1,36 @@
 const express = require('express'),
 	router = express.Router(),
-	mongoose = require('mongoose'),
 	User = require('../passport/models/user'),
-	Session = require('../passport/models/session')
+	Session = require('../passport/models/session'),
+	Mentorship = require('../passport/models/mentorship')
 
-router.use('*', isLoggedIn, isEmailVerified)
+router.use('*', isLoggedIn, isEmailVerified, isMentor)
 
 router.get('/register', (req, res, next) => {
+	if (req.user.completed)
+		return res.redirect('/mentor/dashboard')
 	res.render('mentor/register', { user: req.user })
 })
 
 router.use('*', isRegCompleted)
 
-
 router.get('/dashboard', (req, res, next) => {
-	User.findById(req.user._id)
-		.populate('upcomingSessions')
-		.populate({
-			path: 'upcomingSessions',
-			populate: {
-				path: 'mentor',
-				model: 'User',
-			},
-		})
-		.populate({
-			path: 'upcomingSessions',
-			populate: {
-				path: 'mentee',
-				model: 'User',
-			},
-		})
-		.exec((err, user) => {
-			if (err)
-				next(err)
-			res.render('mentor/dashboard', { user })
-
-			// res.render('mentor_dashboard', {
-			// 	user,
-			// 	successMsg: req.flash('successMsg')[0] || '',
-			// 	infoMsg: req.flash('infoMsg')[0] || '',
-			// })
-		})
+	res.render('mentor/dashboard', { user: req.user })
 })
 
 router.post('/availability', (req, res, next) => {
-
-	console.log(req.body)
 	var newSession = new Session()
-
 	newSession.start = req.body.start
 	newSession.end = req.body.end
 	newSession.mentor = req.user._id
 	newSession.type = req.body.type
 	newSession.save()
 		.then(savedSession => {
-			User.findByIdAndUpdate(req.user._id, { $addToSet: { upcomingSessions: savedSession._id } })
-				.then(() => {
-					res.status(200).json({ _id: savedSession._id })
-				})
-				.then(null, err => {
-					res.status(500).send(err)
-				})
+			res.status(200).json({ _id: savedSession._id })
 		})
-		.then(null, err => {
-			res.status(500).send(err)
+		.catch(err => {
+			next(err)
 		})
-
-
-
-
-	// var newSession = new Session()
-	// newSession.creation_date = new Date()
-	// newSession.type = req.body.type
-	// newSession.purpose = req.body.purpose
-	// newSession.date = new Date(req.body.date)
-	// newSession.startTime = req.body.startTime
-	// newSession.endTime = req.body.endTime
-	// newSession.mentor = req.user._id
-	// newSession.mentee = req.body.mentee_id
 
 	// save the session
 	// newSession.save((err, savedSession) => {
@@ -132,40 +85,50 @@ router.post('/availability', (req, res, next) => {
 })
 
 router.put('/availability', (req, res, next) => {
-	console.log(req.body)
-	Session.findByIdAndUpdate(req.body._id, req.body)
+	Session.findOneAndUpdate({
+		_id: req.body._id,
+		mentor: req.user._id,
+	}, req.body).exec()
 		.then(doc => {
-			res.status(200).send('update success')
+			res.status(200).send()
 		})
-		.then(null, err => {
-			res.status(500).send(err)
+		.catch(err => {
+			next(err)
 		})
 })
 
 router.delete('/availability', (req, res, next) => {
-	console.log(req.body)
-	Session.findByIdAndRemove(req.body._id)
-		.then(doc => User.update({ $or: [ { _id: doc.mentor }, { _id: doc.mentee } ] }, { $pull: { upcomingSessions: req.body._id } }, { multi: true }).exec())
+	Session.findOneAndRemove({
+		_id: req.body._id,
+		mentor: req.user._id,
+	}).exec()
 		.then(() => {
-			res.status(200).send('deletion success')
+			res.status(200).send()
 		})
-		.then(null, err => {
-			console.log(err)
-			res.status(500).send(err)
+		.catch(err => {
+			next(err)
 		})
 })
 
-router.get('/mymentees', (req, res, next) => {
-	User.findById(req.user._id)
-		.populate('mentees')
-		.exec((err, user) => {
-			if (err)
-				next(err)
+router.get('/my-mentees', (req, res, next) => {
+	Mentorship.find({
+		mentor: req.user._id,
+		mentee: { $exists: true },
+	})
+		.populate('mentee')
+		.exec()
+		.then(mentorships => {
+			const menteesArr = []
+			for (var i = 0; i < mentorships.length; i++)
+				menteesArr.push(mentorships[i].mentee)
 			res.render('common/profile_list', {
 				user: req.user,
-				profiles: user.mentees,
+				profiles: menteesArr,
 				title: 'My Mentees',
 			})
+		})
+		.catch(err => {
+			next(err)
 		})
 })
 
@@ -173,30 +136,47 @@ router.get('/mentor-list', (req, res, next) => {
 	User.find({
 		role: 'mentor',
 		completed: true,
+		verified: true,
 		_id: { $ne: req.user._id },
-	}, (err, profiles) => {
-		if (err)
-			next(err)
-		else
+	}).exec()
+		.then(profiles => {
 			res.render('common/profile_list', {
 				user: req.user,
 				profiles,
 				title: 'Mentor Search',
 			})
-	})
-
-})
-
-router.get('/mentor-details/:id', (req, res, next) => {
-	User.findById(req.params.id, (err, mentor) => {
-		if (err) next(err)
-		res.render('common/mentor_profile_details', {
-			user: req.user,
-			mentor,
+		})
+		.catch(err => {
+			next(err)
 		})
 
-	})
 })
+
+router.get('/mentor-profile/:id', (req, res, next) => {
+	User.findOne({
+		_id: req.params.id,
+		completed: true,
+		verified: true,
+		role: 'mentor',
+	}).exec()
+		.then(mentor => {
+			if (!mentor) return res.status(200).send('Mentor Not Found')
+			res.render('common/mentor_profile_details', {
+				user: req.user,
+				mentor,
+				matched: false,
+			})
+		})
+		.catch(err => {
+			next(err)
+		})
+})
+
+function isMentor (req, res, next) {
+	if (req.user.role === 'mentor')
+		return next()
+	res.redirect('/mentee/dashboard')
+}
 
 function isEmailVerified (req, res, next) {
 	if (req.user.verified)

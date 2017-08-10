@@ -3,6 +3,7 @@ const express = require('express'),
 	//	User = require('../passport/models/user'),
 	Session = require('../passport/models/session')
 
+
 router.get('/sessions/:id', (req, res) => {
 	const userId = req.params.id
 	Session.find({
@@ -17,7 +18,7 @@ router.get('/sessions/:id', (req, res) => {
 		.then(sessions => {
 			res.status(200).json(sessions)
 		})
-		.then(null, err => {
+		.catch(err => {
 			console.log(err)
 			res.status(500).send(err)
 		})
