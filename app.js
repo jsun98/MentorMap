@@ -16,7 +16,7 @@ const
 	PORT = process.env.PORT || 3000
 
 // DEVELOPMENT VARIABLES
-process.env.NODE_ENV = 'development'
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))

@@ -13,10 +13,12 @@ router.get('/', (req, res, next) => {
 
 })
 
-router.get('/verify', (req, res, next) => {
-	User.findByIdAndUpdate(req.query.id, { verified: true })
-		.then(() => {
-			req.flash('success', "Thank You For Verifying Your Email! We Are Thrilled to Have You On Board! Click on 'Log In' to Access Your Account.")
+router.get('/verify/:id', (req, res, next) => {
+	console.log(req.params.id)
+	User.findByIdAndUpdate(req.params.id, { verified: true })
+		.then(user => {
+			console.log(user)
+			// req.flash('success', "Thank You For Verifying Your Email! We Are Thrilled to Have You On Board! Click on 'Log In' to Access Your Account.")
 			res.redirect('/')
 		})
 		.catch(err => {
