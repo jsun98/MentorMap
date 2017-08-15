@@ -164,8 +164,8 @@ router.post('/cancel-mentor', isInMentorship, (req, res, next) => {
 router.post('/pick-time-slot', isInMentorship, hasSufficientTokens, (req, res, next) => {
 	Session.findByIdAndUpdate(req.body.session_id, {
 		mentee: req.user._id,
-		type: 'taken',
-		color: 'red',
+		type: 'requested',
+		color: 'orange',
 	}, { new: true }).exec()
 		.then(session => {
 			console.log(session)

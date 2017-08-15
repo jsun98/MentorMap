@@ -12,7 +12,7 @@ var sessionSchema = new mongoose.Schema({
 	},
 	type: {
 		type: String,
-		enum: [ 'available', 'taken', 'confirmed', 'pending', 'finished', 'noshow' ],
+		enum: [ 'available', 'requested', 'taken', 'finished', 'noshow' ],
 		default: 'available',
 	},
 	confirmation_email_sent: {
@@ -44,7 +44,7 @@ var sessionSchema = new mongoose.Schema({
 	color: {
 		type: String,
 		required: true,
-		enum: [ 'red', 'green', 'orange' ],
+		enum: [ 'red', 'green', 'orange', 'grey', 'yellow' ],
 		default: 'green',
 	},
 })

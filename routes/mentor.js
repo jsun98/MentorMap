@@ -97,6 +97,23 @@ router.put('/availability', (req, res, next) => {
 		})
 })
 
+router.post('/confirm-session', (req, res, next) => {
+	Session.findOneAndUpdate({
+		_id: req.body._id,
+		mentor: req.user._id,
+	}, {
+		type: 'taken',
+		color: 'red',
+	}).exec()
+		.then(doc => {
+			console.log(doc)
+			res.status(200).send()
+		})
+		.catch(err => {
+			next(err)
+		})
+})
+
 router.delete('/availability', (req, res, next) => {
 	Session.findOneAndRemove({
 		_id: req.body._id,

@@ -129,8 +129,10 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
+				<button type="button" id='confirm' class="btn btn-success" style="margin: 0;">Confirm</button>
+				<button type="button" id='refuse' class="btn btn-warning" style="margin: 0;">Refuse</button>
 				<button type="button" id='delete' class="btn btn-danger antoupdate" style="margin: 0;">Delete</button>
+				<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
 			</div>
 		</div>
 	</div>
@@ -180,27 +182,44 @@ $(window).load(function() {
 			center: 'title',
 			right: 'month,agendaWeek,agendaDay'
 		},
+		timezone: 'local',
 		defaultView: 'agendaWeek',
 		selectable: true,
 		selectHelper: true,
 		selectOverlap: false,
 		select: function(start, end) {
-			if (calendar.fullCalendar( 'getView' ).name === 'month')
-			return false
-			$.post('/mentor/availability', {
+			if (calendar.fullCalendar( 'getView' ).name === 'month') {
+				calendar.fullCalendar('unselect')
+				return false
+			}
+			if (start < moment().add(4, 'h')) {
+				new PNotify({
+					title: 'Error',
+					text: 'Your time slot must be booked 4 hours in advance!',
+					type: 'warning',
+					styling: "bootstrap3"
+				});
+				calendar.fullCalendar('unselect')
+				return false
+			}
+			if(end-start > 1.08e+7) {
+				new PNotify({
+					title: 'Error',
+					text: 'Time slot cannot be longer than 180 minutes',
+					type: 'danger',
+					styling: "bootstrap3"
+				});
+				calendar.fullCalendar('unselect')
+				return false
+			}
+
+			$.post('/session', {
 				type: 'available',
+				color: 'green',
 				start: start.valueOf(),
 				end: end.valueOf(),
+				mentor: user._id,
 			}).done(function (res) {
-				// calendar.fullCalendar('renderEvent', {
-				// 	start: start,
-				// 	end: end,
-				// 	color: 'green',
-				// 	title: 'Session',
-				// 	mentor: user,
-				// 	_id: res._id,
-				// 	type: 'available'
-				// }, true)
 				new PNotify({
 					title: 'Success',
 					text: 'New Time Slot Created',
@@ -212,33 +231,84 @@ $(window).load(function() {
 			});
 		},
 		eventClick: function( calEvent, jsEvent, view ) {
-			$('#event_details').click();
+			console.log(calEvent)
+			if (['taken', 'noshow', 'finished'].indexOf(calEvent.type) !== -1)
+				return false
 
+			$('#event_details').click();
 			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
 			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
 			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
 			$('#mentee').val(calEvent.mentee ? calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name : '')
-			if (calEvent.type === "expired" || calEvent.type === "taken")
-				$("#delete").hide()
-			else {
-				$("#delete").off().on("click", function() {
+			if (calEvent.type === "requested") {
+				$("#confirm").off().on("click", function() {
 					$.ajax({
-						url: '/mentor/availability',
-						type: 'DELETE',
+						url: '/session/'+calEvent._id,
+						type: 'PUT',
 						data: {
-							_id: calEvent._id,
+							type: 'taken',
+							color: 'red',
 						}
 					}).done(function (res) {
-						// calendar.fullCalendar('removeEvents', function (event) {
-						// 	return event == calEvent;
-						// });
+						new PNotify({
+							title: 'Session Confirmed',
+							type: 'success',
+							styling: "bootstrap3"
+						});
 						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					})
+				}).show()
+				$("#refuse").off().on("click", function() {
+					$.ajax({
+						url: '/session/'+calEvent._id,
+						type: 'PUT',
+						data: {
+							mentee: '',
+							type: 'available',
+							color: 'green',
+						}
+					}).done(function (res) {
+						new PNotify({
+							title: 'Request refused',
+							type: 'warning',
+							styling: "bootstrap3"
+						});
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					})
+				}).show()
+				$("#delete").off().on("click", function() {
+					$.ajax({
+						url: '/session/'+calEvent._id,
+						type: 'DELETE',
+					}).done(function (res) {
 						new PNotify({
 							title: 'Item Deleted',
 							text: 'Time Slot Deleted',
 							type: 'warning',
 							styling: "bootstrap3"
 						});
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					})
+				}).show()
+			}
+			else {
+				$("#confirm").hide()
+				$("#refuse").hide()
+				$("#delete").off().on("click", function() {
+					$.ajax({
+						url: '/session/'+calEvent._id,
+						type: 'DELETE',
+					}).done(function (res) {
+						new PNotify({
+							title: 'Time slot deleted',
+							text: 'Time Slot Deleted',
+							type: 'warning',
+							styling: "bootstrap3"
+						});
+						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
 					})
 				}).show()
@@ -249,14 +319,23 @@ $(window).load(function() {
 				revertFunc()
 				return false
 			}
+			if (calEvent.start < moment().add(4, 'h')) {
+				new PNotify({
+					title: 'Error',
+					text: 'Your time slot must be booked 4 hours in advance!',
+					type: 'warning',
+					styling: "bootstrap3"
+				});
+				revertFunc()
+				return false
+			}
 
 			var start = calEvent.start
 			var end = calEvent.end
 			$.ajax({
-				url: '/mentor/availability',
+				url: '/session/'+calEvent._id,
 				type: 'PUT',
 				data: {
-					_id: calEvent._id,
 					start: start.valueOf(),
 					end: end.valueOf(),
 				}
@@ -274,14 +353,33 @@ $(window).load(function() {
 				revertFunc()
 				return false
 			}
+			if (calEvent.start < moment().add(4, 'h')) {
+				new PNotify({
+					title: 'Error',
+					text: 'Your time slot must be booked 4 hours in advance!',
+					type: 'warning',
+					styling: "bootstrap3"
+				});
+				revertFunc()
+				return false
+			}
+			if(calEvent.end - calEvent.start > 1.08e+7) {
+				new PNotify({
+					title: 'Error',
+					text: 'Time slot cannot be longer than 180 minutes',
+					type: 'danger',
+					styling: "bootstrap3"
+				});
+				revertFunc()
+				return false
+			}
 
 			var start = calEvent.start
 			var end = calEvent.end
 			$.ajax({
-				url: '/mentor/availability',
+				url: '/session/'+calEvent._id,
 				type: 'PUT',
 				data: {
-					_id: calEvent._id,
 					start: start.valueOf(),
 					end: end.valueOf(),
 				}
@@ -299,74 +397,11 @@ $(window).load(function() {
 		},
 		editable: true,
 		eventOverlap: false,
-		events: '/db/sessions/'+ user._id,
+		events: '/session/byUserId/'+ user._id,
 	});
 });
 </script>
 <!-- /FullCalendar -->
-
-
-<!--
-<script>
-var opts = {
-lines: 12,
-angle: 0,
-lineWidth: 0.4,
-pointer: {
-length: 0.75,
-strokeWidth: 0.042,
-color: '#1D212A'
-},
-limitMax: 'false',
-colorStart: '#1ABC9C',
-colorStop: '#1ABC9C',
-strokeColor: '#F0F3F3',
-generateGradient: true
-};
-var target = document.getElementById('foo'),
-gauge = new Gauge(target).setOptions(opts);
-
-gauge.maxValue = 100;
-gauge.animationSpeed = 32;
-gauge.set(85);
-gauge.setTextField(document.getElementById("gauge-text"));
-</script>
-
-
-
-<script>
-var ctx = document.getElementById("canvasRadar");
-if (ctx) {
-var data = {
-labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
-datasets: [{
-label: "My First dataset",
-backgroundColor: "rgba(3, 88, 106, 0.2)",
-borderColor: "rgba(3, 88, 106, 0.80)",
-pointBorderColor: "rgba(3, 88, 106, 0.80)",
-pointBackgroundColor: "rgba(3, 88, 106, 0.80)",
-pointHoverBackgroundColor: "#fff",
-pointHoverBorderColor: "rgba(220,220,220,1)",
-data: [65, 59, 90, 81, 56, 55, 40]
-}, {
-label: "My Second dataset",
-backgroundColor: "rgba(38, 185, 154, 0.2)",
-borderColor: "rgba(38, 185, 154, 0.85)",
-pointColor: "rgba(38, 185, 154, 0.85)",
-pointStrokeColor: "#fff",
-pointHighlightFill: "#fff",
-pointHighlightStroke: "rgba(151,187,205,1)",
-data: [28, 48, 40, 19, 96, 27, 100]
-}]
-};
-
-var canvasRadar = new Chart(ctx, {
-type: 'radar',
-data: data,
-});
-}
-</script>
--->
 
 <!-- jQuery Sparklines -->
 <script>
