@@ -2,7 +2,11 @@
 
 // load all the things we need
 const LocalStrategy = require('passport-local').Strategy,
-	User = require('../models/user')
+	User = require('../models/user'),
+	Zoom = require('zoomus')({
+		key: 'R6fQ_CoxSUeWXxshTvhZhg',
+		secret: 'AhhzZfhGL4T3ACCBjsjlK5IvqQqUvYERygMV',
+	})
 
 // expose this function to our app using module.exports
 module.exports = function (passport, mailjet) {
@@ -61,25 +65,37 @@ module.exports = function (passport, mailjet) {
 				newUser.profile.curr_major = 'Software Engineering'
 				newUser.profile.curr_minor = 'Applied Health Sciences'
 				newUser.profile.grad_year = 2021
+
+				Zoom.user.custCreate({
+					email: newUser.email,
+					type: 1,
+					first_name: newUser.profile.first_name,
+					last_name: newUser.profile.last_name,
+				}, response => {
+					if (response.error)
+						done(response.error)
+					else {
+						newUser.ZoomId = response.id
+						newUser.save((err, savedUser) => {
+							if (err) done(err)
+
+							var hostname = process.env.NODE_ENV === 'development' ? 'localhost:3000' : req.hostname
+							mailjet
+								.post('send')
+								.request(require('../../email_templates/confirmation')(savedUser, hostname))
+								.then(response => {
+									console.log('Email sent to client ' + savedUser._id)
+									return done(null, savedUser)
+								})
+								.catch(err => {
+									console.log(err.statusCode, err)
+									return done(err)
+								})
+						})
+					}
+
+				})
 			}
-
-			// save the user
-			newUser.save((err, savedUser) => {
-				if (err) done(err)
-
-				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:3000' : req.hostname
-				mailjet
-					.post('send')
-					.request(require('../../email_templates/confirmation')(savedUser, hostname))
-					.then(response => {
-						console.log('Email sent to client ' + savedUser._id)
-						return done(null, savedUser)
-					})
-					.catch(err => {
-						console.log(err.statusCode, err)
-						return done(err)
-					})
-			})
 
 
 		})

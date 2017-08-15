@@ -41,6 +41,8 @@ var sessionSchema = new mongoose.Schema({
 		type: mongoose.Schema.ObjectId,
 		ref: 'User',
 	},
+	startURL: String,
+	joinURL: String,
 	color: {
 		type: String,
 		required: true,

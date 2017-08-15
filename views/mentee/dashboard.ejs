@@ -200,7 +200,7 @@ $(window).load(function() {
 			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
 			$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
 			$("#cancel").off().on("click", function() {
-				$.put( "/session/"+calEvent._id, { mentee: '', status: "available", color: "green" } )
+				$.put( "/mentee/session/cancel/"+calEvent._id, { status: "available", color: "green" } )
 					.done((res) => {
 						new PNotify({
 							title: 'Cancelled',

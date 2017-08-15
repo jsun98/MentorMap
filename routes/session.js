@@ -1,7 +1,11 @@
 const express = require('express'),
 	router = express.Router(),
 	//	User = require('../passport/models/user'),
-	Session = require('../passport/models/session')
+	Session = require('../passport/models/session'),
+	Zoom = require('zoomus')({
+		key: 'oxmx-UJlQ3-3vGBz1s98fQ',
+		secret: '1hWel7g0W8nv2tTu0I9jPWT8fOJJsYz',
+	})
 
 
 router.get('/byUserId/:id', (req, res) => {

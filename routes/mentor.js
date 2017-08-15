@@ -1,8 +1,13 @@
 const express = require('express'),
 	router = express.Router(),
+	moment = require('moment'),
 	User = require('../passport/models/user'),
 	Session = require('../passport/models/session'),
-	Mentorship = require('../passport/models/mentorship')
+	Mentorship = require('../passport/models/mentorship'),
+	Zoom = require('zoomus')({
+		key: 'R6fQ_CoxSUeWXxshTvhZhg',
+		secret: 'AhhzZfhGL4T3ACCBjsjlK5IvqQqUvYERygMV',
+	})
 
 router.use('*', isLoggedIn, isEmailVerified, isMentor)
 
@@ -84,42 +89,70 @@ router.post('/availability', (req, res, next) => {
 	// 	})
 })
 
-router.put('/availability', (req, res, next) => {
-	Session.findOneAndUpdate({
-		_id: req.body._id,
-		mentor: req.user._id,
-	}, req.body).exec()
-		.then(doc => {
-			res.status(200).send()
+router.post('/session/new', (req, res, next) => {
+	req.body.mentor = req.user._id
+	var session = new Session(req.body)
+	session.save()
+		.then(saved => {
+			res.status(200).send(saved)
 		})
 		.catch(err => {
 			next(err)
 		})
 })
 
-router.post('/confirm-session', (req, res, next) => {
-	Session.findOneAndUpdate({
-		_id: req.body._id,
-		mentor: req.user._id,
-	}, {
-		type: 'taken',
-		color: 'red',
-	}).exec()
-		.then(doc => {
-			console.log(doc)
-			res.status(200).send()
+router.put('/session/update/:id', (req, res, next) => {
+	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
+		.then(updated => {
+			res.status(200).send(updated)
 		})
 		.catch(err => {
 			next(err)
 		})
 })
 
-router.delete('/availability', (req, res, next) => {
-	Session.findOneAndRemove({
-		_id: req.body._id,
-		mentor: req.user._id,
-	}).exec()
-		.then(() => {
+router.put('/session/confirm/:id', (req, res, next) => {
+	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
+		.then(updated => {
+			console.log(moment.utc(updated.start).format('YYYY-MM-DD[T]HH:mm:ss[Z]'))
+			Zoom.meeting.create({
+				host_id: req.user.ZoomId,
+				type: 2,
+				topic: 'Mentoring Session',
+				start_time: moment.utc(updated.start).format('YYYY-MM-DD[T]HH:mm:ss[Z]'),
+				timezone: 'UTC',
+				duration: (updated.end - updated.start) / 60000,
+			}, response => {
+				if (response.error)
+					next(response.error)
+				else {
+					console.log(response)
+					res.status(200).send(updated)
+				}
+			})
+
+		})
+		.catch(err => {
+			next(err)
+		})
+
+
+})
+
+router.put('/session/refuse/:id', (req, res, next) => {
+	req.body.mentee = undefined
+	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
+		.then(updated => {
+			res.status(200).send(updated)
+		})
+		.catch(err => {
+			next(err)
+		})
+})
+
+router.delete('/session/delete/:id', (req, res, next) => {
+	Session.findByIdAndRemove(req.params.id)
+		.then(updated => {
 			res.status(200).send()
 		})
 		.catch(err => {

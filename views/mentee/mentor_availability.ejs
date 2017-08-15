@@ -201,9 +201,9 @@ $(window).load(function() {
 				$("#choose").hide()
 				$("#cancel").off().on("click", function() {
 					$.ajax({
-						url: "/session/"+calEvent._id,
+						url: "/mentee/session/cancel/"+calEvent._id,
 						type: 'PUT',
-						data: { mentee: '', type: "available", color: "green" }
+						data: { type: "available", color: "green" }
 					})
 					.done((res) => {
 						new PNotify({
@@ -221,9 +221,9 @@ $(window).load(function() {
 				$("#confirm").hide()
 				$("#choose").off().on("click", function() {
 					$.ajax({
-						url: "/session/"+calEvent._id,
+						url: "/mentee/session/choose/"+calEvent._id,
 						type: 'PUT',
-						data: { mentee: user._id, type: "requested", color: "orange" }
+						data: { type: "requested", color: "orange" }
 					})
 					.done((res) => {
 						new PNotify({

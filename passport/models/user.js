@@ -44,6 +44,7 @@ var userSchema = new mongoose.Schema({
 		min: 0,
 		default: 0,
 	},
+	ZoomId: String,
 
 	profile: {
 		// common info

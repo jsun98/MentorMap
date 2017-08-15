@@ -192,10 +192,10 @@ $(window).load(function() {
 				calendar.fullCalendar('unselect')
 				return false
 			}
-			if (start < moment().add(4, 'h')) {
+			if (start < moment().add(24, 'h')) {
 				new PNotify({
 					title: 'Error',
-					text: 'Your time slot must be booked 4 hours in advance!',
+					text: 'Your time slot must be booked 24 hours in advance!',
 					type: 'warning',
 					styling: "bootstrap3"
 				});
@@ -213,7 +213,7 @@ $(window).load(function() {
 				return false
 			}
 
-			$.post('/session', {
+			$.post('/mentor/session/new/', {
 				type: 'available',
 				color: 'green',
 				start: start.valueOf(),
@@ -243,7 +243,7 @@ $(window).load(function() {
 			if (calEvent.type === "requested") {
 				$("#confirm").off().on("click", function() {
 					$.ajax({
-						url: '/session/'+calEvent._id,
+						url: '/mentor/session/confirm/'+calEvent._id,
 						type: 'PUT',
 						data: {
 							type: 'taken',
@@ -261,10 +261,9 @@ $(window).load(function() {
 				}).show()
 				$("#refuse").off().on("click", function() {
 					$.ajax({
-						url: '/session/'+calEvent._id,
+						url: '/mentor/session/refuse/'+calEvent._id,
 						type: 'PUT',
 						data: {
-							mentee: '',
 							type: 'available',
 							color: 'green',
 						}
@@ -280,7 +279,7 @@ $(window).load(function() {
 				}).show()
 				$("#delete").off().on("click", function() {
 					$.ajax({
-						url: '/session/'+calEvent._id,
+						url: '/mentor/session/delete/'+calEvent._id,
 						type: 'DELETE',
 					}).done(function (res) {
 						new PNotify({
@@ -299,7 +298,7 @@ $(window).load(function() {
 				$("#refuse").hide()
 				$("#delete").off().on("click", function() {
 					$.ajax({
-						url: '/session/'+calEvent._id,
+						url: '/mentor/session/delete/'+calEvent._id,
 						type: 'DELETE',
 					}).done(function (res) {
 						new PNotify({
@@ -319,10 +318,10 @@ $(window).load(function() {
 				revertFunc()
 				return false
 			}
-			if (calEvent.start < moment().add(4, 'h')) {
+			if (calEvent.start < moment().add(24, 'h')) {
 				new PNotify({
 					title: 'Error',
-					text: 'Your time slot must be booked 4 hours in advance!',
+					text: 'Your time slot must be booked 24 hours in advance!',
 					type: 'warning',
 					styling: "bootstrap3"
 				});
@@ -333,7 +332,7 @@ $(window).load(function() {
 			var start = calEvent.start
 			var end = calEvent.end
 			$.ajax({
-				url: '/session/'+calEvent._id,
+				url: '/mentor/session/update/'+calEvent._id,
 				type: 'PUT',
 				data: {
 					start: start.valueOf(),
@@ -353,10 +352,10 @@ $(window).load(function() {
 				revertFunc()
 				return false
 			}
-			if (calEvent.start < moment().add(4, 'h')) {
+			if (calEvent.start < moment().add(24, 'h')) {
 				new PNotify({
 					title: 'Error',
-					text: 'Your time slot must be booked 4 hours in advance!',
+					text: 'Your time slot must be booked 24 hours in advance!',
 					type: 'warning',
 					styling: "bootstrap3"
 				});
@@ -377,7 +376,7 @@ $(window).load(function() {
 			var start = calEvent.start
 			var end = calEvent.end
 			$.ajax({
-				url: '/session/'+calEvent._id,
+				url: '/mentor/session/update/'+calEvent._id,
 				type: 'PUT',
 				data: {
 					start: start.valueOf(),

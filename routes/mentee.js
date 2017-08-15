@@ -4,6 +4,7 @@ const express = require('express'),
 	Session = require('../passport/models/session'),
 	Mentorship = require('../passport/models/mentorship')
 
+
 router.use('*', isLoggedIn, isEmailVerified, isMentee)
 
 router.get('/register', (req, res, next) => {
@@ -138,63 +139,26 @@ router.post('/choose-mentor', (req, res, next) => {
 		})
 })
 
-// Mentees cancels mentorship
-router.post('/cancel-mentor', isInMentorship, (req, res, next) => {
-	Session.find({
-		mentee: req.user._id,
-		mentor: req.body.mentor_id,
-		type: { $in: [ 'available', 'pending', 'taken' ] },
-	})
-		.then(sessions => {
-			if (sessions.length > 0) return res.status(200).send('You have outstanding sessions with this mentor')
-			return Mentorship.findOneAndRemove({
-				mentee: req.user._id,
-				mentor: req.body.mentor_id,
-			}).exec()
-		})
-		.then(() => {
-			res.status(200).send()
+router.put('/session/cancel/:id', (req, res, next) => {
+	req.body.mentee = undefined
+	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
+		.then(updated => {
+			res.status(200).send(updated)
 		})
 		.catch(err => {
 			next(err)
 		})
-
 })
 
-router.post('/pick-time-slot', isInMentorship, hasSufficientTokens, (req, res, next) => {
-	Session.findByIdAndUpdate(req.body.session_id, {
-		mentee: req.user._id,
-		type: 'requested',
-		color: 'orange',
-	}, { new: true }).exec()
-		.then(session => {
-			console.log(session)
-			if (!session) return res.status(200).send('Session not found')
-			res.status(200).send()
+router.put('/session/choose/:id', hasSufficientTokens, (req, res, next) => {
+	req.body.mentee = req.user._id
+	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
+		.then(updated => {
+			res.status(200).send(updated)
 		})
 		.catch(err => {
 			next(err)
 		})
-
-})
-
-router.post('/cancel-time-slot', isInMentorship, (req, res, next) => {
-	Session.findOneAndUpdate({
-		_id: req.body.session_id,
-		mentee: req.user._id,
-	}, {
-		mentee: undefined,
-		color: 'green',
-		type: 'available',
-	}, { new: true }).exec()
-		.then(session => {
-			if (!session) return res.status(200).send('Session not found')
-			res.status(200).send()
-		})
-		.catch(err => {
-			next(err)
-		})
-
 })
 
 router.get('/tokens', (req, res, next) => {
@@ -214,21 +178,6 @@ router.get('/tokens', (req, res, next) => {
 			next(err)
 		})
 })
-
-function isInMentorship (req, res, next) {
-	Mentorship.findOne({
-		mentee: req.user._id,
-		mentor: req.body.mentor_id,
-	}).exec()
-		.then(mentorship => {
-			if (!mentorship)
-				return res.status(200).send('not in mentorship!')
-			next()
-		})
-		.catch(err => {
-			next(err)
-		})
-}
 
 function hasSufficientTokens (req, res, next) {
 	Session.find({
