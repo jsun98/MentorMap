@@ -26,7 +26,7 @@ module.exports = function (passport) {
 	// =========================================================================
 	// FIRST SIGNUP ============================================================
 	// =========================================================================
-	passport.use('user-signup', new LocalStrategy({
+	passport.use('mentee-signup', new LocalStrategy({
 		usernameField: 'email',
 		passwordField: 'password',
 		passReqToCallback: true,
@@ -60,44 +60,78 @@ module.exports = function (passport) {
 				newUser.profile.high_school_program = [ 'AP', 'IB' ]
 				newUser.profile.preferred_program = [ 'Medicine', 'Engineering' ]
 				newUser.profile.preferred_school = [ 'Waterloo', 'University of Toronto' ]
-				newUser.profile.gpa = '4.0'
+
 				newUser.profile.curr_school = 'Univerisity of Waterloo'
 				newUser.profile.curr_major = 'Software Engineering'
 				newUser.profile.curr_minor = 'Applied Health Sciences'
 				newUser.profile.grad_year = 2021
-
-				Zoom.user.custCreate({
-					email: newUser.email,
-					type: 1,
-					first_name: newUser.profile.first_name,
-					last_name: newUser.profile.last_name,
-				}, response => {
-					if (response.error)
-						done(response.error)
-					else {
-						newUser.ZoomId = response.id
-						newUser.save((err, savedUser) => {
-							if (err) done(err)
-
-							var hostname = process.env.NODE_ENV === 'development' ? 'localhost:3000' : req.hostname
-							mailjet
-								.post('send')
-								.request(require('../../email_templates/confirmation')(savedUser, hostname))
-								.then(response => {
-									console.log('Email sent to client ' + savedUser._id)
-								})
-								.catch(err => {
-									console.log(err.statusCode, err)
-								})
-
-							done(null, newUser)
-						})
-					}
-
-				})
 			}
 
+			newUser.save((err, savedUser) => {
+				if (err) done(err)
 
+				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+				mailjet
+					.post('send')
+					.request(require('../../email_templates/confirmation')(savedUser, hostname))
+					.then(response => {
+						console.log('Email sent to client ' + savedUser._id)
+					})
+					.catch(err => {
+						console.log(err.statusCode, err)
+					})
+
+				done(null, newUser)
+			})
+		})
+
+	}))
+
+	passport.use('mentor-signup', new LocalStrategy({
+		usernameField: 'email',
+		passwordField: 'password',
+		passReqToCallback: true,
+	}, (req, email, password, done) => {
+		User.findOne({ email }, (err, user) => {
+			if (err) return done(err)
+
+			if (user) return done(null, false, req.flash('error', 'Email Already in Use!'))
+
+			var newUser = new User()
+
+			newUser.email = email
+			newUser.password = newUser.generateHash(password)
+			newUser.profile.first_name = req.body.first_name
+			newUser.profile.last_name = req.body.last_name
+
+			Zoom.user.custCreate({
+				email: newUser.email,
+				type: 1,
+				first_name: newUser.profile.first_name,
+				last_name: newUser.profile.last_name,
+			}, response => {
+				if (response.error)
+					done(response.error)
+				else {
+					newUser.ZoomId = response.id
+					newUser.save((err, savedUser) => {
+						if (err) done(err)
+
+						var hostname = req.hostname
+						mailjet
+							.post('send')
+							.request(require('../../email_templates/confirmation')(savedUser, hostname))
+							.then(response => {
+								console.log('Email sent to client ' + savedUser._id)
+							})
+							.catch(err => {
+								console.log(err.statusCode, err)
+							})
+
+						done(null, newUser)
+					})
+				}
+			})
 		})
 
 	}))

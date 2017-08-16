@@ -10,10 +10,10 @@ const
 	passport = require('passport'),
 	path = require('path'),
 	session = require('express-session'),
-	app = express(),
-	PORT = process.env.PORT || 3000
+	app = express()
 
 // DEVELOPMENT VARIABLES
+process.env.PORT = process.env.PORT || 3000
 process.env.NODE_ENV = process.env.NODE_ENV === 'undefined' ? 'development' : process.env.NODE_ENV
 
 // view engine setup
@@ -74,4 +74,4 @@ app.use((err, req, res, next) => {
 	res.render('404')
 })
 
-app.listen(PORT)
+app.listen(process.env.PORT)

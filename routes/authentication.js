@@ -28,7 +28,7 @@ router.post('/login', passport.authenticate('user-login', {
 	failureFlash: true,
 }))
 
-router.post('/signup', passport.authenticate('user-signup', {
+router.post('/signup', passport.authenticate('mentee-signup', {
 	successRedirect: '/email-confirm',
 	failureRedirect: '/auth/signup',
 	failureFlash: true,
