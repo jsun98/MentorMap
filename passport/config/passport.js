@@ -34,7 +34,7 @@ module.exports = function (passport) {
 		User.findOne({ email }, (err, user) => {
 			if (err) return done(err)
 
-			if (user) return done(null, false, { message: 'Email Already in Use!' })
+			if (user) return done(null, false, req.flash('error', 'Email Already in Use!'))
 
 			var newUser = new User()
 
@@ -119,18 +119,18 @@ module.exports = function (passport) {
 				if (err)
 					return done(err)
 
-				// if no user is found, return the message
+
 				if (!User)
-					return done(null, false, req.flash('errMessage', 'Email Not Found'))
+					return done(null, false, req.flash('error', 'Email Not Found'))
 
 				// if the user is found but the password is wrong
 				if (!User.validPassword(password))
-					return done(null, false, req.flash('errMessage', 'Wrong Password')) // create the loginMessage and save it to session as flashdata
+					return done(null, false, req.flash('error', 'Wrong Password')) // create the loginerror and save it to session as flashdata
 				// if the user is found but the password is wrong
 
 				// if email not verified
 				if (!User.verified)
-					return done(null, false, req.flash('errMessage', 'Please Verify Your Email First!'))
+					return done(null, false, req.flash('error', 'Please Verify Your Email First!'))
 
 				// promise
 				/*

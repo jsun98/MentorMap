@@ -3,8 +3,13 @@
 
 <head>
 <%- include('../partials/meta'); %>
-
+<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+<link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+<link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+<link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
 <link rel="stylesheet" href="/login/stylesheets/bundle.min.css"/>
+
 </head>
 
 <body>
@@ -31,15 +36,40 @@
 	  </div>
 	</div>
 
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-	        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	        crossorigin="anonymous"></script>
+
+	<script src="/vendor/jquery/dist/jquery.min.js"></script>
+	<!-- PNotify -->
+	<script src="/vendor/pnotify/dist/pnotify.js"></script>
+	<script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
+	<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+
+
 
 
 	<script>
 		$('.message a').click(function(){
 		   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
 		});
+
+		<% if (startPage === 'signup') { %>
+			$('form').animate({height: "toggle", opacity: "toggle"}, 0);
+		<% } %>
+
+
+		function showDangerNotify (msg) {
+			new PNotify({
+				title: 'Error',
+				text: msg,
+				type: 'error',
+				styling: "bootstrap3",
+				delay: 4000,
+				buttons: {sticker: false},
+			});
+		}
+
+		<% for (var i = 0; i < messages.length; i++) { %>
+			showDangerNotify('<%= messages[i] %>')
+		<% } %>
 	</script>
 
 </body>
