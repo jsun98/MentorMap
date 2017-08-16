@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/meta', {pageTitle: 'View Mentee Detail'}); %>
+
+    <!-- Bootstrap -->
+    <link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+    <link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/vendor/gentelella/css/custom.min.css" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <!-- left navigation -->
+        <%- include('../partials/left_nav', {user: user}); %>
+        <!-- /left navigation -->
+
+        <!-- top navigation -->
+        <%- include('../partials/top_nav', {user: user}); %>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Mentee Profile</h3>
+              </div>
+
+              <div class="title_right">
+                  <div class="input-group pull-right">
+                    <a type="button" href="/mentee/dashboard" class="btn btn-round btn-default">Back</a>
+                  </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_content">
+
+                    <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+
+                      <div class="profile_img">
+
+                        <!-- end of image cropping -->
+                        <div id="crop-avatar">
+                          <!-- Current avatar -->
+                          <img class="img-responsive avatar-view" src="/base/images/picture.jpg" alt="Avatar" title="Change the avatar">
+
+                          <!-- Loading state -->
+                          <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+                        </div>
+                        <!-- end of image cropping -->
+
+                      </div>
+                      <h3><%= mentee.profile.first_name + ' ' + mentee.profile.last_name %></h3>
+
+                      <ul class="list-unstyled user_data">
+                        <li>
+                          <i class="fa fa-institution user-profile-icon"></i><%= mentee.profile.high_school %>
+                        </li>
+						<li>
+						  <i class="fa fa-calendar user-profile-icon"></i> Grade:  <%= mentee.profile.grade %>
+						</li>
+                        <li>
+                          <i class="fa fa-briefcase user-profile-icon"></i> Preferred School: <br><%= mentee.profile.preferred_school %>
+                        </li>
+                        <% if (mentee.profile.curr_minor) { %>
+                        <li>
+                          <i class="fa fa-book user-profile-icon"></i> Preferred Program: <br><%= mentee.profile.preferred_program %>
+                        </li>
+                        <% } %>
+
+                        <% if (mentee.profile.linkedin) { %>
+                        <li class="m-top-xs">
+                          <i class="fa fa-external-link user-profile-icon"></i>
+                          <a href='<%= mentee.profile.linkedin %>' target="_blank"><%= mentee.profile.linkedin %></a>
+                        </li>
+                        <% } %>
+                      </ul>
+
+                      <!-- Large modal -->
+
+                      <br />
+
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+
+                      <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                          <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">About Me</a>
+                          </li>
+                          <li role="presentation" class=""><a href="#tab_content4" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Contact Information</a>
+                          </li>
+                        </ul>
+
+                        <div id="myTabContent" class="tab-content">
+
+                          <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                            <!-- About -->
+                            <ul class="messages">
+                              <!-- start skills -->
+                              <h4>Skills And Experiences</h4>
+                              <ul class="list-unstyled user_data">
+                                <% for (var i = 0; i < mentee.profile.skills.length; i++) { %>
+                                <li>
+                                  <p><%= mentee.profile.skills[i] %></p>
+                                </li>
+                                <% } %>
+                              </ul>
+							  <br/>
+							  <h4>Participating in the Following Programs</h4>
+							  <ul class="list-unstyled user_data">
+								<% for (var i = 0; i < mentee.profile.high_school_program.length; i++) { %>
+								<li>
+								  <p><%= mentee.profile.high_school_program[i] %></p>
+								</li>
+								<% } %>
+							  </ul>
+                            </ul>
+                            <!-- end about -->
+
+                          </div>
+                          <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="home-tab">
+                            <div>
+                              <h4>Email: <%= mentee.email %></h4>
+                              <h4>Phone: <%= mentee.profile.phone %></h4>
+                              <h4>LinkedIn: <%= mentee.profile.linkedin %></h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <%- include('../partials/footer'); %>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/vendor/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/vendor/nprogress/nprogress.js"></script>
+    <!-- morris.js -->
+    <script src="/vendor/raphael/raphael.min.js"></script>
+    <script src="/vendor/morris.js/morris.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/vendor/moment/moment.min.js"></script>
+    <script src="/vendor/datepicker/daterangepicker.js"></script>
+    <!-- PNotify -->
+    <script src="/vendor/pnotify/dist/pnotify.js"></script>
+    <script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="/vendor/gentelella/js/custom.min.js"></script>
+
+  </body>
+</html>

@@ -3,13 +3,14 @@
 // load all the things we need
 const LocalStrategy = require('passport-local').Strategy,
 	User = require('../models/user'),
+	mailjet = require('../../email_templates/email'),
 	Zoom = require('zoomus')({
 		key: 'R6fQ_CoxSUeWXxshTvhZhg',
 		secret: 'AhhzZfhGL4T3ACCBjsjlK5IvqQqUvYERygMV',
 	})
 
 // expose this function to our app using module.exports
-module.exports = function (passport, mailjet) {
+module.exports = function (passport) {
 
 	passport.serializeUser((user, done) => {
 		done(null, user.id)
@@ -42,7 +43,6 @@ module.exports = function (passport, mailjet) {
 			newUser.profile.first_name = req.body.first_name
 			newUser.profile.last_name = req.body.last_name
 
-			console.log('node_env is ' + process.env.NODE_ENV)
 			if (process.env.NODE_ENV === 'development') {
 				newUser.tokens = 100
 				newUser.verified = true
@@ -85,12 +85,12 @@ module.exports = function (passport, mailjet) {
 								.request(require('../../email_templates/confirmation')(savedUser, hostname))
 								.then(response => {
 									console.log('Email sent to client ' + savedUser._id)
-									return done(null, savedUser)
 								})
 								.catch(err => {
 									console.log(err.statusCode, err)
-									return done(err)
 								})
+
+							done(null, newUser)
 						})
 					}
 

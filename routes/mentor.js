@@ -222,6 +222,25 @@ router.get('/mentor-profile/:id', (req, res, next) => {
 		})
 })
 
+router.get('/mentee-profile/:id', (req, res, next) => {
+	User.findOne({
+		_id: req.params.id,
+		completed: true,
+		verified: true,
+		role: 'mentee',
+	}).exec()
+		.then(mentee => {
+			if (!mentee) return res.status(200).send('Mentee Not Found')
+			res.render('common/mentee_profile_details', {
+				user: req.user,
+				mentee,
+			})
+		})
+		.catch(err => {
+			next(err)
+		})
+})
+
 router.get('/tokens', (req, res, next) => {
 	res.render('common/tokens', {
 		user: req.user,

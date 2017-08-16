@@ -53,6 +53,10 @@
 			  <a type="button" class="btn btn-primary btn-xs details pull-right" href = "/mentee/mentor-profile/<%= profile._id %>" >
 				  <i class="fa fa-user"></i> Profile
 			  </a>
+		  <% } else if (title === 'My Mentees' && user.role === 'mentor') { %>
+			  <a type="button" class="btn btn-primary btn-xs details pull-right" href = "/mentor/mentee-profile/<%= profile._id %>" >
+				  <i class="fa fa-user"></i> Profile
+			  </a>
 		  <% } %>
 
 

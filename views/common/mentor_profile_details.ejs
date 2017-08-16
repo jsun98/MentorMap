@@ -58,68 +58,6 @@
                           <!-- Current avatar -->
                           <img class="img-responsive avatar-view" src="/base/images/picture.jpg" alt="Avatar" title="Change the avatar">
 
-                          <!-- Cropping modal -->
-                          <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
-                            <div class="modal-dialog modal-lg">
-                              <div class="modal-content">
-                                <form class="avatar-form" action="crop.php" enctype="multipart/form-data" method="post">
-                                  <div class="modal-header">
-                                    <button class="close" data-dismiss="modal" type="button">&times;</button>
-                                    <h4 class="modal-title" id="avatar-modal-label">Change Avatar</h4>
-                                  </div>
-                                  <div class="modal-body">
-                                    <div class="avatar-body">
-
-                                      <!-- Upload image and data -->
-                                      <div class="avatar-upload">
-                                        <input class="avatar-src" name="avatar_src" type="hidden">
-                                        <input class="avatar-data" name="avatar_data" type="hidden">
-                                        <label for="avatarInput">Local upload</label>
-                                        <input class="avatar-input" id="avatarInput" name="avatar_file" type="file">
-                                      </div>
-
-                                      <!-- Crop and preview -->
-                                      <div class="row">
-                                        <div class="col-md-9">
-                                          <div class="avatar-wrapper"></div>
-                                        </div>
-                                        <div class="col-md-3">
-                                          <div class="avatar-preview preview-lg"></div>
-                                          <div class="avatar-preview preview-md"></div>
-                                          <div class="avatar-preview preview-sm"></div>
-                                        </div>
-                                      </div>
-
-                                      <div class="row avatar-btns">
-                                        <div class="col-md-9">
-                                          <div class="btn-group">
-                                            <button class="btn btn-primary" data-method="rotate" data-option="-90" type="button" title="Rotate -90 degrees">Rotate Left</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="-15" type="button">-15deg</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="-30" type="button">-30deg</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="-45" type="button">-45deg</button>
-                                          </div>
-                                          <div class="btn-group">
-                                            <button class="btn btn-primary" data-method="rotate" data-option="90" type="button" title="Rotate 90 degrees">Rotate Right</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="15" type="button">15deg</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="30" type="button">30deg</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="45" type="button">45deg</button>
-                                          </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                          <button class="btn btn-primary btn-block avatar-save" type="submit">Done</button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- <div class="modal-footer">
-                                                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
-                                                  </div> -->
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- /.modal -->
-
                           <!-- Loading state -->
                           <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
                         </div>
@@ -130,8 +68,11 @@
 
                       <ul class="list-unstyled user_data">
                         <li>
-                          <i class="fa fa-institution user-profile-icon"></i> <%= mentor.profile.curr_school %>
+                          <i class="fa fa-institution user-profile-icon"></i><%= mentor.profile.curr_school %>
                         </li>
+						<li>
+						  <i class="fa fa-calendar user-profile-icon"></i> Graduates:  <%= mentor.profile.grad_year %>
+						</li>
                         <li>
                           <i class="fa fa-briefcase user-profile-icon"></i> <%= mentor.profile.curr_major %>
                         </li>
@@ -228,7 +169,7 @@
                             <!-- About -->
                             <ul class="messages">
                               <!-- start skills -->
-                              <h4>Skills</h4>
+                              <h4>Skills And Experiences</h4>
                               <ul class="list-unstyled user_data">
                                 <% for (var i = 0; i < mentor.profile.skills.length; i++) { %>
                                 <li>
@@ -236,16 +177,15 @@
                                 </li>
                                 <% } %>
                               </ul>
-                              <!-- end of skills -->
-                              <h4>Paragraph 1</h4>
-                              <%= mentor.profile.paragraphs[0] %>
-                              <h4>Paragraph 2</h4>
-                              <%= mentor.profile.paragraphs[1] %>
-                              <h4>Paragraph 3</h4>
-                              <%= mentor.profile.paragraphs[2] %>
-                              <h4>Paragraph 4</h4>
-                              <%= mentor.profile.paragraphs[3] %>
-
+							  <br/>
+							  <h4>Participated in the Following Programs</h4>
+							  <ul class="list-unstyled user_data">
+								<% for (var i = 0; i < mentor.profile.high_school_program.length; i++) { %>
+								<li>
+								  <p><%= mentor.profile.high_school_program[i] %></p>
+								</li>
+								<% } %>
+							  </ul>
                             </ul>
                             <!-- end about -->
 
@@ -254,9 +194,9 @@
                           <% if ((user.role === 'mentee' && matched === true) || user.role === 'mentor') { %>
                           <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="home-tab">
                             <div>
-                              <h4>Email: <%= mentor.email %></h4>
-                              <h4>Phone: <%= mentor.profile.phone %></h4>
-                              <h4>LinkedIn: <%= mentor.profile.linkedin %></h4>
+                              <h4>Email: </h4><p> <%= mentor.email %></p>
+                              <h4>Phone: </h4><p> <%= mentor.profile.phone %></p>
+                              <h4>LinkedIn: </h4><p> <%= mentor.profile.linkedin %></p>
                             </div>
                           </div>
                           <% } %>

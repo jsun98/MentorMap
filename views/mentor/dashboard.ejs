@@ -50,21 +50,6 @@
 							<div class="x_panel">
 								<div class="x_title">
 									<h2>Schedule</h2>
-									<ul class="nav navbar-right panel_toolbox">
-										<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-										</li>
-										<li class="dropdown">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-											<ul class="dropdown-menu" role="menu">
-												<li><a href="#">Settings 1</a>
-												</li>
-												<li><a href="#">Settings 2</a>
-												</li>
-											</ul>
-										</li>
-										<li><a class="close-link"><i class="fa fa-close"></i></a>
-										</li>
-									</ul>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
@@ -176,12 +161,52 @@ $(window).load(function() {
 	var user = <%- JSON.stringify(user) %>;
 	var calEvents = user.upcomingSessions
 
+	function showDangerNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Error',
+			text: msg,
+			type: 'error',
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showInfoNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Info',
+			text: msg,
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showSuccessNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Success',
+			text: msg,
+			type: 'success',
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
 	var calendar = $('#calendar').fullCalendar({
 		header: {
 			left: 'prev,next today',
 			center: 'title',
 			right: 'month,agendaWeek,agendaDay'
 		},
+		minTime: "07:00:00",
+		maxTime: "22:00:00",
+		allDaySlot: false,
 		timezone: 'local',
 		defaultView: 'agendaWeek',
 		selectable: true,
@@ -193,22 +218,12 @@ $(window).load(function() {
 				return false
 			}
 			if (start < moment().add(24, 'h')) {
-				new PNotify({
-					title: 'Error',
-					text: 'Your time slot must be booked 24 hours in advance!',
-					type: 'warning',
-					styling: "bootstrap3"
-				});
+				showDangerNotify('Your time slot must be booked 24 hours in advance!')
 				calendar.fullCalendar('unselect')
 				return false
 			}
-			if(end-start > 1.08e+7) {
-				new PNotify({
-					title: 'Error',
-					text: 'Time slot cannot be longer than 180 minutes',
-					type: 'danger',
-					styling: "bootstrap3"
-				});
+			if(end-start > 1.08e+7 || end-start < 3e+6) {
+				showDangerNotify('Time slot must be between 60 - 180 minutes')
 				calendar.fullCalendar('unselect')
 				return false
 			}
@@ -220,12 +235,7 @@ $(window).load(function() {
 				end: end.valueOf(),
 				mentor: user._id,
 			}).done(function (res) {
-				new PNotify({
-					title: 'Success',
-					text: 'New Time Slot Created',
-					type: 'success',
-					styling: "bootstrap3"
-				});
+				showSuccessNotify('New Time Slot Created')
 				calendar.fullCalendar('refetchEvents')
 				calendar.fullCalendar('unselect')
 			});
@@ -250,11 +260,7 @@ $(window).load(function() {
 							color: 'red',
 						}
 					}).done(function (res) {
-						new PNotify({
-							title: 'Session Confirmed',
-							type: 'success',
-							styling: "bootstrap3"
-						});
+						showSuccessNotify('Session Confirmed!')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
 					})
@@ -268,11 +274,7 @@ $(window).load(function() {
 							color: 'green',
 						}
 					}).done(function (res) {
-						new PNotify({
-							title: 'Request refused',
-							type: 'warning',
-							styling: "bootstrap3"
-						});
+						showInfoNotify('Request for session refused!')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
 					})
@@ -282,12 +284,7 @@ $(window).load(function() {
 						url: '/mentor/session/delete/'+calEvent._id,
 						type: 'DELETE',
 					}).done(function (res) {
-						new PNotify({
-							title: 'Item Deleted',
-							text: 'Time Slot Deleted',
-							type: 'warning',
-							styling: "bootstrap3"
-						});
+						showInfoNotify('Time slot deleted')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
 					})
@@ -301,12 +298,7 @@ $(window).load(function() {
 						url: '/mentor/session/delete/'+calEvent._id,
 						type: 'DELETE',
 					}).done(function (res) {
-						new PNotify({
-							title: 'Time slot deleted',
-							text: 'Time Slot Deleted',
-							type: 'warning',
-							styling: "bootstrap3"
-						});
+						showInfoNotify('Time slot deleted')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
 					})
@@ -319,12 +311,7 @@ $(window).load(function() {
 				return false
 			}
 			if (calEvent.start < moment().add(24, 'h')) {
-				new PNotify({
-					title: 'Error',
-					text: 'Your time slot must be booked 24 hours in advance!',
-					type: 'warning',
-					styling: "bootstrap3"
-				});
+				showDangerNotify('Your time slot must be booked 24 hours in advance!')
 				revertFunc()
 				return false
 			}
@@ -339,12 +326,7 @@ $(window).load(function() {
 					end: end.valueOf(),
 				}
 			}).done(function (res) {
-				new PNotify({
-					title: 'Success',
-					text: 'Changes Saved',
-					type: 'success',
-					styling: "bootstrap3"
-				});
+				showSuccessNotify('Time slot change saved!')
 			})
 		},
 		eventResize: function(calEvent, delta, revertFunc, jsEvent) {
@@ -353,22 +335,12 @@ $(window).load(function() {
 				return false
 			}
 			if (calEvent.start < moment().add(24, 'h')) {
-				new PNotify({
-					title: 'Error',
-					text: 'Your time slot must be booked 24 hours in advance!',
-					type: 'warning',
-					styling: "bootstrap3"
-				});
+				showDangerNotify('Your time slot must be booked 24 hours in advance!')
 				revertFunc()
 				return false
 			}
-			if(calEvent.end - calEvent.start > 1.08e+7) {
-				new PNotify({
-					title: 'Error',
-					text: 'Time slot cannot be longer than 180 minutes',
-					type: 'danger',
-					styling: "bootstrap3"
-				});
+			if(calEvent.end - calEvent.start > 1.08e+7 || calEvent.end - calEvent.start < 3e+6) {
+				showDangerNotify('Time slot must be between 60 to 180 minutes')
 				revertFunc()
 				return false
 			}
@@ -383,12 +355,7 @@ $(window).load(function() {
 					end: end.valueOf(),
 				}
 			}).done(function (res) {
-				new PNotify({
-					title: 'Success',
-					text: 'Changes Saved',
-					type: 'success',
-					styling: "bootstrap3"
-				});
+				showSuccessNotify('Time slot changes saved')
 			})
 		},
 		eventRender: function(event, element) {
