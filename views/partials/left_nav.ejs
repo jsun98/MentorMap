@@ -36,14 +36,12 @@
 			<li><a href='/mentee/dashboard'><i class="fa fa-home"></i> My Dashboard <span class="fa"></span></a></li>
 	        <li><a href="/mentee/my-mentors"><i class="fa fa-comments-o"></i> View My Mentors <span class="fa"></span></a></li>
 	        <li><a href="/mentee/new-mentors"><i class="fa fa-table"></i> Find A New Mentor <span class="fa"></span></a></li>
-	        <li><a href="/mentee/tokens"><i class="fa fa-dollar"></i> My Tokens <span class="fa"></span></a></li>
 			<li><a><i class="fa fa-edit"></i> Leave Us A Review <span class="fa"></span></a></li>
 		    <li><a><i class="fa fa-question-circle"></i> Help <span class="fa"></span></a></li>
 		<% } else if (user.role === 'mentor' && user.completed){ %>
 			<li><a href='/mentor/dashboard'><i class="fa fa-home"></i> My Dashboard <span class="fa"></span></a></li>
 			<li><a href="/mentor/my-mentees"><i class="fa fa-comments-o"></i> View My Mentees <span class="fa"></span></a></li>
 			<li><a href="/mentor/mentor-list"><i class="fa fa-table"></i> View Other Mentors <span class="fa"></span></a></li>
-			<li><a href="/mentor/tokens"><i class="fa fa-dollar"></i> My Tokens <span class="fa"></span></a></li>
 			<li><a><i class="fa fa-edit"></i> Leave Us A Review <span class="fa"></span></a></li>
 			<li><a><i class="fa fa-question-circle"></i> Help <span class="fa"></span></a></li>
 		<% } %>

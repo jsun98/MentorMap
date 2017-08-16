@@ -150,7 +150,7 @@ router.put('/session/cancel/:id', (req, res, next) => {
 		})
 })
 
-router.put('/session/choose/:id', hasSufficientTokens, (req, res, next) => {
+router.put('/session/choose/:id', (req, res, next) => {
 	req.body.mentee = req.user._id
 	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
 		.then(updated => {
@@ -160,41 +160,6 @@ router.put('/session/choose/:id', hasSufficientTokens, (req, res, next) => {
 			next(err)
 		})
 })
-
-router.get('/tokens', (req, res, next) => {
-	Session.find({
-		mentee: req.user._id,
-		type: { $in: [ 'pending', 'taken' ] },
-	}).count()
-		.then(count => {
-			console.log(count)
-			const amt = req.user.tokens - count
-			res.render('common/tokens', {
-				user: req.user,
-				tokens: amt,
-			})
-		})
-		.catch(err => {
-			next(err)
-		})
-})
-
-function hasSufficientTokens (req, res, next) {
-	Session.find({
-		mentee: req.user._id,
-		type: { $in: [ 'pending', 'taken' ] },
-	}).count()
-		.then(count => {
-			console.log(count)
-			const amt = req.user.tokens - count
-			if (amt > 0)
-				return next()
-			return res.status(200).send('Insufficient tokens')
-		})
-		.catch(err => {
-			next(err)
-		})
-}
 
 function isMentee (req, res, next) {
 	if (req.user.role === 'mentee')

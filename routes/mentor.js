@@ -241,12 +241,6 @@ router.get('/mentee-profile/:id', (req, res, next) => {
 		})
 })
 
-router.get('/tokens', (req, res, next) => {
-	res.render('common/tokens', {
-		user: req.user,
-		tokens: req.user.tokens,
-	})
-})
 
 
 function isMentor (req, res, next) {

@@ -38,12 +38,6 @@ var userSchema = new mongoose.Schema({
 		required: true,
 		default: Date(),
 	},
-	tokens: {
-		type: Number,
-		required: true,
-		min: 0,
-		default: 0,
-	},
 	ZoomId: String,
 
 	profile: {
