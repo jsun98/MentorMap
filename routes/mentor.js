@@ -89,6 +89,23 @@ router.post('/availability', (req, res, next) => {
 	// 	})
 })
 
+router.get('/mySessions', (req, res) => {
+	Session.find({
+		mentor: req.user._id,
+		start: { $gte: new Date(req.query.start) },
+		end: { $lte: new Date(req.query.end) },
+	})
+		.populate('mentor')
+		.populate('mentee')
+		.then(sessions => {
+			res.status(200).json(sessions)
+		})
+		.catch(err => {
+			console.log(err)
+			res.status(500).send(err)
+		})
+})
+
 router.post('/session/new', (req, res, next) => {
 	req.body.mentor = req.user._id
 	var session = new Session(req.body)
@@ -252,7 +269,7 @@ function isMentor (req, res, next) {
 function isEmailVerified (req, res, next) {
 	if (req.user.verified)
 		return next()
-	res.redirect('/auth/email-confirm')
+	res.redirect('/email-confirm')
 }
 
 // checks if registration is completed

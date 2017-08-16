@@ -161,6 +161,43 @@ $(window).load(function() {
 	var mentor = <%- JSON.stringify(mentor) %>
 	var user = <%- JSON.stringify(user) %>
 
+	function showDangerNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Error',
+			text: msg,
+			type: 'error',
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showInfoNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Info',
+			text: msg,
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showSuccessNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Success',
+			text: msg,
+			type: 'success',
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
 	var calendar = $('#calendar').fullCalendar({
 		header: {
 			left: 'prev,next today',
@@ -174,7 +211,6 @@ $(window).load(function() {
 		maxTime: "22:00:00",
 		allDaySlot: false,
 		eventClick: function(calEvent, jsEvent, view) {
-			console.log(calEvent)
 			if (['taken', 'finished', 'noshow'].indexOf(calEvent.type) !== -1)
 				return false;
 			if (calEvent.type === 'requested' && calEvent.mentee._id !== user._id)
@@ -194,12 +230,7 @@ $(window).load(function() {
 						data: { type: "available", color: "green" }
 					})
 					.done((res) => {
-						new PNotify({
-							title: 'Cancelled',
-							text: 'Your Session Has Been Canceled',
-							type: 'warning',
-							styling: "bootstrap3"
-						});
+						showInfoNotify('Your Session Has Been Canceled')
 						$('.close').click();
 						calendar.fullCalendar('refetchEvents')
 					})
@@ -214,12 +245,7 @@ $(window).load(function() {
 						data: { type: "requested", color: "orange" }
 					})
 					.done((res) => {
-						new PNotify({
-							title: 'Success',
-							text: res,
-							type: 'success',
-							styling: "bootstrap3"
-						});
+						showSuccessNotify('Your request has been processed')
 						$('.close').click();
 						calendar.fullCalendar('refetchEvents')
 					})
@@ -230,7 +256,7 @@ $(window).load(function() {
 
 		},
 		editable: false,
-		events:	'/session/byUserId/'+ mentor._id,
+		events:	'/mentee/sessionByMentorId/'+ mentor._id,
 		eventRender: function(event, element) {
 			element.append('Click for more details<br>Status: '+event.type+'<br>'+'Mentor: '+event.mentor.profile.first_name)
 

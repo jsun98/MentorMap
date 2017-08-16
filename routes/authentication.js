@@ -28,12 +28,8 @@ router.post('/login', passport.authenticate('user-login', {
 	failureFlash: true,
 }))
 
-router.get('/email-confirm', (req, res, next) => {
-	res.render('index/email-confirm')
-})
-
 router.post('/signup', passport.authenticate('user-signup', {
-	successRedirect: '/auth/email-confirm',
+	successRedirect: '/email-confirm',
 	failureRedirect: '/auth/signup',
 	failureFlash: true,
 }))

@@ -13,6 +13,10 @@ router.get('/', (req, res, next) => {
 
 })
 
+router.get('/email-confirm', (req, res, next) => {
+	res.render('index/email-confirm')
+})
+
 router.get('/verify/:id', (req, res, next) => {
 	User.findByIdAndUpdate(req.params.id, { verified: true })
 		.then(newUser => {
@@ -24,10 +28,12 @@ router.get('/verify/:id', (req, res, next) => {
 })
 
 router.get('/dashboard', (req, res, next) => {
+	if (!req.isAuthenticated())
+		res.redirect('/')
 	if (req.user.role === 'mentor')
 		res.redirect('/mentor/dashboard')
 	else
-		res.redirect('mentee/dashboard')
+		res.redirect('/mentee/dashboard')
 })
 
 module.exports = router

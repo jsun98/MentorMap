@@ -118,6 +118,41 @@ router.get('/mentor-availability/:id', (req, res, next) => {
 		})
 })
 
+router.get('/sessionByMentorId/:id', (req, res) => {
+	Session.find({
+		mentor: req.params.id,
+		$or: [ { type: 'available' }, { mentee: req.user._id } ],
+		start: { $gte: new Date(req.query.start) },
+		end: { $lte: new Date(req.query.end) },
+	})
+		.populate('mentor')
+		.populate('mentee')
+		.then(sessions => {
+			res.status(200).json(sessions)
+		})
+		.catch(err => {
+			console.log(err)
+			res.status(500).send(err)
+		})
+})
+
+router.get('/mySessions', (req, res) => {
+	Session.find({
+		mentee: req.user._id,
+		start: { $gte: new Date(req.query.start) },
+		end: { $lte: new Date(req.query.end) },
+	})
+		.populate('mentor')
+		.populate('mentee')
+		.then(sessions => {
+			res.status(200).json(sessions)
+		})
+		.catch(err => {
+			console.log(err)
+			res.status(500).send(err)
+		})
+})
+
 // Mentees choose mentor
 router.post('/choose-mentor', (req, res, next) => {
 	Mentorship.findOne({
@@ -171,7 +206,7 @@ function isMentee (req, res, next) {
 function isEmailVerified (req, res, next) {
 	if (req.user.verified)
 		return next()
-	res.redirect('/auth/email-confirm')
+	res.redirect('/email-confirm')
 }
 
 // checks if registration is completed

@@ -50,7 +50,6 @@ app.use(flash()) // use connect-flash for flash messages stored in session
 app.use('/auth', require('./routes/authentication.js'))
 app.use('/mentee', require('./routes/mentee.js'))
 app.use('/mentor', require('./routes/mentor.js'))
-app.use('/session', require('./routes/session.js'))
 app.use('/', require('./routes/index.js'))
 
 

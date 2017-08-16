@@ -166,6 +166,43 @@ $(window).load(function() {
 	started,
 	categoryClass;
 
+	function showDangerNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Error',
+			text: msg,
+			type: 'error',
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showInfoNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Info',
+			text: msg,
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showSuccessNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Success',
+			text: msg,
+			type: 'success',
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
 	var calendar = $('#calendar').fullCalendar({
 		header: {
 			left: 'prev,next today',
@@ -190,12 +227,7 @@ $(window).load(function() {
 			$("#cancel").off().on("click", function() {
 				$.put( "/mentee/session/cancel/"+calEvent._id, { status: "available", color: "green" } )
 					.done((res) => {
-						new PNotify({
-							title: 'Cancelled',
-							text: 'Your Session Has Been Canceled',
-							type: 'warning',
-							styling: "bootstrap3"
-						});
+						showInfoNotify('Your Session Has Been Canceled')
 						$('.close').click();
 						calendar.fullCalendar('refetchEvents')
 					})
@@ -204,7 +236,7 @@ $(window).load(function() {
 			calendar.fullCalendar('unselect');
 
 		},
-		events: '/session/byUserId/'+ user._id,
+		events: '/mentee/mySessions',
 		eventRender: function(event, element) {
 			element.append('Click for more details<br>Status: '+event.type+'<br>'+'Mentor: '+event.mentor.profile.first_name)
 		}
