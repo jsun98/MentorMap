@@ -6,18 +6,20 @@ const express = require('express'),
 // LOGIN ===============================
 // =====================================
 
-router.get('/login', (req, res, next) => {
+router.get('/login', isLoggedIn, (req, res, next) => {
 	res.render('index/login', {
 		user: req.user,
-		messages: req.flash('error'),
+		error: req.flash('error'),
+		success: req.flash('success'),
 		startPage: 'login',
 	})
 })
 
-router.get('/signup', (req, res, next) => {
+router.get('/signup', isLoggedIn, (req, res, next) => {
 	res.render('index/login', {
 		user: req.user,
-		messages: req.flash('error'),
+		error: req.flash('error'),
+		success: req.flash('success'),
 		startPage: 'signup',
 	})
 })
@@ -38,5 +40,11 @@ router.get('/logout', (req, res) => {
 	req.logout()
 	res.redirect('/')
 })
+
+function isLoggedIn (req, res, next) {
+	if (req.isAuthenticated())
+		return res.redirect('/dashboard')
+	next()
+}
 
 module.exports = router

@@ -67,22 +67,17 @@ module.exports = function (passport) {
 				newUser.profile.grad_year = 2021
 			}
 
-			newUser.save((err, savedUser) => {
-				if (err) done(err)
-
-				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-				mailjet
-					.post('send')
-					.request(require('../../email_templates/confirmation')(savedUser, hostname))
-					.then(response => {
-						console.log('Email sent to client ' + savedUser._id)
-					})
-					.catch(err => {
-						console.log(err.statusCode, err)
-					})
-
-				done(null, newUser)
-			})
+			newUser.save()
+				.then(savedUser => {
+					done(null, newUser)
+					var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+					return mailjet
+						.post('send')
+						.request(require('../../email_templates/confirmation')(savedUser, hostname))
+				})
+				.catch(err => {
+					done(err)
+				})
 		})
 
 	}))

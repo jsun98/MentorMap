@@ -56,6 +56,18 @@
 		<% } %>
 
 
+
+		function showSuccessNotify (msg) {
+			new PNotify({
+				title: 'Success',
+				text: msg,
+				type: 'success',
+				styling: "bootstrap3",
+				delay: 4000,
+				buttons: {sticker: false},
+			});
+		}
+
 		function showDangerNotify (msg) {
 			new PNotify({
 				title: 'Error',
@@ -67,8 +79,12 @@
 			});
 		}
 
-		<% for (var i = 0; i < messages.length; i++) { %>
-			showDangerNotify('<%= messages[i] %>')
+		<% for (var i = 0; i < error.length; i++) { %>
+			showDangerNotify('<%= error[i] %>')
+		<% } %>
+
+		<% for (var i = 0; i < success.length; i++) { %>
+			showSuccessNotify('<%= success[i] %>')
 		<% } %>
 	</script>
 

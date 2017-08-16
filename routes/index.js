@@ -14,13 +14,16 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/email-confirm', (req, res, next) => {
+	if (req.isAuthenticated())
+		req.logout()
 	res.render('index/email-confirm')
 })
 
 router.get('/verify/:id', (req, res, next) => {
 	User.findByIdAndUpdate(req.params.id, { verified: true })
 		.then(newUser => {
-			res.redirect('/')
+			req.flash('success', 'Your account has now been verified. Log in to start exploring MentorMap!')
+			res.redirect('/auth/login')
 		})
 		.catch(err => {
 			next(err)
