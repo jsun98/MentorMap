@@ -39,7 +39,7 @@
 				<div class="">
 					<div class="page-title">
 						<div class="title_left" style="width: 100%;">
-							<h3>See My Mentor's Availability <small>Click On Any Available Time Slot to Request A Session With the Mentor</small></h3>
+							<h3>See My Mentor's Availability <small>To request a session with this mentor or view session details, click on any available green slots.</small></h3>
 						</div>
 					</div>
 
@@ -85,31 +85,31 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Start</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="start" disabled>
+									<input type="text" class="form-control" id="start" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">End</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="end" disabled>
+									<input type="text" class="form-control" id="end" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Mentor</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="mentor" disabled>
+									<input type="text" class="form-control" id="mentor" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Mentee</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="mentee" disabled>
+									<input type="text" class="form-control" id="mentee" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Zoom Link</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="zoom" disabled>
+									<input type="text" class="form-control" id="zoom-join" readonly>
 								</div>
 							</div>
 
@@ -117,9 +117,12 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+					<p style="text-align: left;">Note: you will only be charged after your request has been confirmed by the mentor.
+					If the mentor refuses your request you will be refunded in full. If the mentor does not show up for the seesion,
+					please email us and we will refund you in full.</p>
 					<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
-					<button type="button" id='choose' class="btn btn-success antoupdate" style="margin: 0;">Choose This Slot</button>
-					<button type="button" id='cancel' class="btn btn-danger antoupdate" style="margin: 0;">Cancel Appointment</button>
+					<button type="button" id='choose' class="btn btn-success antoupdate btn-control" style="margin: 0;">Submit Request</button>
+					<button type="button" id='cancel' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Cancel Request</button>
 				</div>
 			</div>
 		</div>
@@ -212,7 +215,7 @@ $(window).load(function() {
 		allDaySlot: false,
 		eventClick: function(calEvent, jsEvent, view) {
 			if (['taken', 'finished', 'noshow'].indexOf(calEvent.type) !== -1)
-				return false;
+				$('.btn-control').hide()
 			if (calEvent.type === 'requested' && calEvent.mentee._id !== user._id)
 				return false
 			$('#event_details').click();
@@ -220,6 +223,7 @@ $(window).load(function() {
 			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
 			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
 			$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
+			$('#zoom-join').val(calEvent.joinURL)
 
 			if (calEvent.type === 'requested') {
 				$("#choose").hide()

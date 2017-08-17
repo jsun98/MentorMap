@@ -2,38 +2,38 @@
 <html>
 
 <head>
-<%- include('../partials/meta'); %>
-<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
-<link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-<link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
-<link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-<link rel="stylesheet" href="/login/stylesheets/bundle.min.css"/>
+	<%- include('../partials/meta'); %>
+	<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+	<link rel="stylesheet" href="/login/stylesheets/bundle.min.css"/>
 
 </head>
 
 <body>
 
 	<div class="login-page">
-	  <div class="form">
-	    <form class="register-form" method="POST" action="/auth/signup" novalidate>
-			<h2 class="title">Become a Mentee</h2>
-			<input type="email" name="email" placeholder="Email" autocomplete="email"/>
-			<input type="text" name="first_name" placeholder="First Name" autocomplete="given-name"/>
-			<input type="text" name="last_name" placeholder="Last Name" autocomplete="family-name"/>
-			<input type="password" name="password" placeholder="Password" autocomplete="new-password"  />
-			<button type='submit'>Create My Account</button>
-			<p class="message">Already registered? <a href="javascript:void(0)">Sign In</a></p>
-			<p class="message">Want To Become a Mentor? <a href="javascript:void(0)">Click Here</a></p>
-	    </form>
-	    <form class="login-form" method="POST" action="/auth/login" novalidate>
-			<h2 class="title">Sign In</h2>
-			<input type="email" name="email" placeholder="Email" autocomplete="email" />
-			<input type="password" name="password" placeholder="Password" autocomplete="new-password"/>
-			<button type='submit'>Log In</button>
-	      	<p class="message">Not registered? <a href="javascript:void(0)">Create an account</a></p>
-	    </form>
-	  </div>
+		<div class="form">
+			<form class="register-form" method="POST" action="/auth/signup" novalidate>
+				<h2 class="title">Become a Mentee</h2>
+				<input type="email" name="email" placeholder="Email" autocomplete="email"/>
+				<input type="text" name="first_name" placeholder="First Name" autocomplete="given-name"/>
+				<input type="text" name="last_name" placeholder="Last Name" autocomplete="family-name"/>
+				<input type="password" name="password" placeholder="Password" autocomplete="new-password"  />
+				<button type='submit'>Create My Account</button>
+				<p class="message">Already registered? <a href="javascript:void(0)">Sign In</a></p>
+				<p class="message">Want To Become a Mentor? <a href="javascript:void(0)">Click Here</a></p>
+			</form>
+			<form class="login-form" method="POST" action="/auth/login" novalidate>
+				<h2 class="title">Sign In</h2>
+				<input type="email" name="email" placeholder="Email" autocomplete="email" required='required' />
+				<input type="password" name="password" placeholder="Password" autocomplete="new-password" required='required'  />
+				<button type='submit'>Log In</button>
+				<p class="message">Not registered? <a href="javascript:void(0)">Create an account</a></p>
+			</form>
+		</div>
 	</div>
 
 
@@ -44,15 +44,13 @@
 	<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
 
 
-
-
 	<script>
-		$('.message a').click(function(){
-		   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-		});
+	$('.message a').click(function(){
+		$('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+	});
 
-		<% if (startPage === 'signup') { %>
-			$('form').animate({height: "toggle", opacity: "toggle"}, 0);
+	<% if (startPage === 'signup') { %>
+		$('form').animate({height: "toggle", opacity: "toggle"}, 0);
 		<% } %>
 
 

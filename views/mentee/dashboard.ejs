@@ -86,31 +86,31 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Start</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="start" disabled>
+									<input type="text" class="form-control" id="start" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">End</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="end" disabled>
+									<input type="text" class="form-control" id="end" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Mentor</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="mentor" disabled>
+									<input type="text" class="form-control" id="mentor" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Mentee</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="mentee" disabled>
+									<input type="text" class="form-control" id="mentee" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Zoom Link</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="zoom" disabled>
+									<input type="text" class="form-control" id="zoom-join" readonly>
 								</div>
 							</div>
 
@@ -118,8 +118,11 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+					<p style="text-align: left;">Note: you will only be charged after your request has been confirmed by the mentor.
+					If the mentor refuses your request you will be refunded in full. If the mentor does not show up for the seesion,
+					please email us and we will refund you in full.</p>
 					<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
-					<button type="button" id='cancel' class="btn btn-danger antoupdate" style="margin: 0;">Cancel Appointment</button>
+					<button type="button" id='cancel' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Cancel Appointment</button>
 				</div>
 			</div>
 		</div>
@@ -217,21 +220,29 @@ $(window).load(function() {
 		allDaySlot: false,
 		eventClick: function(calEvent, jsEvent, view) {
 			if (['taken', 'finished', 'noshow'].indexOf(calEvent.type) !== -1)
-				return false;
-
-			$('#event_details').click();
-			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
-			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
-			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
-			$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
-			$("#cancel").off().on("click", function() {
-				$.put( "/mentee/session/cancel/"+calEvent._id, { status: "available", color: "green" } )
+				$('#cancel').hide()
+			else {
+				$("#cancel").off().on("click", function() {
+					$.ajax({
+						url: "/mentee/session/cancel/"+calEvent._id,
+						type: 'PUT',
+						data: { type: "available", color: "green" }
+					})
 					.done((res) => {
 						showInfoNotify('Your Session Has Been Canceled')
 						$('.close').click();
 						calendar.fullCalendar('refetchEvents')
 					})
 				}).show();
+			}
+
+			$('#event_details').click();
+			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
+			$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
+			$('#zoom-join').val(calEvent.joinURL)
+
 
 			calendar.fullCalendar('unselect');
 

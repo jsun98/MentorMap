@@ -82,31 +82,37 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">Start</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="start" disabled>
+								<input type="text" class="form-control" id="start" readonly>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label">End</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="end" disabled>
+								<input type="text" class="form-control" id="end" readonly>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label">Mentor</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="mentor" disabled>
+								<input type="text" class="form-control" id="mentor" readonly>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label">Mentee</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="mentee" disabled>
+								<input type="text" class="form-control" id="mentee" readonly>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label">Zoom Link</label>
+							<label class="col-sm-3 control-label">Zoom Host Start Link</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="zoom" disabled>
+								<textarea type="text" class="form-control" id="zoom-start" readonly></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Zoom Mentee Join Link</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="zoom-join" readonly>
 							</div>
 						</div>
 
@@ -114,9 +120,13 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" id='confirm' class="btn btn-success" style="margin: 0;">Confirm</button>
-				<button type="button" id='refuse' class="btn btn-warning" style="margin: 0;">Refuse</button>
-				<button type="button" id='delete' class="btn btn-danger antoupdate" style="margin: 0;">Delete</button>
+				<p style="text-align: left;">Note: if you confirm a request, you will not be able
+					 to make any changes to or cancel the session. You may only cancel a
+					 session if it has not been confirmed by you. If you absolutely have to cancel
+				 	 a session after it has been confirmed, please email us and explain your circumstances.</p>
+				<button type="button" id='confirm' class="btn btn-success btn-control" style="margin: 0;">Confirm</button>
+				<button type="button" id='refuse' class="btn btn-warning btn-control" style="margin: 0;">Refuse</button>
+				<button type="button" id='delete' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Delete</button>
 				<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
 			</div>
 		</div>
@@ -168,7 +178,7 @@ $(window).load(function() {
 			text: msg,
 			type: 'error',
 			styling: "bootstrap3",
-			delay: 4000,
+			delay: 6000,
 			buttons: {sticker: false},
 		});
 	}
@@ -180,7 +190,7 @@ $(window).load(function() {
 			title: 'Info',
 			text: msg,
 			styling: "bootstrap3",
-			delay: 4000,
+			delay: 6000,
 			buttons: {sticker: false},
 		});
 	}
@@ -193,7 +203,7 @@ $(window).load(function() {
 			text: msg,
 			type: 'success',
 			styling: "bootstrap3",
-			delay: 4000,
+			delay: 6000,
 			buttons: {sticker: false},
 		});
 	}
@@ -242,14 +252,17 @@ $(window).load(function() {
 		},
 		eventClick: function( calEvent, jsEvent, view ) {
 			console.log(calEvent)
-			if (['taken', 'noshow', 'finished'].indexOf(calEvent.type) !== -1)
-				return false
+			if (['taken', 'noshow', 'finished'].indexOf(calEvent.type) !== -1) {
+				$('.btn-control').hide()
+			}
 
 			$('#event_details').click();
 			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
 			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
 			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
 			$('#mentee').val(calEvent.mentee ? calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name : '')
+			$('#zoom-start').val(calEvent.startURL)
+			$('#zoom-join').val(calEvent.joinURL)
 			if (calEvent.type === "requested") {
 				$("#confirm").off().on("click", function() {
 					$.ajax({
@@ -258,9 +271,11 @@ $(window).load(function() {
 						data: {
 							type: 'taken',
 							color: 'red',
+							start: calEvent.start.format(),
+							end: calEvent.end.format(),
 						}
 					}).done(function (res) {
-						showSuccessNotify('Session Confirmed!')
+						showSuccessNotify('Session Confirmed! Click on the event again to view the Zoom links. An email with relevent information has also been sent to you.')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
 					})
@@ -290,7 +305,7 @@ $(window).load(function() {
 					})
 				}).show()
 			}
-			else {
+			else if (calEvent.type === "available") {
 				$("#confirm").hide()
 				$("#refuse").hide()
 				$("#delete").off().on("click", function() {

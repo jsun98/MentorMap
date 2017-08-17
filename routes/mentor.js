@@ -129,30 +129,30 @@ router.put('/session/update/:id', (req, res, next) => {
 })
 
 router.put('/session/confirm/:id', (req, res, next) => {
-	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
-		.then(updated => {
-			console.log(moment.utc(updated.start).format('YYYY-MM-DD[T]HH:mm:ss[Z]'))
-			Zoom.meeting.create({
-				host_id: req.user.ZoomId,
-				type: 2,
-				topic: 'Mentoring Session',
-				start_time: moment.utc(updated.start).format('YYYY-MM-DD[T]HH:mm:ss[Z]'),
-				timezone: 'UTC',
-				duration: (updated.end - updated.start) / 60000,
-			}, response => {
-				if (response.error)
-					next(response.error)
-				else {
-					console.log(response)
-					res.status(200).send(updated)
-				}
-			})
-
-		})
-		.catch(err => {
-			next(err)
-		})
-
+	var updated = req.body
+	Zoom.meeting.create({
+		host_id: req.user.ZoomId,
+		type: 2,
+		topic: 'Mentoring Session',
+		start_time: moment.utc(updated.start).format('YYYY-MM-DD[T]HH:mm:ss[Z]'),
+		timezone: 'UTC',
+		duration: (moment(updated.end) - moment(updated.start)) / 60000,
+	}, response => {
+		console.log(response)
+		if (response.error)
+			next(response.error)
+		else {
+			req.body.joinURL = response.join_url
+			req.body.startURL = response.start_url
+			Session.findByIdAndUpdate(req.params.id, req.body)
+				.then(() => {
+					res.status(200).send()
+				})
+				.catch(err => {
+					next(err)
+				})
+		}
+	})
 
 })
 

@@ -3,11 +3,8 @@ const express = require('express'),
 	User = require('../passport/models/user')
 
 router.get('/', (req, res, next) => {
-	let authenticated = false
-	if (req.isAuthenticated())
-		authenticated = true
 	res.render('index/index', {
-		authenticated,
+		authenticated: req.isAuthenticated(),
 		user: req.user,
 	})
 
@@ -15,7 +12,10 @@ router.get('/', (req, res, next) => {
 
 router.get('/email-confirm', (req, res, next) => {
 	if (req.isAuthenticated())
-		req.logout()
+		if (req.user.verified)
+			res.redirect('/')
+		else
+			req.logout()
 	res.render('index/email-confirm')
 })
 
