@@ -1,9 +1,10 @@
-const express = require('express'),
+const
+	express = require('express'),
 	router = express.Router(),
 	User = require('../passport/models/user'),
 	Session = require('../passport/models/session'),
-	Mentorship = require('../passport/models/mentorship')
-
+	Mentorship = require('../passport/models/mentorship'),
+	gateway = require('../BrainTree/braintree.js')
 
 router.use('*', isLoggedIn, isEmailVerified, isMentee)
 
@@ -17,6 +18,13 @@ router.use('*', isRegCompleted)
 
 router.get('/dashboard', (req, res, next) => {
 	res.render('mentee/dashboard', { user: req.user })
+})
+
+router.get('/paymentToken', (req, res, next) => {
+	gateway.clientToken.generate({ }, (err, response) => {
+		if (err) next(err)
+		res.status(200).send(response.clientToken)
+	})
 })
 
 router.get('/my-mentors', (req, res, next) => {
@@ -185,15 +193,29 @@ router.put('/session/cancel/:id', (req, res, next) => {
 		})
 })
 
+// TRANSACTION
 router.put('/session/choose/:id', (req, res, next) => {
 	req.body.mentee = req.user._id
-	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
-		.then(updated => {
-			res.status(200).send(updated)
-		})
-		.catch(err => {
-			next(err)
-		})
+	gateway.transaction.sale({
+		amount: '11.99',
+		paymentMethodNonce: process.env.NODE_ENV === 'development' ? 'fake-valid-nonce' : req.body.nonce,
+		options: { submitForSettlement: false },
+	}, (err, result) => {
+		if (err) next(err)
+		Session.findByIdAndUpdate(req.params.id, {
+			color: 'orange',
+			type: 'requested',
+			mentee: req.user._id,
+			transaction_id: result.transaction.id,
+		}, { new: true })
+			.then(updated => {
+				res.status(200).send(updated)
+			})
+			.catch(err => {
+				next(err)
+			})
+	})
+
 })
 
 function isMentee (req, res, next) {

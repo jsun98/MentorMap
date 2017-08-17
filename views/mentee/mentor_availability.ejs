@@ -118,175 +118,236 @@
 				</div>
 				<div class="modal-footer">
 					<p style="text-align: left;">Note: you will only be charged after your request has been confirmed by the mentor.
-					If the mentor refuses your request you will be refunded in full. If the mentor does not show up for the seesion,
-					please email us and we will refund you in full.</p>
-					<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
-					<button type="button" id='choose' class="btn btn-success antoupdate btn-control" style="margin: 0;">Submit Request</button>
-					<button type="button" id='cancel' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Cancel Request</button>
+						If the mentor refuses your request you will be refunded in full. If the mentor does not show up for the seesion,
+						please email us and we will refund you in full.</p>
+						<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
+						<button type="button" id='choose' class="btn btn-success antoupdate btn-control" style="margin: 0;">Make Payment and Request Session</button>
+						<button type="button" id='cancel' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Cancel Request</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div id="event_details" data-toggle="modal" data-target="#CalenderModalEventDetails"></div>
-	<!-- /calendar modal -->
+		<div id="event_details" data-toggle="modal" data-target="#CalenderModalEventDetails"></div>
+		<!-- /calendar modal -->
 
-	<!-- jQuery -->
-	<script src="/vendor/jquery/dist/jquery.min.js"></script>
-	<!-- Bootstrap -->
-	<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-	<!-- FastClick -->
-	<script src="/vendor/fastclick/lib/fastclick.js"></script>
-	<!-- iCheck -->
-	<script src="/vendor/iCheck/icheck.min.js"></script>
-	<!-- gauge.js
-	<script src="/vendor/bernii/gauge.js/dist/gauge.min.js"></script>
+		<!-- calendar modal -->
+		<div id="paymentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog">
+				<div class="modal-content">
 
-	<script src="/vendor/Chart.js/dist/Chart.min.js"></script>
--->
-<!-- jQuery Sparklines -->
-<script src="/vendor/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-<!-- PNotify -->
-<script src="/vendor/pnotify/dist/pnotify.js"></script>
-<script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
-<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
-<!-- FullCalendar -->
-<script src="/vendor/moment/min/moment.min.js"></script>
-<script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
-<!-- Custom Theme Scripts -->
-<script src="/vendor/gentelella/js/custom.min.js"></script>
+					<div class="modal-header">
+						<button type="button" class="close close2" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title" id="myModalLabel2">Make Your Payment</h4>
+					</div>
+					<div class="modal-body">
 
+						<div id="testmodal2" style="padding: 5px 20px;">
+							<form id="antoform2" class="form-horizontal calender" role="form">
+								<h1>Amount: $11.99 CDN</h1>
+								<div id="dropin-container"></div>
+							</form>
+						</div>
+					</div>
+					<div class="modal-footer">
+							<button id="braintree-button" class='btn btn-success paymentControl' style="margin: 0;">Make Payment</button>
+							<button type="button" class="btn btn-default close2 paymentControl" data-dismiss="modal" style="margin: 0;">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
+			<div id="paymentModalControl" data-toggle="modal" data-target="#paymentModal"></div>
+			<!-- /calendar modal -->
 
-<!-- FullCalendar -->
-<script>
-$(window).load(function() {
-	var mentor = <%- JSON.stringify(mentor) %>
-	var user = <%- JSON.stringify(user) %>
+			<!-- jQuery -->
+			<script src="/vendor/jquery/dist/jquery.min.js"></script>
+			<!-- Bootstrap -->
+			<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+			<!-- FastClick -->
+			<script src="/vendor/fastclick/lib/fastclick.js"></script>
+			<!-- iCheck -->
+			<script src="/vendor/iCheck/icheck.min.js"></script>
+			<!-- gauge.js
+			<script src="/vendor/bernii/gauge.js/dist/gauge.min.js"></script>
 
-	function showDangerNotify (msg) {
-		PNotify.removeAll()
-		new PNotify({
-			title: 'Error',
-			text: msg,
-			type: 'error',
-			styling: "bootstrap3",
-			delay: 4000,
-			buttons: {sticker: false},
-		});
-	}
-
-
-	function showInfoNotify (msg) {
-		PNotify.removeAll()
-		new PNotify({
-			title: 'Info',
-			text: msg,
-			styling: "bootstrap3",
-			delay: 4000,
-			buttons: {sticker: false},
-		});
-	}
+			<script src="/vendor/Chart.js/dist/Chart.min.js"></script>
+		-->
+		<script src="https://js.braintreegateway.com/web/dropin/1.6.1/js/dropin.min.js"></script>
+		<!-- jQuery Sparklines -->
+		<script src="/vendor/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+		<!-- PNotify -->
+		<script src="/vendor/pnotify/dist/pnotify.js"></script>
+		<script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
+		<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+		<!-- FullCalendar -->
+		<script src="/vendor/moment/min/moment.min.js"></script>
+		<script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
+		<!-- Custom Theme Scripts -->
+		<script src="/vendor/gentelella/js/custom.min.js"></script>
 
 
-	function showSuccessNotify (msg) {
-		PNotify.removeAll()
-		new PNotify({
-			title: 'Success',
-			text: msg,
-			type: 'success',
-			styling: "bootstrap3",
-			delay: 4000,
-			buttons: {sticker: false},
-		});
-	}
 
-	var calendar = $('#calendar').fullCalendar({
-		header: {
-			left: 'prev,next today',
-			center: 'title',
-			right: 'month,agendaWeek,agendaDay'
-		},
-		defaultView: 'agendaWeek',
-		selectable: true,
-		selectHelper: false,
-		minTime: "07:00:00",
-		maxTime: "22:00:00",
-		allDaySlot: false,
-		eventClick: function(calEvent, jsEvent, view) {
-			if (['taken', 'finished', 'noshow'].indexOf(calEvent.type) !== -1)
-				$('.btn-control').hide()
-			if (calEvent.type === 'requested' && calEvent.mentee._id !== user._id)
-				return false
-			$('#event_details').click();
-			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
-			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
-			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
-			$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
-			$('#zoom-join').val(calEvent.joinURL)
+		<!-- FullCalendar -->
+		<script>
+		$(window).load(function() {
+			var mentor = <%- JSON.stringify(mentor) %>
+			var user = <%- JSON.stringify(user) %>
 
-			if (calEvent.type === 'requested') {
-				$("#choose").hide()
-				$("#cancel").off().on("click", function() {
-					$.ajax({
-						url: "/mentee/session/cancel/"+calEvent._id,
-						type: 'PUT',
-						data: { type: "available", color: "green" }
-					})
-					.done((res) => {
-						showInfoNotify('Your Session Has Been Canceled')
-						$('.close').click();
-						calendar.fullCalendar('refetchEvents')
-					})
-				}).show();
-			} else if (calEvent.type === 'available'){
-				$("#cancel").hide()
-				$("#confirm").hide()
-				$("#choose").off().on("click", function() {
-					$.ajax({
-						url: "/mentee/session/choose/"+calEvent._id,
-						type: 'PUT',
-						data: { type: "requested", color: "orange" }
-					})
-					.done((res) => {
-						showSuccessNotify('Your request has been processed')
-						$('.close').click();
-						calendar.fullCalendar('refetchEvents')
-					})
-				}).show();
+			function showDangerNotify (msg) {
+				PNotify.removeAll()
+				new PNotify({
+					title: 'Error',
+					text: msg,
+					type: 'error',
+					styling: "bootstrap3",
+					delay: 4000,
+					buttons: {sticker: false},
+				});
 			}
 
-			calendar.fullCalendar('unselect');
 
-		},
-		editable: false,
-		events:	'/mentee/sessionByMentorId/'+ mentor._id,
-		eventRender: function(event, element) {
-			element.append('Click for more details<br>Status: '+event.type+'<br>'+'Mentor: '+event.mentor.profile.first_name)
-
-		}
-	});
-});
-</script>
-<!-- /FullCalendar -->
+			function showInfoNotify (msg) {
+				PNotify.removeAll()
+				new PNotify({
+					title: 'Info',
+					text: msg,
+					styling: "bootstrap3",
+					delay: 4000,
+					buttons: {sticker: false},
+				});
+			}
 
 
-<!--
-<script>
-var opts = {
-lines: 12,
-angle: 0,
-lineWidth: 0.4,
-pointer: {
-length: 0.75,
-strokeWidth: 0.042,
-color: '#1D212A'
-},
-limitMax: 'false',
-colorStart: '#1ABC9C',
-colorStop: '#1ABC9C',
-strokeColor: '#F0F3F3',
-generateGradient: true
+			function showSuccessNotify (msg) {
+				PNotify.removeAll()
+				new PNotify({
+					title: 'Success',
+					text: msg,
+					type: 'success',
+					styling: "bootstrap3",
+					delay: 4000,
+					buttons: {sticker: false},
+				});
+			}
+
+			var calendar = $('#calendar').fullCalendar({
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,agendaWeek,agendaDay'
+				},
+				defaultView: 'agendaWeek',
+				selectable: true,
+				selectHelper: false,
+				minTime: "07:00:00",
+				maxTime: "22:00:00",
+				allDaySlot: false,
+				eventClick: function(calEvent, jsEvent, view) {
+					if (['taken', 'finished', 'noshow'].indexOf(calEvent.type) !== -1)
+					$('.btn-control').hide()
+					if (calEvent.type === 'requested' && calEvent.mentee._id !== user._id)
+					return false
+					$('#event_details').click();
+					$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
+					$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
+					$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
+					$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
+					$('#zoom-join').val(calEvent.joinURL)
+
+					if (calEvent.type === 'requested') {
+						$("#choose").hide()
+						$("#cancel").off().on("click", function() {
+							$.ajax({
+								url: "/mentee/session/cancel/"+calEvent._id,
+								type: 'PUT',
+								data: { type: "available", color: "green" }
+							})
+							.done((res) => {
+								showInfoNotify('Your Session Has Been Canceled')
+								$('.close').click();
+								calendar.fullCalendar('refetchEvents')
+							})
+						}).show();
+					} else if (calEvent.type === 'available'){
+						$("#cancel").hide()
+						$("#confirm").hide()
+						$("#choose").off().on("click", function() {
+							$('.paymentControl').show()
+							$('.close').click();
+							$('#paymentModalControl').click()
+							var $button = $('#braintree-button');
+
+							function handlePaymentButtonClick (instance) {
+								return function () {
+									$('.paymentControl').hide()
+									instance.requestPaymentMethod(function (err, payload) {
+										if (err) {
+											$('.close').click();
+											showDangerNotify('Server error, please try again later')
+										}
+										$.ajax({
+											url: "/mentee/session/choose/"+calEvent._id,
+											type: 'PUT',
+											data: { type: "requested", color: "orange", nonce: payload.nonce }
+										})
+										.done((res) => {
+											showSuccessNotify('Payment received. Your request has been processed. You will receive an email when the mentor responds to your request.')
+											$('.close').click();
+											calendar.fullCalendar('refetchEvents')
+										})
+									});
+								}
+							}
+
+							$.get('/mentee/paymentToken')
+								.done(function (token) {
+									braintree.dropin.create({
+										authorization: token,
+										container: '#dropin-container'
+									}, function (createErr, instance) {
+										$button.on('click', handlePaymentButtonClick(instance));
+									});
+								})
+								.fail(function() {
+									$('.close').click();
+									showDangerNotify('Server error, please try again later')
+								})
+
+						}).show();
+					}
+
+					calendar.fullCalendar('unselect');
+
+				},
+				editable: false,
+				events:	'/mentee/sessionByMentorId/'+ mentor._id,
+				eventRender: function(event, element) {
+					element.append('Click for more details<br>Status: '+event.type+'<br>'+'Mentor: '+event.mentor.profile.first_name)
+
+				}
+			});
+		});
+		</script>
+		<!-- /FullCalendar -->
+
+
+		<!--
+		<script>
+		var opts = {
+		lines: 12,
+		angle: 0,
+		lineWidth: 0.4,
+		pointer: {
+		length: 0.75,
+		strokeWidth: 0.042,
+		color: '#1D212A'
+	},
+	limitMax: 'false',
+	colorStart: '#1ABC9C',
+	colorStop: '#1ABC9C',
+	strokeColor: '#F0F3F3',
+	generateGradient: true
 };
 var target = document.getElementById('foo'),
 gauge = new Gauge(target).setOptions(opts);

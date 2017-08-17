@@ -4,6 +4,7 @@ const express = require('express'),
 	User = require('../passport/models/user'),
 	Session = require('../passport/models/session'),
 	Mentorship = require('../passport/models/mentorship'),
+	gateway = require('../BrainTree/braintree.js'),
 	Zoom = require('zoomus')({
 		key: 'R6fQ_CoxSUeWXxshTvhZhg',
 		secret: 'AhhzZfhGL4T3ACCBjsjlK5IvqQqUvYERygMV',
@@ -128,39 +129,58 @@ router.put('/session/update/:id', (req, res, next) => {
 		})
 })
 
+// TRANSACTION
 router.put('/session/confirm/:id', (req, res, next) => {
 	var updated = req.body
-	Zoom.meeting.create({
-		host_id: req.user.ZoomId,
-		type: 2,
-		topic: 'Mentoring Session',
-		start_time: moment.utc(updated.start).format('YYYY-MM-DD[T]HH:mm:ss[Z]'),
-		timezone: 'UTC',
-		duration: (moment(updated.end) - moment(updated.start)) / 60000,
-	}, response => {
-		console.log(response)
-		if (response.error)
-			next(response.error)
-		else {
-			req.body.joinURL = response.join_url
-			req.body.startURL = response.start_url
-			Session.findByIdAndUpdate(req.params.id, req.body)
-				.then(() => {
-					res.status(200).send()
+	Session.findById(req.params.id)
+		.then(session => {
+			if (!session || !session.transaction_id) return res.status(404).send()
+			gateway.transaction.submitForSettlement(session.transaction_id, (err, result) => {
+				if (err) next(err)
+				Zoom.meeting.create({
+					host_id: req.user.ZoomId,
+					type: 2,
+					topic: 'Mentoring Session',
+					start_time: moment.utc(updated.start).format('YYYY-MM-DD[T]HH:mm:ss[Z]'),
+					timezone: 'UTC',
+					duration: (moment(updated.end) - moment(updated.start)) / 60000,
+				}, response => {
+					if (response.error)
+						next(response.error)
+					else
+						Session.findByIdAndUpdate(req.params.id, {
+							type: 'taken',
+							color: 'red',
+							joinURL: response.join_url,
+							startURL: response.start_url,
+						})
+							.then(() => {
+								res.status(200).send()
+							})
+							.catch(err => {
+								next(err)
+							})
 				})
-				.catch(err => {
-					next(err)
-				})
-		}
-	})
+			})
+		})
+
+
 
 })
 
+// TRANSACTION
 router.put('/session/refuse/:id', (req, res, next) => {
-	req.body.mentee = undefined
-	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
+	Session.findByIdAndUpdate(req.params.id, {
+		type: 'available',
+		color: 'green',
+		mentee: undefined,
+		transaction_id: '',
+	})
 		.then(updated => {
-			res.status(200).send(updated)
+			gateway.transaction.void(updated.transaction_id, (err, result) => {
+				if (err) next(err)
+				res.status(200).send(updated)
+			})
 		})
 		.catch(err => {
 			next(err)

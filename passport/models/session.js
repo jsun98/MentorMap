@@ -20,11 +20,7 @@ var sessionSchema = new mongoose.Schema({
 		required: true,
 		default: false,
 	},
-	transaction_confirmed: {
-		type: Boolean,
-		required: true,
-		default: false,
-	},
+	transaction_id: String,
 	start: {
 		type: Date,
 		required: true,

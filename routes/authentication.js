@@ -36,7 +36,7 @@ router.post('/signup', passport.authenticate('mentee-signup', {
 	failureFlash: true,
 }))
 
-router.get('/logout', isLoggedIn, (req, res) => {
+router.get('/logout', (req, res) => {
 	req.logout()
 	res.redirect('/')
 })

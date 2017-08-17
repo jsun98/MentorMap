@@ -124,7 +124,7 @@
 					 to make any changes to or cancel the session. You may only cancel a
 					 session if it has not been confirmed by you. If you absolutely have to cancel
 				 	 a session after it has been confirmed, please email us and explain your circumstances.</p>
-				<button type="button" id='confirm' class="btn btn-success btn-control" style="margin: 0;">Confirm</button>
+				<button type="button" id='confirm' class="btn btn-success btn-control" style="margin: 0;">Accept</button>
 				<button type="button" id='refuse' class="btn btn-warning btn-control" style="margin: 0;">Refuse</button>
 				<button type="button" id='delete' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Delete</button>
 				<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
@@ -290,16 +290,6 @@ $(window).load(function() {
 						}
 					}).done(function (res) {
 						showInfoNotify('Request for session refused!')
-						$('.close').click()
-						calendar.fullCalendar('refetchEvents')
-					})
-				}).show()
-				$("#delete").off().on("click", function() {
-					$.ajax({
-						url: '/mentor/session/delete/'+calEvent._id,
-						type: 'DELETE',
-					}).done(function (res) {
-						showInfoNotify('Time slot deleted')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
 					})
