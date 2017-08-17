@@ -286,6 +286,7 @@
 											$('.close').click();
 											showDangerNotify('Server error, please try again later')
 										}
+										console.log('here')
 										$.ajax({
 											url: "/mentee/session/choose/"+calEvent._id,
 											type: 'PUT',
@@ -302,11 +303,12 @@
 
 							$.get('/mentee/paymentToken')
 								.done(function (token) {
+									$('#dropin-container').empty()
 									braintree.dropin.create({
 										authorization: token,
 										container: '#dropin-container'
 									}, function (createErr, instance) {
-										$button.on('click', handlePaymentButtonClick(instance));
+										$button.off().click(handlePaymentButtonClick(instance));
 									});
 								})
 								.fail(function() {

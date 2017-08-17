@@ -3,6 +3,7 @@ const
 	router = express.Router(),
 	User = require('../passport/models/user'),
 	Session = require('../passport/models/session'),
+	mailjet = require('../email_templates/email'),
 	Mentorship = require('../passport/models/mentorship'),
 	gateway = require('../BrainTree/braintree.js')
 
@@ -195,7 +196,6 @@ router.put('/session/cancel/:id', (req, res, next) => {
 
 // TRANSACTION
 router.put('/session/choose/:id', (req, res, next) => {
-	req.body.mentee = req.user._id
 	gateway.transaction.sale({
 		amount: '11.99',
 		paymentMethodNonce: process.env.NODE_ENV === 'development' ? 'fake-valid-nonce' : req.body.nonce,
@@ -208,8 +208,15 @@ router.put('/session/choose/:id', (req, res, next) => {
 			mentee: req.user._id,
 			transaction_id: result.transaction.id,
 		}, { new: true })
+			.populate('mentor')
 			.then(updated => {
-				res.status(200).send(updated)
+				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+				return mailjet
+					.post('send')
+					.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))
+			})
+			.then(() => {
+				res.status(200).send()
 			})
 			.catch(err => {
 				next(err)

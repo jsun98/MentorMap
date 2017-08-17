@@ -42,6 +42,7 @@ module.exports = function (passport) {
 			newUser.password = newUser.generateHash(password)
 			newUser.profile.first_name = req.body.first_name
 			newUser.profile.last_name = req.body.last_name
+			newUser.role = 'mentee'
 
 			if (process.env.NODE_ENV === 'development') {
 				newUser.tokens = 100
@@ -98,6 +99,31 @@ module.exports = function (passport) {
 			newUser.password = newUser.generateHash(password)
 			newUser.profile.first_name = req.body.first_name
 			newUser.profile.last_name = req.body.last_name
+			newUser.role = 'mentor'
+
+			if (process.env.NODE_ENV === 'development') {
+				newUser.tokens = 100
+				newUser.verified = true
+				newUser.completed = true
+				newUser.profile.gender = 'male'
+				newUser.profile.phone = '4166667777'
+				newUser.profile.age = '19'
+				newUser.profile.avg_11 = '4'
+				newUser.profile.avg_12 = '4'
+				newUser.profile.high_school = 'Unionville High School'
+				newUser.profile.grade = '12'
+				newUser.profile.skills = [ 'President of DECA', 'VP of CS Club' ]
+				newUser.profile.linkedin = 'www.google.ca'
+				newUser.profile.paragraphs = [ 'hi', 'hi', 'hi', 'hi' ]
+				newUser.profile.high_school_program = [ 'AP', 'IB' ]
+				newUser.profile.preferred_program = [ 'Medicine', 'Engineering' ]
+				newUser.profile.preferred_school = [ 'Waterloo', 'University of Toronto' ]
+
+				newUser.profile.curr_school = 'Univerisity of Waterloo'
+				newUser.profile.curr_major = 'Software Engineering'
+				newUser.profile.curr_minor = 'Applied Health Sciences'
+				newUser.profile.grad_year = 2021
+			}
 
 			Zoom.user.custCreate({
 				email: newUser.email,

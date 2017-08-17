@@ -36,6 +36,12 @@ router.post('/signup', passport.authenticate('mentee-signup', {
 	failureFlash: true,
 }))
 
+router.post('/mentor-signup', passport.authenticate('mentor-signup', {
+	successRedirect: '/dashboard',
+	failureRedirect: '/auth/signup',
+	failureFlash: true,
+}))
+
 router.get('/logout', (req, res) => {
 	req.logout()
 	res.redirect('/')

@@ -3,6 +3,7 @@ const express = require('express'),
 	moment = require('moment'),
 	User = require('../passport/models/user'),
 	Session = require('../passport/models/session'),
+	mailjet = require('../email_templates/email'),
 	Mentorship = require('../passport/models/mentorship'),
 	gateway = require('../BrainTree/braintree.js'),
 	Zoom = require('zoomus')({
@@ -154,7 +155,14 @@ router.put('/session/confirm/:id', (req, res, next) => {
 							joinURL: response.join_url,
 							startURL: response.start_url,
 						})
-							.then(() => {
+							.populate('mentee')
+							.then(session => {
+								var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+								return mailjet
+									.post('send')
+									.request(require('../email_templates/session_response')(req.user, session.mentee, session, 'Accepted', hostname))
+							})
+							.then(resp => {
 								res.status(200).send()
 							})
 							.catch(err => {
@@ -176,10 +184,20 @@ router.put('/session/refuse/:id', (req, res, next) => {
 		mentee: undefined,
 		transaction_id: '',
 	})
+		.populate('mentee')
 		.then(updated => {
 			gateway.transaction.void(updated.transaction_id, (err, result) => {
 				if (err) next(err)
-				res.status(200).send(updated)
+				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+				mailjet
+					.post('send')
+					.request(require('../email_templates/session_response')(req.user, updated.mentee, updated, 'Refused', hostname))
+					.then(() => {
+						res.status(200).send()
+					})
+					.catch(err => {
+						next(err)
+					})
 			})
 		})
 		.catch(err => {
