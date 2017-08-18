@@ -198,29 +198,37 @@ router.put('/session/cancel/:id', (req, res, next) => {
 router.put('/session/choose/:id', (req, res, next) => {
 	gateway.transaction.sale({
 		amount: '11.99',
-		paymentMethodNonce: process.env.NODE_ENV === 'development' ? 'fake-valid-nonce' : req.body.nonce,
+		paymentMethodNonce: req.body.nonce, // 'fake-valid-nonce'
 		options: { submitForSettlement: false },
 	}, (err, result) => {
 		if (err) next(err)
-		Session.findByIdAndUpdate(req.params.id, {
-			color: 'orange',
-			type: 'requested',
-			mentee: req.user._id,
-			transaction_id: result.transaction.id,
-		}, { new: true })
-			.populate('mentor')
-			.then(updated => {
-				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-				return mailjet
-					.post('send')
-					.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))
-			})
-			.then(() => {
-				res.status(200).send()
-			})
-			.catch(err => {
-				next(err)
-			})
+		console.log(result)
+		console.log('tranaction details: ')
+		console.log(result.success)
+		console.log(result.transaction.type)
+		console.log(result.transaction.status)
+		if (result.success)
+			Session.findByIdAndUpdate(req.params.id, {
+				color: 'orange',
+				type: 'requested',
+				mentee: req.user._id,
+				transaction_id: result.transaction.id,
+			}, { new: true })
+				.populate('mentor')
+				.then(updated => {
+					var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+					return mailjet
+						.post('send')
+						.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))
+				})
+				.then(() => {
+					res.status(200).send()
+				})
+				.catch(err => {
+					next(err)
+				})
+		else
+			res.status(400).send()
 	})
 
 })

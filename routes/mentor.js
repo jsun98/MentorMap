@@ -6,10 +6,7 @@ const express = require('express'),
 	mailjet = require('../email_templates/email'),
 	Mentorship = require('../passport/models/mentorship'),
 	gateway = require('../BrainTree/braintree.js'),
-	Zoom = require('zoomus')({
-		key: 'R6fQ_CoxSUeWXxshTvhZhg',
-		secret: 'AhhzZfhGL4T3ACCBjsjlK5IvqQqUvYERygMV',
-	})
+	Zoom = require('../zoom/zoom')
 
 router.use('*', isLoggedIn, isEmailVerified, isMentor)
 
@@ -138,6 +135,7 @@ router.put('/session/confirm/:id', (req, res, next) => {
 			if (!session || !session.transaction_id) return res.status(404).send()
 			gateway.transaction.submitForSettlement(session.transaction_id, (err, result) => {
 				if (err) next(err)
+				console.log(result)
 				Zoom.meeting.create({
 					host_id: req.user.ZoomId,
 					type: 2,

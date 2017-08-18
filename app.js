@@ -1,7 +1,7 @@
+require('dotenv').config()
 const
 	bodyParser = require('body-parser'),
 	cookieParser = require('cookie-parser'),
-	devDBUrl = require('./passport/config/database.js').url,
 	express = require('express'),
 	favicon = require('serve-favicon'),
 	flash = require('connect-flash'),
@@ -32,13 +32,13 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 // ======passport configuration ===============================================================
-mongoose.connect(process.env.MONGODB_URI || devDBUrl, { useMongoClient: true }) // connect to our database
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test', { useMongoClient: true }) // connect to our database
 
 require('./passport/config/passport')(passport) // pass passport for configuration
 
 // required for passport
 app.use(session({
-	secret: 'ilovescotchscotchyscotchscotch',
+	secret: process.env.SESSION_SECRET,
 	resave: true,
 	saveUninitialized: false,
 	store: new MongoStore({ mongooseConnection: mongoose.connection }),
