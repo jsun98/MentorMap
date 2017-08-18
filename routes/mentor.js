@@ -163,6 +163,12 @@ router.put('/session/confirm/:id', (req, res, next) => {
 									.request(require('../email_templates/session_response')(req.user, session.mentee, session, 'Accepted', hostname))
 							})
 							.then(resp => {
+								var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+								return mailjet
+									.post('send')
+									.request(require('../email_templates/session_confirm')(req.user, session.mentee, session, hostname))
+							})
+							.then(() => {
 								res.status(200).send()
 							})
 							.catch(err => {

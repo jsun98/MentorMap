@@ -13,13 +13,15 @@ module.exports = function (mentor, mentee, session, decision, hostname) {
 		'Text-part': text
 			.replace('%name', mentee.profile.first_name + ' ' + mentee.profile.last_name)
 			.replace('%decision', decision)
-			.replace('%mentor_name', mentor.profile.first_name + ' ' + mentor.profile.last_name),
+			.replace('%mentor_name', mentor.profile.first_name + ' ' + mentor.profile.last_name)
+			.replace('%zoom', session.joinURL),
 		'Html-part': html
 			.replace('%decision', decision)
 			.replace('%start', moment(session.start).format('MMM Do, YYYY HH:mm:ss'))
 			.replace('%end', moment(session.end).format('MMM Do, YYYY HH:mm:ss'))
 			.replace(/%link/g, 'http://mentormap.ca/auth/login')
-			.replace('%name', mentor.profile.first_name + ' ' + mentor.profile.last_name),
+			.replace('%name', mentor.profile.first_name + ' ' + mentor.profile.last_name)
+			.replace('%zoom', session.joinURL),
 		Recipients: [
 			{ Email: mentee.email },
 		],
