@@ -14,8 +14,6 @@
 	<link rel="stylesheet" href="vendor/slick/slick-theme.css"/>
     <link rel="stylesheet" href="index/stylesheets/bundle.min.css"/>
 
-
-
 </head>
 
 <body>
@@ -51,7 +49,7 @@
             <div class="hero-right col-sm-12 col-sm-12 col-centered" >
                 <h1 class="header-headline bold"> Mentorship Service For High School Students <br></h1>
                 <h4 class="header-running-text light"> Get quality mentorship from students studying at Canada's best universities.</h4>
-                <a href="#email-form">
+                <a>
                     <button class="hero-btn" id='learn-more'> Learn More</button>
                 </a>
             </div><!--hero-left-->
@@ -64,7 +62,7 @@
 <!-- Features
   ================================================== -->
 
-<div id="features" class="white-section row">
+<div id="features" class="white-section  text-section row">
 
   <h2 class="pricing-section-header strong text-center">WHAT IS <span class='theme-color'>MENTORMAP</span> ALL ABOUT?</h2>
   <h4 class="pricing-section-sub text-center light bottom-break">We connect high school students with university mentors</h4>
@@ -73,7 +71,7 @@
 
     <div class="feature-section-text">
       <span>
-		  We connect students uncertain about their futures in university with appropriate mentors who will impart valuable firsthand experience.
+		  <img class="img-responsive" style="display: inherit;" src="index/images/logo.png">We connect students uncertain about their futures in university with appropriate mentors who will impart valuable firsthand experience.
 		   This will include helping the student set their future goals through analysis of personality, values, and personal interests, and together
 		    developing a strategy to attain that goal. This strategy involves development of habits, both personal and academic, selection and
 			involvement in relevant extracurriculars, and assistance in university application processes. All mentors are selected and screened
@@ -95,23 +93,20 @@
   <div class="row">
     <div class="carousel col-sm-12">
       <div>
-        <img class="img-responsive" src="index/images/p1.jpg">
+        <img class="img-responsive mentor" src="index/images/mentor1.png">
       </div>
       <div>
-        <img class="img-responsive" src="index/images/p2.jpg">
+        <img class="img-responsive mentor" src="index/images/mentor2.jpg">
       </div>
       <div>
-        <img class="img-responsive" src="index/images/p3.jpg">
+        <img class="img-responsive mentor" src="index/images/mentor3.png">
       </div>
       <div>
-        <img class="img-responsive" src="index/images/p4.jpg">
+        <img class="img-responsive mentor" src="index/images/mentor4.png">
       </div>
-      <div>
-        <img class="img-responsive" src="index/images/p5.jpg">
-      </div>
-      <div>
-        <img class="img-responsive" src="index/images/p6.jpg">
-      </div>
+	  <div>
+		<img class="img-responsive mentor" src="index/images/mentor5.png">
+	  </div>
     </div>
   </div>
 
@@ -164,14 +159,10 @@
 <!-- Where do i start?
   ================================================== -->
 
-<div class="grey-section row">
-
-    <div class="imac col-sm-5">
-        <img class="imac-screen img-responsive" src="index/images/infographics/academics.jpg">
-    </div>
+<div class="grey-section text-section row">
     <!--imac-->
 
-    <div class="col-sm-7">
+    <div class="col-sm-12">
 
         <div class="word-section-text">
 
@@ -180,12 +171,13 @@
             <div class="word-section-desc">
               <ul>
                 <li><strong>Step 1.</strong> sign up and we will provide you a mentor preference questionnaire
-                   that gives us an idea of what your ideal mentor will be like</li>
-                <li><strong>Step 2.</strong> our system will match you with 4 qualified mentors for you to choose from</li>
-                <li><strong>Step 3.</strong> after choosing your mentor, you can request a video session on Zoom or Skype, a
-                  audio session over the phone, or meet the mentor in person.</li>
-                <li><strong>Step 4.</strong> when the meeting time comes, start chatting with your mentor about your dream school,
-                  your future plans, or just about anything related!</li>
+                   that gives us an idea of what your ideal mentor will be like. You will also get a chance to upload your profile picture.</li>
+                <li><strong>Step 2.</strong> You will be able to browser through a few randomly chosen mentors, view their profiles, and once
+					you decide, you can choose to apply for a mentorship with that mentor.</li>
+                <li><strong>Step 3.</strong> after choosing your mentor, you go see their availability on the mentor's calendar.
+					you can request a video session on Zoom or choose to contact the mentor to arrange other options.</li>
+                <li><strong>Step 4.</strong> when the meeting time comes, we will send you an email containing the link to your Zoom session.
+					After your mentor has hosted the call, you can chat away!</li>
               </ul>
             </div>
         </div>
@@ -247,7 +239,7 @@
 
 <div id="testimonials" class="grey-section">
   <h2 class="pricing-section-header strong text-center">DISCOVER <span class='theme-color'>MENTORMAP</span> STORIES</h2>
-  <h4 class=" pricing-section-sub text-center light bottom-break">listen to what our customers say</h4>
+  <h4 class=" pricing-section-sub text-center light bottom-break">testimonials from our mentor and mentees</h4>
   <div class="team-container row">
 
 	  <div class="col-sm-6 team-member">
@@ -255,11 +247,13 @@
 		  <div class="team-member-text">
 			  <h4 class="team-member-position light">Mentee</h4>
 			  <h5 class="bold">Kylin</h5>
-			  <p class="light">This is a wonderful project which helped me a lot on my preparation for
+			  <span class='word-section-text'>
+			  <p class="testimonials-text light">This is a wonderful project which helped me a lot on my preparation for
 				university. During the session, the mentor learnt about my situation and gave
 				me advice on my current study. He was experienced in university application of
 				my interested program and directed me to get start to prepare. His own
 				experience cheered me a lot as well.</p>
+		    	</span>
 		  </div>
 	  </div>
 
@@ -268,80 +262,41 @@
 		  <div class="team-member-text">
 			  <h4 class="team-member-position light">Mentee</h4>
 			  <h5 class="bold">Anita</h5>
+			  <span class='word-section-text'>
 			  <p class="light">I was unclear on what my future was going to be;
-				  however, with the help of my mentor, I was able to identify multiple path for my future. During the session,
+				  however, a mentor helped point me in the right direction. During the session,
 				   we narrowed the selection down to the careers I wanted the most. We then looked at things I had to do to achieve that goal.
 				   I would encourage anyone who is unsure about their future to take this amazing oppertunity.</p>
+			  </span>
 		  </div>
 	  </div>
   </div>
-      <!-- <div class="testimonials-carousel">
-		  <div>
-	        <img class="img-responsive" src="index/images/p1.jpg">
-	      </div>
-        <div class='row'>
-          <div class="col-sm-6 .hidden-xs">
-            <div class="carousel-img">
-              <img src="index/images/testimonial.jpg">
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="word-section-text">
-              <div class="word-section-desc">
 
-                <blockquote>
-                  Insert typical awe-inspring totally legit quote coming from our best mentors prasing our beautiful organization!
-                </blockquote>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class = "row">
-
-          <div class="carousel-img col-sm-6 .hidden-xs">
-            <img src="index/images/testimonial.jpg">
-          </div>
-
-          <div class="col-sm-6">
-            <div class="word-section-text">
-
-                <div class="word-section-desc">
-
-                  <blockquote>
-                    Insert typical awe-inspring totally legit quote coming from our best mentors prasing our beautiful organization!
-                  </blockquote>
-                </div>
-            </div>
-          </div>
-
-
-        </div>
-
-  </div> -->
 </div><!--white-section-text-section--->
 
 <!-- Pricing
   ================================================== -->
 <div id="pricing" class="white-section">
 
-    <h2 class="pricing-section-header strong text-center">CHOOSE THE <span class='theme-color'>RIGHT PLAN</span> FOR YOU</h2>
-    <h4 class=" pricing-section-sub text-center light">Pick any of our super affordable pricing plans</h4>
+    <h2 class="pricing-section-header strong text-center">AFFORDABLE <span class='theme-color'>PRICING</span> PLANS</h2>
+    <h4 class=" pricing-section-sub text-center light">Great benefits for both mentee and mentors</h4>
 
     <div class="pricing-table row">
-        <div class="col-sm-4">
-            <div class="plan">
-                <h3 class="plan-title light">STARTER</h3>
-                <h4 class="plan-cost bold">15</h4>
-                <h5 class="monthly">for 1 token</h5>
+        <div class="col-sm-6">
+            <div class="mid-plan">
+                <h3 class="plan-title light">For Mentors</h3>
+                <h4 class="plan-cost bold">9.99</h4>
+                <h5 class="monthly">earned per session</h5>
                 <ul class="plan-features">
-                    <li>Full customer support</li>
-                    <li>Unlimited mentor choices</li>
-					<li>One free sessions, one paid session</li>
+					<li>Free to join and start earning</li>
+                    <li>Must be on time and commit to a set time</li>
+                    <li>Be ready for follow up questions</li>
+					<li>Connect with mentee over social media</li>
+					<li>Commit at least one hour per session</li>
                 </ul>
                 <div class="plan-price-div text-center">
                     <div class="choose-plan-div">
-                        <a class="plan-btn light" href="#">
+                        <a class="plan-btn light" href="/auth/signup">
                             Get Started
                         </a>
                     </div>
@@ -349,39 +304,20 @@
             </div><!--basic-plan--->
         </div><!--col-->
 
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <div class="mid-plan">
-                <h3 class="plan-title light">RECOMMENDED</h3>
-                <h4 class="plan-cost bold">35</h4>
-                <h5 class="monthly">for 3 tokens</h5>
+                <h3 class="plan-title light">For Mentees</h3>
+                <h4 class="plan-cost bold">11.99</h4>
+                <h5 class="monthly">per mentoring session</h5>
                 <ul class="plan-features">
-					<li>Full customer support</li>
-                    <li>Unlimited mentor choices</li>
-					<li>One free sessions, three paid session</li>
+                    <li>Hour-long one to one sessions</li>
+					<li>Build personal connections</li>
+					<li>Discuss plans for your future</li>
+					<li>Full mentor support during and after session</li>
                 </ul>
                 <div class="plan-price-div text-center">
                     <div class="choose-plan-div">
-                        <a class="plan-btn light" href="#">
-                            Get Started
-                        </a>
-                    </div>
-                </div>
-            </div><!--pro-plan--->
-        </div><!--col-->
-
-        <div class="col-sm-4">
-            <div class="plan">
-                <h3 class="plan-title light">PRO</h3>
-                <h4 class="plan-cost bold">55</h4>
-                <h5 class="monthly">for 7 tokens</h5>
-                <ul class="plan-features">
-					<li>Full customer support</li>
-                    <li>Unlimited mentor choices</li>
-					<li>One free sessions, seven paid session</li>
-                </ul>
-                <div class="plan-price-div text-center">
-                    <div class="choose-plan-div">
-                        <a class="plan-btn light" href="#">
+                        <a class="plan-btn light" href="/auth/signup">
                             Get Started
                         </a>
                     </div>
@@ -402,10 +338,10 @@
 
     <div class="team-container row">
 
-        <div class="col-sm-3 team-member">
+        <div class="col-sm-4 team-member">
             <img class="headshot" src="index/images/kevin.png">
             <div class="team-member-text">
-                <h4 class="team-member-position light">Founder</h4>
+                <h4 class="team-member-position light">Founder - Administration</h4>
                 <h5 class="bold">Kevin Wu</h5>
                 <h6>York University</h6>
                 <p class="light">Schulich School of Business</p>
@@ -416,10 +352,10 @@
             </div>
         </div>
 
-        <div class="col-sm-3 team-member">
+        <div class="col-sm-4 team-member">
             <img class="headshot" src="index/images/france.png">
             <div class="team-member-text">
-                <h4 class="team-member-position light">Co-Founder</h4>
+                <h4 class="team-member-position light">Co-Founder - Administration</h4>
                 <h5 class="bold">France Song</h5>
                 <h6>Western University</h6>
                 <p class="light">Medical Sciences</p>
@@ -430,10 +366,10 @@
             </div>
         </div>
 
-        <div class="col-sm-3 team-member">
+        <div class="col-sm-4 team-member">
             <img class="headshot" src="index/images/josh.png">
             <div class="team-member-text">
-              <h4 class="team-member-position light">Co-Founder</h4>
+              <h4 class="team-member-position light">Co-Founder - Software</h4>
               <h5 class="bold">Joshua Sun</h5>
               <h6>University of Waterloo</h6>
               <p class="light">Software Engineering</p>
@@ -446,15 +382,30 @@
 
         </div>
 
-		<div class="col-sm-3 team-member">
+		<div class="col-sm-6 team-member">
 			<img class="headshot" src="index/images/helen.png">
 			<div class="team-member-text">
-			  <h4 class="team-member-position light">Co-Founder</h4>
+			  <h4 class="team-member-position light">Co-Founder - Marketing</h4>
 			  <h5 class="bold">Helen Chen</h5>
 			  <h6>Marc Garneau</h6>
 			  <p class="light">TOPS Student</p>
 				<a href="https://www.facebook.com/profile.php?id=100010156037852"><img class="team-social-icon"
 													   src="index/images/team-facebook.svg"></a>
+			</div>
+
+		</div>
+		<div class="col-sm-6 team-member">
+			<img class="headshot" src="index/images/bill.png">
+			<div class="team-member-text">
+			  <h4 class="team-member-position light">Co-Founder - Software</h4>
+			  <h5 class="bold">Bill Qi</h5>
+			  <h6>University of Waterloo</h6>
+			  <p class="light">Software Engineering</p>
+			  <a href="https://github.com/brity"><img class="team-social-icon" src="index/images/team-github.png"></a>
+			  <a href="https://www.facebook.com/profile.php?id=100005058077749"><img class="team-social-icon"
+				  src="index/images/team-facebook.svg"></a>
+			  <a href="https://www.linkedin.com/in/bill-sipu-qi-386352133/"><img class="team-social-icon"
+				  src="index/images/team-linkedin.png"></a>
 			</div>
 
 		</div>
@@ -492,8 +443,10 @@
             <div class="col-sm-2"></div>
 
             <div class="col-sm-8 webscope">
-                <span class="webscope-text"> This website is designed by
-                <a class='btn-link' href="https://github.com/jsun98"> Joshua Sun and Bill Qi </a></span>
+                <span class="webscope-text"> Website design by
+                <a class='btn-link' href="https://github.com/jsun98"> Joshua Sun @ MentorMap </a><br>
+				CopyRight © <% new Date().getFullYear() %> MentorMap - All Rights Reserved
+				</span>
             </div>
             <!--webscope-->
 

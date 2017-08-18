@@ -11,6 +11,11 @@ h2 {
   font-size: 4.5rem;
 }
 
+.mentor {
+  height: 300px;
+  width: 100%;
+}
+
 .navbar-left-logo {
   float: left;
   color: #FF0077;
@@ -285,6 +290,10 @@ h2 {
   max-width: 1400px;
   margin: auto;
   background-color: #F8F9F9;
+}
+
+.text-section {
+  padding: 0 10vw;
 }
 
 .white-section {
