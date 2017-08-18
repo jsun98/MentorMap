@@ -154,17 +154,14 @@ router.put('/session/confirm/:id', (req, res, next) => {
 							color: 'red',
 							joinURL: response.join_url,
 							startURL: response.start_url,
-						})
+						}, { new: true })
 							.populate('mentee')
 							.then(session => {
 								var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-								return mailjet
+								mailjet
 									.post('send')
 									.request(require('../email_templates/session_response')(req.user, session.mentee, session, 'Accepted', hostname))
-							})
-							.then(resp => {
-								var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-								return mailjet
+								mailjet
 									.post('send')
 									.request(require('../email_templates/session_confirm')(req.user, session.mentee, session, hostname))
 							})

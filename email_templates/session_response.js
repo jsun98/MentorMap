@@ -21,7 +21,7 @@ module.exports = function (mentor, mentee, session, decision, hostname) {
 			.replace('%end', moment(session.end).format('MMM Do, YYYY HH:mm:ss'))
 			.replace(/%link/g, 'http://mentormap.ca/auth/login')
 			.replace('%name', mentor.profile.first_name + ' ' + mentor.profile.last_name)
-			.replace('%zoom', session.joinURL),
+			.replace('%zoom', session.joinURL || 'Not Available'),
 		Recipients: [
 			{ Email: mentee.email },
 		],

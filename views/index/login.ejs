@@ -8,6 +8,7 @@
 	<link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
 	<link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
 	<link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+	<link href="/vendor/strengthjs/strength.css" rel="stylesheet">
 	<link rel="stylesheet" href="/login/stylesheets/bundle.min.css"/>
 
 </head>
@@ -23,7 +24,7 @@
 					<input type="email" name="email" placeholder="Email" autocomplete="email" class='form-control' required='required' data-validate-length-range="5,25" />
 				</div>
 				<div class="item form-group">
-					<input type="password" name="password" placeholder="Password" autocomplete="new-password" class='form-control' required='required' data-validate-length-range="6,14"/>
+					<input type="password" name="password" id='password' placeholder="Password" autocomplete="new-password" class='form-control' required='required' data-validate-length-range="6,24"/>
 				</div>
 				<div class="item form-group">
 					<input type="text" name="first_name" placeholder="First Name" autocomplete="given-name" required='required' class='form-control'/>
@@ -40,10 +41,10 @@
 				<img class="img-responsive"  src="/index/images/logo.png">
 				<h2 class="title">Sign In</h2>
 				<div class="item form-group">
-					<input type="email" name="email" placeholder="Email" autocomplete="email" required='required' data-validate-length-range="5,25" class='form-control'/>
+					<input type="email" name="email" placeholder="Email" autocomplete="email" required='required' class='form-control'/>
 				</div>
 				<div class="item form-group">
-					<input type="password" name="password" placeholder="Password" autocomplete="new-password" required='required' class='form-control' data-validate-length-range="6,14" />
+					<input type="password" name="password" placeholder="Password" autocomplete="new-password" required='required' class='form-control' />
 				</div>
 				<button type='submit'>Log In</button>
 				<p class="message">Not registered? <a href="javascript:void(0)">Create an account</a><br><br><a href='/'>Back To Home Page</a></p>
@@ -63,25 +64,23 @@
 	<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
 	<!-- validator -->
     <script src="/vendor/validator/validator.min.js"></script>
+	<script src="/vendor/strengthjs/strength.js"></script>
 
 	<!-- validator -->
 	<script>
 
 	  // initialize the validator function
-	  validator.message.date = 'not a real date';
+	  validator.message.empty = 'Input cannot be empty!';
+	  validator.message.short = 'Your input is too short!';
+	  validator.message.long = 'Your input is too long!';
+	  validator.message.email = 'Email address is invalid!';
 
-	  // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
-	  $('.auth-form')
-		.on('blur', 'input[required], input.optional, textarea[required], select.required', validator.checkField)
-		.on('change', 'select.required', validator.checkField)
-		//.on('keypress', 'input[required][pattern]', validator.keypress);
-
-	  $('.form').submit(function(e) {
+	  $('form').submit(function(e) {
 
 		e.preventDefault();
 			var submit = true;
 			// evaluate the form using generic validaing
-			if( !validator.checkAll( $('.form') ) ){
+			if( !validator.checkAll( $('form') ) ){
 				submit = false;
 			}
 
@@ -97,6 +96,20 @@
 
 
 	<script>
+		$(document).ready(function ($) {
+			$("#password").strength();
+			$('.strength_meter').hide()
+			$('.button_strength').hide()
+
+			$("#password")
+				.on('blur', function () {
+					$('.strength_meter').hide()
+				})
+				.on('keypress focus change', function () {
+					$('.strength_meter').show()
+				})
+		});
+
 	$('.message a').click(function(){
 		$('form').animate({height: "toggle", opacity: "toggle"}, "slow");
 	});
