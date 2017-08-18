@@ -16,20 +16,32 @@
 
 	<div class="login-page">
 		<div class="form">
-			<form class="register-form" method="POST" action="/auth/signup" novalidate>
+			<form class="register-form auth-form" method="POST" action="/auth/signup" novalidate>
 				<h2 class="title">Become a Mentee</h2>
-				<input type="email" name="email" placeholder="Email" autocomplete="email"/>
-				<input type="text" name="first_name" placeholder="First Name" autocomplete="given-name"/>
-				<input type="text" name="last_name" placeholder="Last Name" autocomplete="family-name"/>
-				<input type="password" name="password" placeholder="Password" autocomplete="new-password"  />
+				<div class="item form-group">
+					<input type="email" name="email" placeholder="Email" autocomplete="email" class='form-control' required='required' data-validate-length-range="5,25" />
+				</div>
+				<div class="item form-group">
+					<input type="password" name="password" placeholder="Password" autocomplete="new-password" class='form-control' required='required' data-validate-length-range="6,14"/>
+				</div>
+				<div class="item form-group">
+					<input type="text" name="first_name" placeholder="First Name" autocomplete="given-name" required='required' class='form-control'/>
+				</div>
+				<div class="item form-group">
+					<input type="text" name="last_name" placeholder="Last Name" autocomplete="family-name" required='required' class='form-control'/>
+				</div>
 				<button type='submit'>Create My Account</button>
 				<p class="message">Already registered? <a href="javascript:void(0)">Sign In</a></p>
 				<p class="message">Want To Become a Mentor? <a href="javascript:void(0)">Click Here</a></p>
 			</form>
-			<form class="login-form" method="POST" action="/auth/login" novalidate>
+			<form class="login-form auth-form" method="POST" action="/auth/login" novalidate>
 				<h2 class="title">Sign In</h2>
-				<input type="email" name="email" placeholder="Email" autocomplete="email" required='required' />
-				<input type="password" name="password" placeholder="Password" autocomplete="new-password" required='required'  />
+				<div class="item form-group">
+					<input type="email" name="email" placeholder="Email" autocomplete="email" required='required' data-validate-length-range="5,25" class='form-control'/>
+				</div>
+				<div class="item form-group">
+					<input type="password" name="password" placeholder="Password" autocomplete="new-password" required='required' class='form-control' data-validate-length-range="6,14" />
+				</div>
 				<button type='submit'>Log In</button>
 				<p class="message">Not registered? <a href="javascript:void(0)">Create an account</a></p>
 			</form>
@@ -38,10 +50,42 @@
 
 
 	<script src="/vendor/jquery/dist/jquery.min.js"></script>
-	<!-- PNotify -->
 	<script src="/vendor/pnotify/dist/pnotify.js"></script>
 	<script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
 	<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+	<!-- validator -->
+    <script src="/vendor/validator/validator.min.js"></script>
+
+	<!-- validator -->
+	<script>
+
+	  // initialize the validator function
+	  validator.message.date = 'not a real date';
+
+	  // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
+	  $('.auth-form')
+		.on('blur', 'input[required], input.optional, textarea[required], select.required', validator.checkField)
+		.on('change', 'select.required', validator.checkField)
+		//.on('keypress', 'input[required][pattern]', validator.keypress);
+
+	  $('.form').submit(function(e) {
+
+		e.preventDefault();
+			var submit = true;
+			// evaluate the form using generic validaing
+			if( !validator.checkAll( $('.form') ) ){
+				submit = false;
+			}
+
+			if ( submit ) {
+				this.submit();
+			}
+			return false;
+
+	  });
+
+	</script>
+	<!-- /validator -->
 
 
 	<script>
