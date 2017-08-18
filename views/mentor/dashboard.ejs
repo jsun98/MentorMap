@@ -251,10 +251,10 @@ $(window).load(function() {
 			});
 		},
 		eventClick: function( calEvent, jsEvent, view ) {
-			console.log(calEvent)
 			if (calEvent.type !== 'requested') {
 				$('.btn-control').hide()
 			}
+
 
 			$('#event_details').click();
 			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
@@ -263,6 +263,11 @@ $(window).load(function() {
 			$('#mentee').val(calEvent.mentee ? calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name : '')
 			$('#zoom-start').val(calEvent.startURL)
 			$('#zoom-join').val(calEvent.joinURL)
+			if ((calEvent.type === 'requested' || calEvent.type === 'available') && calEvent.start < moment().add(12, 'h')) {
+				$('.btn-control').hide()
+				showInfoNotify('You cannot make any changes within 12 hours of the starting time. The status of this session will change to "expired" shortly.')
+				return
+			}
 			if (calEvent.type === "requested") {
 				$('#delete').hide()
 				$("#confirm").off().on("click", function() {

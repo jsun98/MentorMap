@@ -220,6 +220,10 @@ $(window).load(function() {
 		eventClick: function(calEvent, jsEvent, view) {
 			if (calEvent.type !== 'requested')
 				$('#cancel').hide()
+			if (calEvent.type === 'requested' && calEvent.start < moment().add(12, 'h')) {
+				$('#cancel').hide()
+				showInfoNotify('You cannot make any changes within 12 hours of the starting time. The status of this session will change to "expired" shortly.')
+			}
 			else {
 				$("#cancel").off().on("click", function() {
 					$.ajax({

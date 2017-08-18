@@ -247,14 +247,18 @@
 				eventClick: function(calEvent, jsEvent, view) {
 					if (calEvent.type !== 'available')
 						$('.btn-control').hide()
-					if (calEvent.type === 'requested' && calEvent.mentee._id !== user._id)
-						return false
+
 					$('#event_details').click();
 					$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
 					$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
 					$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
 					$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
 					$('#zoom-join').val(calEvent.joinURL)
+					if ((calEvent.type === 'requested' || calEvent.type === 'available') && calEvent.start < moment().add(12, 'h')) {
+						showInfoNotify('You cannot make any changes or requests within 12 hours of the starting time. The status of this session will change to expired shortly.')
+						return false
+					}
+
 
 					if (calEvent.type === 'requested') {
 						$("#choose").hide()
