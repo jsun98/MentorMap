@@ -4,6 +4,7 @@
 const LocalStrategy = require('passport-local').Strategy,
 	User = require('../models/user'),
 	mailjet = require('../../email_templates/email'),
+	gateway = require('../../BrainTree/braintree.js'),
 	Zoom = require('zoomus')({
 		key: 'R6fQ_CoxSUeWXxshTvhZhg',
 		secret: 'AhhzZfhGL4T3ACCBjsjlK5IvqQqUvYERygMV',
@@ -68,17 +69,29 @@ module.exports = function (passport) {
 				newUser.profile.grad_year = 2021
 			}
 
-			newUser.save()
-				.then(savedUser => {
-					done(null, newUser)
-					var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-					return mailjet
-						.post('send')
-						.request(require('../../email_templates/confirmation')(savedUser, hostname))
-				})
-				.catch(err => {
-					done(err)
-				})
+			gateway.customer.create({
+				firstName: newUser.profile.first_name,
+				lastName: newUser.profile.last_name,
+				email: newUser.email,
+			}, (err, result) => {
+				if (err) return done(err)
+				if (!result.success) return done(new Error('Cannot create new BrainTree customer'))
+				newUser.BrainTreeId = result.customer.id
+				newUser.save()
+					.then(savedUser => {
+						done(null, newUser)
+						var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+						return mailjet
+							.post('send')
+							.request(require('../../email_templates/confirmation')(savedUser, hostname))
+					})
+					.catch(err => {
+						done(err)
+					})
+
+			})
+
+
 		})
 
 	}))
@@ -88,6 +101,8 @@ module.exports = function (passport) {
 		passwordField: 'password',
 		passReqToCallback: true,
 	}, (req, email, password, done) => {
+		if (req.params.secret !== process.env.MENTOR_CREATE_SECRET)
+			return done(new Error('wrong secret'))
 		User.findOne({ email }, (err, user) => {
 			if (err) return done(err)
 
@@ -142,13 +157,6 @@ module.exports = function (passport) {
 						mailjet
 							.post('send')
 							.request(require('../../email_templates/confirmation')(savedUser, hostname))
-							.then(response => {
-								console.log('Email sent to client ' + savedUser._id)
-							})
-							.catch(err => {
-								console.log(err.statusCode, err)
-							})
-
 						done(null, newUser)
 					})
 				}

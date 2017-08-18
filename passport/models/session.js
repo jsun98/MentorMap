@@ -12,15 +12,15 @@ var sessionSchema = new mongoose.Schema({
 	},
 	type: {
 		type: String,
-		enum: [ 'available', 'requested', 'taken', 'finished', 'noshow' ],
+		enum: [ 'available', 'requested', 'processing', 'scheduled', 'payment_error', 'expired' ],
 		default: 'available',
 	},
+	paymentMethodToken: String,
 	confirmation_email_sent: {
 		type: Boolean,
 		required: true,
 		default: false,
 	},
-	transaction_id: String,
 	start: {
 		type: Date,
 		required: true,

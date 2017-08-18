@@ -218,7 +218,7 @@ $(window).load(function() {
 		maxTime: "22:00:00",
 		allDaySlot: false,
 		timezone: 'local',
-		defaultView: 'agendaWeek',
+		defaultView: 'month',
 		selectable: true,
 		selectHelper: true,
 		selectOverlap: false,
@@ -252,7 +252,7 @@ $(window).load(function() {
 		},
 		eventClick: function( calEvent, jsEvent, view ) {
 			console.log(calEvent)
-			if (['taken', 'noshow', 'finished'].indexOf(calEvent.type) !== -1) {
+			if (calEvent.type !== 'requested') {
 				$('.btn-control').hide()
 			}
 
@@ -264,6 +264,7 @@ $(window).load(function() {
 			$('#zoom-start').val(calEvent.startURL)
 			$('#zoom-join').val(calEvent.joinURL)
 			if (calEvent.type === "requested") {
+				$('#delete').hide()
 				$("#confirm").off().on("click", function() {
 					$.ajax({
 						url: '/mentor/session/confirm/'+calEvent._id,

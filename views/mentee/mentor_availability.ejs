@@ -242,12 +242,13 @@
 				selectHelper: false,
 				minTime: "07:00:00",
 				maxTime: "22:00:00",
+				timezone: 'local',
 				allDaySlot: false,
 				eventClick: function(calEvent, jsEvent, view) {
-					if (['taken', 'finished', 'noshow'].indexOf(calEvent.type) !== -1)
-					$('.btn-control').hide()
+					if (calEvent.type !== 'available')
+						$('.btn-control').hide()
 					if (calEvent.type === 'requested' && calEvent.mentee._id !== user._id)
-					return false
+						return false
 					$('#event_details').click();
 					$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
 					$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
@@ -297,7 +298,8 @@
 											calendar.fullCalendar('refetchEvents')
 										})
 										.fail((res) => {
-											showDangerNotify('Your card information is not valid or your bank declined the transaction. Please try again.')
+											console.log(res)
+											showDangerNotify('Your card information is not valid or your bank declined the transaction. Please try again. Status: '+res.responseText)
 											$('.close').click();
 											calendar.fullCalendar('refetchEvents')
 										})

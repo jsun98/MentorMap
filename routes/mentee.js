@@ -22,7 +22,7 @@ router.get('/dashboard', (req, res, next) => {
 })
 
 router.get('/paymentToken', (req, res, next) => {
-	gateway.clientToken.generate({ }, (err, response) => {
+	gateway.clientToken.generate({ customerId: req.user.BrainTreeId }, (err, response) => {
 		if (err) next(err)
 		res.status(200).send(response.clientToken)
 	})
@@ -185,7 +185,12 @@ router.post('/choose-mentor', (req, res, next) => {
 
 router.put('/session/cancel/:id', (req, res, next) => {
 	req.body.mentee = undefined
-	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
+	Session.findByIdAndUpdate(req.params.id, {
+		color: 'green',
+		mentee: undefined,
+		paymentMethodToken: '',
+		type: 'available',
+	}, { new: true })
 		.then(updated => {
 			res.status(200).send(updated)
 		})
@@ -196,40 +201,71 @@ router.put('/session/cancel/:id', (req, res, next) => {
 
 // TRANSACTION
 router.put('/session/choose/:id', (req, res, next) => {
-	gateway.transaction.sale({
-		amount: '11.99',
-		paymentMethodNonce: req.body.nonce, // 'fake-valid-nonce'
-		options: { submitForSettlement: false },
+	gateway.paymentMethod.create({
+		customerId: req.user.BrainTreeId,
+		paymentMethodNonce: req.body.nonce,
+		options: {
+			verifyCard: true,
+			makeDefault: true,
+		},
 	}, (err, result) => {
-		if (err) next(err)
-		console.log(result)
-		console.log('tranaction details: ')
-		console.log(result.success)
-		console.log(result.transaction.type)
-		console.log(result.transaction.status)
-		if (result.success)
-			Session.findByIdAndUpdate(req.params.id, {
-				color: 'orange',
-				type: 'requested',
-				mentee: req.user._id,
-				transaction_id: result.transaction.id,
-			}, { new: true })
-				.populate('mentor')
-				.then(updated => {
-					var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-					return mailjet
-						.post('send')
-						.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))
-				})
-				.then(() => {
-					res.status(200).send()
-				})
-				.catch(err => {
-					next(err)
-				})
-		else
-			res.status(400).send()
+		if (err) return next(err)
+		if (!result.success) res.status(400).send(result.verification.status)
+		console.log(result.paymentMethod.token)
+		Session.findByIdAndUpdate(req.params.id, {
+			mentee: req.user._id,
+			paymentMethodToken: result.paymentMethod.token,
+			color: 'orange',
+			type: 'requested',
+		}, { new: true })
+			.populate('mentor')
+			.then(updated => {
+				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+				return mailjet
+					.post('send')
+					.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))
+			})
+			.then(() => {
+				res.status(200).send()
+			})
+			.catch(err => {
+				next(err)
+			})
 	})
+	// gateway.transaction.sale({
+	// 	amount: '11.99',
+	// 	paymentMethodNonce: req.body.nonce, // 'fake-valid-nonce'
+	// 	options: { submitForSettlement: false },
+	// }, (err, result) => {
+	// 	if (err) next(err)
+	// 	console.log(result)
+	// 	console.log('tranaction details: ')
+	// 	console.log(result.success)
+	// 	console.log(result.transaction.type)
+	// 	console.log(result.transaction.status)
+	// 	if (result.success)
+	// 		Session.findByIdAndUpdate(req.params.id, {
+	// 			color: 'orange',
+	// 			type: 'requested',
+	// 			mentee: req.user._id,
+	// 			transaction_id: result.transaction.id,
+	// 		}, { new: true })
+	// 			.populate('mentor')
+	// 			.then(updated => {
+	// 				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+	// 				return mailjet
+	// 					.post('send')
+	// 					.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))
+	// 			})
+	// 			.then(() => {
+	// 				res.status(200).send()
+	// 			})
+	// 			.catch(err => {
+	// 				next(err)
+	// 			})
+	// 	else
+	// 		res.status(400).send()
+	// })
 
 })
 

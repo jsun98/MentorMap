@@ -35,57 +35,6 @@ router.post('/availability', (req, res, next) => {
 		.catch(err => {
 			next(err)
 		})
-
-	// save the session
-	// newSession.save((err, savedSession) => {
-	// 	if (err)
-	// 		next(err)
-	// 	User.update({ _id: req.body.mentee_id }, { $addToSet: { upcomingSessions: savedSession._id } }, err => {
-	// 		if (err)
-	// 			next(err)
-	// 		else
-	// 			User.update({ _id: req.user._id }, { $addToSet: { upcomingSessions: savedSession._id } }, err => {
-	// 				if (err)
-	// 					next(err)
-	// 				else {
-	// 					var meeting = {
-	// 						host_id: 3638201174,
-	// 						type: 2,
-	// 						topic: 'Mentoring Session',
-	// 						start_time: newSession.date.setHours(req.body.startTime.split(':')[0], req.body.startTime.split(':')[1]),
-	// 						timezone: 'America/New_York',
-	// 					}
-	//
-	// 					Zoom.meeting.create(meeting, res => {
-	// 						if (res.error)
-	// 							next(res.error)
-	// 						else {
-	// 							console.log('new meeting scheduled')
-	// 							console.log(res)
-	// 							req.flash('successMsg', 'Session Created Successfully')
-	// 							res.redirect('/dashboard')
-	// 						}
-	// 					})
-	// 				}
-	// 			})
-	//
-	// 	})
-	// })
-
-
-
-	// User.findById(req.user._id)
-	// 	.exec((err, user) => {
-	// 		if (err)
-	// 			next(err)
-	// 		res.render('mentor/dashboard', { user })
-	//
-	// 		// res.render('mentor_dashboard', {
-	// 		// 	user,
-	// 		// 	successMsg: req.flash('successMsg')[0] || '',
-	// 		// 	infoMsg: req.flash('infoMsg')[0] || '',
-	// 		// })
-	// 	})
 })
 
 router.get('/mySessions', (req, res) => {
@@ -132,10 +81,14 @@ router.put('/session/confirm/:id', (req, res, next) => {
 	var updated = req.body
 	Session.findById(req.params.id)
 		.then(session => {
-			if (!session || !session.transaction_id) return res.status(404).send()
-			gateway.transaction.submitForSettlement(session.transaction_id, (err, result) => {
+			if (!session || !session.paymentMethodToken) return res.status(404).send()
+			gateway.transaction.sale({
+				paymentMethodToken: session.paymentMethodToken,
+				amount: '11.99',
+				options: { submitForSettlement: true },
+			}, (err, result) => {
 				if (err) next(err)
-				console.log(result)
+				if (!result.success) res.status(400).send()
 				Zoom.meeting.create({
 					host_id: req.user.ZoomId,
 					type: 2,
@@ -148,7 +101,7 @@ router.put('/session/confirm/:id', (req, res, next) => {
 						next(response.error)
 					else
 						Session.findByIdAndUpdate(req.params.id, {
-							type: 'taken',
+							type: 'processing',
 							color: 'red',
 							joinURL: response.join_url,
 							startURL: response.start_url,
@@ -183,23 +136,20 @@ router.put('/session/refuse/:id', (req, res, next) => {
 		type: 'available',
 		color: 'green',
 		mentee: undefined,
-		transaction_id: '',
+		paymentMethodToken: '',
 	})
 		.populate('mentee')
 		.then(updated => {
-			gateway.transaction.void(updated.transaction_id, (err, result) => {
-				if (err) next(err)
-				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-				mailjet
-					.post('send')
-					.request(require('../email_templates/session_response')(req.user, updated.mentee, updated, 'Refused', hostname))
-					.then(() => {
-						res.status(200).send()
-					})
-					.catch(err => {
-						next(err)
-					})
-			})
+			var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+			mailjet
+				.post('send')
+				.request(require('../email_templates/session_response')(req.user, updated.mentee, updated, 'Refused', hostname))
+				.then(() => {
+					res.status(200).send()
+				})
+				.catch(err => {
+					next(err)
+				})
 		})
 		.catch(err => {
 			next(err)

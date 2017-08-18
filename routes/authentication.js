@@ -30,13 +30,13 @@ router.post('/login', passport.authenticate('user-login', {
 	failureFlash: true,
 }))
 
-router.post('/signup', passport.authenticate('mentee-signup', {
+router.post('/signup/', passport.authenticate('mentee-signup', {
 	successRedirect: '/email-confirm',
 	failureRedirect: '/auth/signup',
 	failureFlash: true,
 }))
 
-router.post('/mentor-signup', passport.authenticate('mentor-signup', {
+router.post('/mentor-signup/:secret', passport.authenticate('mentor-signup', {
 	successRedirect: '/dashboard',
 	failureRedirect: '/auth/signup',
 	failureFlash: true,
