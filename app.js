@@ -10,6 +10,7 @@ const
 	passport = require('passport'),
 	path = require('path'),
 	session = require('express-session'),
+	MongoStore = require('connect-mongo')(session),
 	app = express()
 
 // DEVELOPMENT VARIABLES
@@ -40,6 +41,7 @@ app.use(session({
 	secret: 'ilovescotchscotchyscotchscotch',
 	resave: true,
 	saveUninitialized: false,
+	store: new MongoStore({ mongooseConnection: mongoose.connection }),
 })) // session secret
 app.use(passport.initialize())
 app.use(passport.session()) // persistent login sessions

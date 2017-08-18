@@ -15,6 +15,10 @@ router.get('/email-confirm', isLoggedIn, (req, res, next) => {
 	res.render('index/email-confirm')
 })
 
+router.get('/prelaunch', (req, res, next) => {
+	res.render('index/prelaunch')
+})
+
 router.get('/verify/:id', (req, res, next) => {
 	User.findByIdAndUpdate(req.params.id, { verified: true })
 		.then(newUser => {
