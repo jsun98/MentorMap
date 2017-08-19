@@ -294,6 +294,10 @@ router.get('/mentee-profile/:id', (req, res, next) => {
 		})
 })
 
+router.get('/review', (req, res, next) => {
+	res.render('common/review', { user: req.user })
+})
+
 
 
 function isMentor (req, res, next) {

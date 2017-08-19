@@ -276,6 +276,10 @@ router.put('/session/choose/:id', (req, res, next) => {
 	})
 })
 
+router.get('/review', (req, res, next) => {
+	res.render('common/review', { user: req.user })
+})
+
 function isMentee (req, res, next) {
 	if (req.user.role === 'mentee')
 		return next()
