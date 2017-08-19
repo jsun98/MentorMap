@@ -16,6 +16,7 @@ var sessionSchema = new mongoose.Schema({
 		default: 'available',
 	},
 	paymentMethodToken: String,
+	transaction_id: String,
 	confirmation_email_sent: {
 		type: Boolean,
 		required: true,

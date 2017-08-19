@@ -218,7 +218,7 @@ $(window).load(function() {
 		maxTime: "22:00:00",
 		allDaySlot: false,
 		timezone: 'local',
-		defaultView: 'month',
+		defaultView: 'agendaWeek',
 		selectable: true,
 		selectHelper: true,
 		selectOverlap: false,
@@ -275,13 +275,11 @@ $(window).load(function() {
 						url: '/mentor/session/confirm/'+calEvent._id,
 						type: 'PUT',
 						data: {
-							type: 'taken',
-							color: 'red',
 							start: calEvent.start.format(),
 							end: calEvent.end.format(),
 						}
 					}).done(function (res) {
-						showSuccessNotify('Session Confirmed! Click on the event again to view the Zoom links. An email with relevent information has also been sent to you.')
+						showSuccessNotify('Session confirmed! It is now being processed. You will receive an email containing the Zoom link once we have it ready.')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
 					})
@@ -370,7 +368,7 @@ $(window).load(function() {
 			})
 		},
 		eventRender: function(event, element) {
-			element.append('Click for more details<br>Status: '+event.type)
+			element.append('Status: '+event.type)
 		},
 		editable: true,
 		eventOverlap: false,

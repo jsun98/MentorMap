@@ -1,12 +1,10 @@
 const express = require('express'),
 	router = express.Router(),
-	moment = require('moment'),
 	User = require('../passport/models/user'),
 	Session = require('../passport/models/session'),
 	mailjet = require('../email_templates/email'),
 	Mentorship = require('../passport/models/mentorship'),
-	gateway = require('../BrainTree/braintree.js'),
-	Zoom = require('../zoom/zoom')
+	gateway = require('../BrainTree/braintree.js')
 
 router.use('*', isLoggedIn, isEmailVerified, isMentor)
 
@@ -78,7 +76,6 @@ router.put('/session/update/:id', (req, res, next) => {
 
 // TRANSACTION
 router.put('/session/confirm/:id', (req, res, next) => {
-	var updated = req.body
 	Session.findById(req.params.id)
 		.then(session => {
 			if (!session || !session.paymentMethodToken) return res.status(404).send()
@@ -89,45 +86,39 @@ router.put('/session/confirm/:id', (req, res, next) => {
 			}, (err, result) => {
 				if (err) next(err)
 				if (!result.success) res.status(400).send()
-				Zoom.meeting.create({
-					host_id: req.user.ZoomId,
-					type: 2,
-					topic: 'Mentoring Session',
-					start_time: moment.utc(updated.start).format('YYYY-MM-DD[T]HH:mm:ss[Z]'),
-					timezone: 'UTC',
-					duration: (moment(updated.end) - moment(updated.start)) / 60000,
-				}, response => {
-					if (response.error)
-						next(response.error)
-					else
+				if (process.env.NODE_ENV === 'development')
+					gateway.testing.settle(result.transaction.id, (err, settleResult) => {
+						if (err) next(err)
+						console.log('testing settle: ' + settleResult.transaction.status)
 						Session.findByIdAndUpdate(req.params.id, {
 							type: 'processing',
 							color: 'red',
-							joinURL: response.join_url,
-							startURL: response.start_url,
+							transaction_id: result.transaction.id,
 						}, { new: true })
-							.populate('mentee')
-							.then(session => {
-								var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-								mailjet
-									.post('send')
-									.request(require('../email_templates/session_response')(req.user, session.mentee, session, 'Accepted', hostname))
-								mailjet
-									.post('send')
-									.request(require('../email_templates/session_confirm')(req.user, session.mentee, session, hostname))
-							})
 							.then(() => {
 								res.status(200).send()
 							})
 							.catch(err => {
 								next(err)
 							})
-				})
+					})
+				else
+					Session.findByIdAndUpdate(req.params.id, {
+						type: 'processing',
+						color: 'red',
+						transaction_id: result.transaction.id,
+					}, { new: true })
+						.then(() => {
+							res.status(200).send()
+						})
+						.catch(err => {
+							next(err)
+						})
+
+
+
 			})
 		})
-
-
-
 })
 
 // TRANSACTION

@@ -76,4 +76,8 @@ app.use((err, req, res, next) => {
 	res.render('404')
 })
 
-app.listen(process.env.PORT)
+app.listen(process.env.PORT, () => {
+	require('./scheduled_job/zoom')
+	require('./scheduled_job/session')
+	console.log('server started')
+})
