@@ -73,39 +73,46 @@ router.post('/availability', (req, res, next) => {
 		})
 })
 
-router.get('/mySessions', (req, res) => {
+router.get('/my-sessions', (req, res, next) => {
 	Session.find({
 		mentor: req.user._id,
 		start: { $gte: new Date(req.query.start) },
 		end: { $lte: new Date(req.query.end) },
-	})
-		.populate('mentor')
-		.populate('mentee')
+	}, '-creation_date -paymentMethodToken -transaction_id -joinURL')
+		.populate('mentor', 'profile.first_name profile.last_name')
+		.populate('mentee', 'profile.first_name profile.last_name')
 		.then(sessions => {
 			res.status(200).json(sessions)
-		})
-		.catch(err => {
-			console.log(err)
-			res.status(500).send(err)
-		})
-})
-
-router.post('/session/new', (req, res, next) => {
-	req.body.mentor = req.user._id
-	var session = new Session(req.body)
-	session.save()
-		.then(saved => {
-			res.status(200).send(saved)
 		})
 		.catch(err => {
 			next(err)
 		})
 })
 
-router.put('/session/update/:id', (req, res, next) => {
-	Session.findByIdAndUpdate(req.params.id, req.body, { new: true })
-		.then(updated => {
-			res.status(200).send(updated)
+router.post('/session/new', (req, res, next) => {
+	var session = new Session({
+		start: req.body.start,
+		end: req.body.end,
+		mentor: req.user._id,
+		type: 'available',
+		color: 'green',
+	})
+	session.save()
+		.then(saved => {
+			res.status(200).send()
+		})
+		.catch(err => {
+			next(err)
+		})
+})
+
+router.put('/session/update-time/:id', (req, res, next) => {
+	Session.findByIdAndUpdate(req.params.id, {
+		start: req.body.start,
+		end: req.body.end,
+	})
+		.then(() => {
+			res.status(200).send()
 		})
 		.catch(err => {
 			next(err)
@@ -166,6 +173,7 @@ router.put('/session/refuse/:id', (req, res, next) => {
 		color: 'green',
 		mentee: undefined,
 		paymentMethodToken: '',
+		transaction_id: '',
 	})
 		.populate('mentee')
 		.then(updated => {
@@ -186,7 +194,11 @@ router.put('/session/refuse/:id', (req, res, next) => {
 })
 
 router.delete('/session/delete/:id', (req, res, next) => {
-	Session.findByIdAndRemove(req.params.id)
+	Session.findOneAndRemove({
+		_id: req.params.id,
+		mentor: req.user._id,
+		type: 'available',
+	})
 		.then(updated => {
 			res.status(200).send()
 		})

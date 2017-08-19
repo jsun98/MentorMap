@@ -175,9 +175,9 @@ router.get('/sessionByMentorId/:id', (req, res) => {
 		$or: [ { type: 'available' }, { mentee: req.user._id } ],
 		start: { $gte: new Date(req.query.start) },
 		end: { $lte: new Date(req.query.end) },
-	})
-		.populate('mentor')
-		.populate('mentee')
+	}, '-creation_date -paymentMethodToken -transaction_id -startURL')
+		.populate('mentor', 'profile.first_name profile.last_name')
+		.populate('mentee', 'profile.first_name profile.last_name')
 		.then(sessions => {
 			res.status(200).json(sessions)
 		})
@@ -187,14 +187,15 @@ router.get('/sessionByMentorId/:id', (req, res) => {
 		})
 })
 
-router.get('/mySessions', (req, res) => {
+router.get('/my-sessions', (req, res) => {
 	Session.find({
 		mentee: req.user._id,
+		type: { $ne: 'available' },
 		start: { $gte: new Date(req.query.start) },
 		end: { $lte: new Date(req.query.end) },
-	})
-		.populate('mentor')
-		.populate('mentee')
+	}, '-creation_date -paymentMethodToken -transaction_id -startURL')
+		.populate('mentor', 'profile.first_name profile.last_name')
+		.populate('mentee', 'profile.first_name profile.last_name')
 		.then(sessions => {
 			res.status(200).json(sessions)
 		})
@@ -226,11 +227,11 @@ router.post('/choose-mentor', (req, res, next) => {
 })
 
 router.put('/session/cancel/:id', (req, res, next) => {
-	req.body.mentee = undefined
 	Session.findByIdAndUpdate(req.params.id, {
 		color: 'green',
 		mentee: undefined,
 		paymentMethodToken: '',
+		transaction_id: '',
 		type: 'available',
 	}, { new: true })
 		.then(updated => {
@@ -252,8 +253,7 @@ router.put('/session/choose/:id', (req, res, next) => {
 		},
 	}, (err, result) => {
 		if (err) return next(err)
-		if (!result.success) res.status(400).send(result.verification.status)
-		console.log(result.paymentMethod.token)
+		if (!result.success) return res.status(400).send(result.verification.status)
 		Session.findByIdAndUpdate(req.params.id, {
 			mentee: req.user._id,
 			paymentMethodToken: result.paymentMethod.token,
@@ -274,41 +274,6 @@ router.put('/session/choose/:id', (req, res, next) => {
 				next(err)
 			})
 	})
-	// gateway.transaction.sale({
-	// 	amount: '11.99',
-	// 	paymentMethodNonce: req.body.nonce, // 'fake-valid-nonce'
-	// 	options: { submitForSettlement: false },
-	// }, (err, result) => {
-	// 	if (err) next(err)
-	// 	console.log(result)
-	// 	console.log('tranaction details: ')
-	// 	console.log(result.success)
-	// 	console.log(result.transaction.type)
-	// 	console.log(result.transaction.status)
-	// 	if (result.success)
-	// 		Session.findByIdAndUpdate(req.params.id, {
-	// 			color: 'orange',
-	// 			type: 'requested',
-	// 			mentee: req.user._id,
-	// 			transaction_id: result.transaction.id,
-	// 		}, { new: true })
-	// 			.populate('mentor')
-	// 			.then(updated => {
-	// 				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-	// 				return mailjet
-	// 					.post('send')
-	// 					.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))
-	// 			})
-	// 			.then(() => {
-	// 				res.status(200).send()
-	// 			})
-	// 			.catch(err => {
-	// 				next(err)
-	// 			})
-	// 	else
-	// 		res.status(400).send()
-	// })
-
 })
 
 function isMentee (req, res, next) {

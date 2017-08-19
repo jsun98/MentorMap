@@ -83,6 +83,12 @@
 					<div id="testmodal2" style="padding: 5px 20px;">
 						<form id="antoform2" class="form-horizontal calender" role="form">
 							<div class="form-group">
+								<label class="col-sm-3 control-label">Status</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="status" readonly>
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-sm-3 control-label">Start</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" id="start" readonly>
@@ -138,13 +144,14 @@
 
 					<div class="modal-header">
 						<button type="button" class="close close2" data-dismiss="modal" aria-hidden="true">×</button>
-						<h4 class="modal-title" id="myModalLabel2">Make Your Payment</h4>
+						<h4 class="modal-title" id="myModalLabel2">Make Your Payment via Credit or Debit Cards</h4>
 					</div>
 					<div class="modal-body">
 
 						<div id="testmodal2" style="padding: 5px 20px;">
 							<form id="antoform2" class="form-horizontal calender" role="form">
 								<h1>Amount: $11.99 CDN</h1>
+								<p id='payment-wait-msg'>Please wait...</p>
 								<div id="dropin-container"></div>
 							</form>
 						</div>
@@ -191,8 +198,6 @@
 		<!-- FullCalendar -->
 		<script>
 		$(window).load(function() {
-			var mentor = <%- JSON.stringify(mentor) %>
-			var user = <%- JSON.stringify(user) %>
 
 			function showDangerNotify (msg) {
 				PNotify.removeAll()
@@ -254,33 +259,37 @@
 					$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
 					$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
 					$('#zoom-join').val(calEvent.joinURL)
-					if ((calEvent.type === 'requested' || calEvent.type === 'available') && calEvent.start < moment().add(12, 'h')) {
-						showInfoNotify('You cannot make any changes or requests within 12 hours of the starting time. The status of this session will change to expired shortly.')
-						return false
-					}
+					$('#status').val(calEvent.type)
 
-
-					if (calEvent.type === 'requested') {
+					if ((calEvent.type === 'requested' || calEvent.type === 'available') && calEvent.start < moment().add(24, 'h')) {
+						$('#choose').hide()
+						$('#cancel').hide()
+						showInfoNotify('You cannot make any changes or requests within 24 hours of the starting time. The status of this session will change to expired shortly.')
+					} else if (calEvent.type === 'requested') {
 						$("#choose").hide()
 						$("#cancel").off().on("click", function() {
 							$.ajax({
 								url: "/mentee/session/cancel/"+calEvent._id,
-								type: 'PUT',
-								data: { type: "available", color: "green" }
+								type: 'PUT'
 							})
-							.done((res) => {
+							.done(function (res) {
 								showInfoNotify('Your Session Has Been Canceled')
+								$('.close').click();
+								calendar.fullCalendar('refetchEvents')
+							})
+							.fail(function () {
+								showDangerNotify('There was an error. Please try again later.')
 								$('.close').click();
 								calendar.fullCalendar('refetchEvents')
 							})
 						}).show();
 					} else if (calEvent.type === 'available'){
 						$("#cancel").hide()
-						$("#confirm").hide()
 						$("#choose").off().on("click", function() {
-							$('.paymentControl').show()
+							$('.paymentControl').hide()
 							$('.close').click();
 							$('#paymentModalControl').click()
+							$('#payment-wait-msg').show()
 							var $button = $('#braintree-button');
 
 							function handlePaymentButtonClick (instance) {
@@ -290,19 +299,19 @@
 										if (err) {
 											$('.close').click();
 											showDangerNotify('Server error, please try again later')
+											return
 										}
 										$.ajax({
 											url: "/mentee/session/choose/"+calEvent._id,
 											type: 'PUT',
-											data: { type: "requested", color: "orange", nonce: payload.nonce }
+											data: { nonce: payload.nonce }
 										})
 										.done((res) => {
-											showSuccessNotify('Payment received. Your request has been processed. You will receive an email when the mentor responds to your request.')
+											showSuccessNotify('Payment received. Your request has been processed. You will receive an email when the mentor responds to your request. You will not be charged until the mentor confirms your request.')
 											$('.close').click();
 											calendar.fullCalendar('refetchEvents')
 										})
 										.fail((res) => {
-											console.log(res)
 											showDangerNotify('Your card information is not valid or your bank declined the transaction. Please try again. Status: '+res.responseText)
 											$('.close').click();
 											calendar.fullCalendar('refetchEvents')
@@ -318,6 +327,8 @@
 										authorization: token,
 										container: '#dropin-container'
 									}, function (createErr, instance) {
+										$('.paymentControl').show()
+										$('#payment-wait-msg').hide()
 										$button.off().click(handlePaymentButtonClick(instance));
 									});
 								})
@@ -327,13 +338,16 @@
 								})
 
 						}).show();
+					} else {
+						$('#choose').hide()
+						$('#cancel').hide()
 					}
 
 					calendar.fullCalendar('unselect');
 
 				},
 				editable: false,
-				events:	'/mentee/sessionByMentorId/'+ mentor._id,
+				events:	'/mentee/sessionByMentorId/' + '<%= mentor._id %>',
 				eventRender: function(event, element) {
 					element.append('Status: '+event.type)
 

@@ -79,5 +79,5 @@ app.use((err, req, res, next) => {
 app.listen(process.env.PORT, () => {
 	require('./scheduled_job/zoom')
 	require('./scheduled_job/session')
-	console.log('server started')
+	console.log('Server Started')
 })

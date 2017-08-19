@@ -6,10 +6,6 @@ var sessionSchema = new mongoose.Schema({
 		default: Date(),
 		required: true,
 	},
-	title: {
-		type: String,
-		default: 'Session Slot',
-	},
 	type: {
 		type: String,
 		enum: [ 'available', 'requested', 'processing', 'scheduled', 'payment_error', 'expired' ],
@@ -17,11 +13,6 @@ var sessionSchema = new mongoose.Schema({
 	},
 	paymentMethodToken: String,
 	transaction_id: String,
-	confirmation_email_sent: {
-		type: Boolean,
-		required: true,
-		default: false,
-	},
 	start: {
 		type: Date,
 		required: true,

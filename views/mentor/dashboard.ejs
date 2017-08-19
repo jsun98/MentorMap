@@ -80,6 +80,12 @@
 				<div id="testmodal2" style="padding: 5px 20px;">
 					<form id="antoform2" class="form-horizontal calender" role="form">
 						<div class="form-group">
+							<label class="col-sm-3 control-label">Status</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="status" readonly>
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-sm-3 control-label">Start</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control" id="start" readonly>
@@ -109,12 +115,6 @@
 								<textarea type="text" class="form-control" id="zoom-start" readonly></textarea>
 							</div>
 						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label">Zoom Mentee Join Link</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="zoom-join" readonly>
-							</div>
-						</div>
 
 					</form>
 				</div>
@@ -124,6 +124,7 @@
 					 to make any changes to or cancel the session. You may only cancel a
 					 session if it has not been confirmed by you. If you absolutely have to cancel
 				 	 a session after it has been confirmed, please email us and explain your circumstances.</p>
+				<h4 id='wait-msg' hidden>Please wait...</h4>
 				<button type="button" id='confirm' class="btn btn-success btn-control" style="margin: 0;">Accept</button>
 				<button type="button" id='refuse' class="btn btn-warning btn-control" style="margin: 0;">Refuse</button>
 				<button type="button" id='delete' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Delete</button>
@@ -167,9 +168,6 @@
 <!-- FullCalendar -->
 <script>
 $(window).load(function() {
-
-	var user = <%- JSON.stringify(user) %>;
-	var calEvents = user.upcomingSessions
 
 	function showDangerNotify (msg) {
 		PNotify.removeAll()
@@ -239,11 +237,8 @@ $(window).load(function() {
 			}
 
 			$.post('/mentor/session/new/', {
-				type: 'available',
-				color: 'green',
 				start: start.valueOf(),
 				end: end.valueOf(),
-				mentor: user._id,
 			}).done(function (res) {
 				showSuccessNotify('New Time Slot Created')
 				calendar.fullCalendar('refetchEvents')
@@ -251,26 +246,25 @@ $(window).load(function() {
 			});
 		},
 		eventClick: function( calEvent, jsEvent, view ) {
-			if (calEvent.type !== 'requested') {
-				$('.btn-control').hide()
-			}
-
-
 			$('#event_details').click();
 			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
 			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
 			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
 			$('#mentee').val(calEvent.mentee ? calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name : '')
 			$('#zoom-start').val(calEvent.startURL)
-			$('#zoom-join').val(calEvent.joinURL)
-			if ((calEvent.type === 'requested' || calEvent.type === 'available') && calEvent.start < moment().add(12, 'h')) {
-				$('.btn-control').hide()
-				showInfoNotify('You cannot make any changes within 12 hours of the starting time. The status of this session will change to "expired" shortly.')
+			$('#status').val(calEvent.type)
+
+			if ((calEvent.type === 'requested' || calEvent.type === 'available') && calEvent.start < moment().add(24, 'h')) {
+				$("#confirm").hide()
+				$("#refuse").hide()
+				$("#delete").hide()
+				showInfoNotify('You cannot make any changes within 24 hours of the starting time. The status of this session will change to "expired" shortly.')
 				return
-			}
-			if (calEvent.type === "requested") {
+			} else if (calEvent.type === "requested") {
 				$('#delete').hide()
 				$("#confirm").off().on("click", function() {
+					$('#wait-msg').show()
+					$('.modal-footer button').hide()
 					$.ajax({
 						url: '/mentor/session/confirm/'+calEvent._id,
 						type: 'PUT',
@@ -279,23 +273,35 @@ $(window).load(function() {
 							end: calEvent.end.format(),
 						}
 					}).done(function (res) {
-						showSuccessNotify('Session confirmed! It is now being processed. You will receive an email containing the Zoom link once we have it ready.')
+						showSuccessNotify('Session confirmed! It is now being processed. You will receive an email containing the Zoom link once we have it ready. Please make sure that you start your session on time.')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
+					}).fail(function () {
+						showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					}).always(function () {
+						$('#wait-msg').hide()
+						$('.modal-footer button').show()
 					})
 				}).show()
 				$("#refuse").off().on("click", function() {
+					$('#wait-msg').show()
+					$('.modal-footer button').hide()
 					$.ajax({
 						url: '/mentor/session/refuse/'+calEvent._id,
-						type: 'PUT',
-						data: {
-							type: 'available',
-							color: 'green',
-						}
+						type: 'PUT'
 					}).done(function (res) {
 						showInfoNotify('Request for session refused!')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
+					}).fail(function () {
+						showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					}).always(function () {
+						$('#wait-msg').hide()
+						$('.modal-footer button').show()
 					})
 				}).show()
 			}
@@ -310,8 +316,16 @@ $(window).load(function() {
 						showInfoNotify('Time slot deleted')
 						$('.close').click()
 						calendar.fullCalendar('refetchEvents')
+					}).fail(function () {
+						showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
 					})
 				}).show()
+			} else {
+				$("#confirm").hide()
+				$("#refuse").hide()
+				$("#delete").hide()
 			}
 		},
 		eventDrop: function(calEvent, delta, revertFunc, jsEvent) {
@@ -328,7 +342,7 @@ $(window).load(function() {
 			var start = calEvent.start
 			var end = calEvent.end
 			$.ajax({
-				url: '/mentor/session/update/'+calEvent._id,
+				url: '/mentor/session/update-time/'+calEvent._id,
 				type: 'PUT',
 				data: {
 					start: start.valueOf(),
@@ -336,6 +350,10 @@ $(window).load(function() {
 				}
 			}).done(function (res) {
 				showSuccessNotify('Time slot change saved!')
+				calendar.fullCalendar('refetchEvents')
+			}).fail(function () {
+				showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+				calendar.fullCalendar('refetchEvents')
 			})
 		},
 		eventResize: function(calEvent, delta, revertFunc, jsEvent) {
@@ -357,7 +375,7 @@ $(window).load(function() {
 			var start = calEvent.start
 			var end = calEvent.end
 			$.ajax({
-				url: '/mentor/session/update/'+calEvent._id,
+				url: '/mentor/session/update-time/'+calEvent._id,
 				type: 'PUT',
 				data: {
 					start: start.valueOf(),
@@ -365,6 +383,10 @@ $(window).load(function() {
 				}
 			}).done(function (res) {
 				showSuccessNotify('Time slot changes saved')
+				calendar.fullCalendar('refetchEvents')
+			}).fail(function () {
+				showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+				calendar.fullCalendar('refetchEvents')
 			})
 		},
 		eventRender: function(event, element) {
@@ -372,7 +394,7 @@ $(window).load(function() {
 		},
 		editable: true,
 		eventOverlap: false,
-		events: '/mentor/mySessions',
+		events: '/mentor/my-sessions',
 	});
 });
 </script>

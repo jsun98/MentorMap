@@ -4,7 +4,7 @@ var CronJob = require('cron').CronJob,
 	mailjet = require('../email_templates/email'),
 	gateway = require('../BrainTree/braintree.js'),
 	Zoom = require('../zoom/zoom'),
-	job = new CronJob('0 0 */6 * * *', () => {
+	job = new CronJob('0 */10 * * * *', () => {
 		console.log('Zoom job running')
 		Session.find({ type: 'processing' })
 			.populate('mentor')

@@ -1,7 +1,7 @@
 var CronJob = require('cron').CronJob,
 	moment = require('moment'),
 	Session = require('../passport/models/session'),
-	job = new CronJob('0 0 * * * *', () => {
+	job = new CronJob('0 */10 * * * *', () => {
 		console.log('Daily session job running')
 		Session.find({
 			$or: [ {

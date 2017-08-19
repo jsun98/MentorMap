@@ -84,6 +84,12 @@
 					<div id="testmodal2" style="padding: 5px 20px;">
 						<form id="antoform2" class="form-horizontal calender" role="form">
 							<div class="form-group">
+								<label class="col-sm-3 control-label">Status</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="status" readonly>
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-sm-3 control-label">Start</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" id="start" readonly>
@@ -159,13 +165,6 @@
 <!-- FullCalendar -->
 <script>
 $(window).load(function() {
-	var user = <%- JSON.stringify(user) %>
-	var date = new Date(),
-	d = date.getDate(),
-	m = date.getMonth(),
-	y = date.getFullYear(),
-	started,
-	categoryClass;
 
 	function showDangerNotify (msg) {
 		PNotify.removeAll()
@@ -218,39 +217,41 @@ $(window).load(function() {
 		timezone: 'local',
 		allDaySlot: false,
 		eventClick: function(calEvent, jsEvent, view) {
-			if (calEvent.type !== 'requested')
+			$('#event_details').click();
+			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
+			$('#mentee').val(calEvent.mentee ? calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name : '')
+			$('#status').val(calEvent.type)
+			$('#zoom-join').val(calEvent.joinURL)
+
+			if (calEvent.type === 'requested' && calEvent.start < moment().add(24, 'h')) {
 				$('#cancel').hide()
-			if (calEvent.type === 'requested' && calEvent.start < moment().add(12, 'h')) {
-				$('#cancel').hide()
-				showInfoNotify('You cannot make any changes within 12 hours of the starting time. The status of this session will change to "expired" shortly.')
-			}
-			else {
+				showInfoNotify('You cannot make any changes within 24 hours of the starting time. The status of this session will change to "expired" shortly.')
+			} else if (calEvent.type === 'requested') {
 				$("#cancel").off().on("click", function() {
 					$.ajax({
 						url: "/mentee/session/cancel/"+calEvent._id,
-						type: 'PUT',
-						data: { type: "available", color: "green" }
+						type: 'PUT'
 					})
 					.done((res) => {
 						showInfoNotify('Your Session Has Been Canceled')
 						$('.close').click();
 						calendar.fullCalendar('refetchEvents')
 					})
+					.fail(() => {
+						showDangerNotify('There was an error. Please try again later.')
+						$('.close').click();
+						calendar.fullCalendar('refetchEvents')
+					})
 				}).show();
+			} else {
+				$('#cancel').hide()
 			}
-
-			$('#event_details').click();
-			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
-			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
-			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
-			$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
-			$('#zoom-join').val(calEvent.joinURL)
-
-
 			calendar.fullCalendar('unselect');
 
 		},
-		events: '/mentee/mySessions',
+		events: '/mentee/my-sessions',
 		eventRender: function(event, element) {
 			element.append('Status: '+event.type)
 		}
