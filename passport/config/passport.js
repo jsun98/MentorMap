@@ -178,7 +178,7 @@ module.exports = function (passport) {
 	}, (req, email, password, done) => {
 		User.findOne({ email })
 			.exec((err, User) => {
-				// if there are any errors, return the error before anything else
+
 				if (err)
 					return done(err)
 
@@ -186,29 +186,11 @@ module.exports = function (passport) {
 				if (!User)
 					return done(null, false, req.flash('error', 'Email Not Found'))
 
-				// if the user is found but the password is wrong
+
 				if (!User.validPassword(password))
-					return done(null, false, req.flash('error', 'Wrong Password')) // create the loginerror and save it to session as flashdata
-				// if the user is found but the password is wrong
+					return done(null, false, req.flash('error', 'Wrong Password'))
 
-				// if email not verified
-				if (!User.verified)
-					return done(null, false, req.flash('error', 'Please Verify Your Email First!'))
 
-				// promise
-				/*
-				for (var i = 0; i < user.upcomingSessions.length; i++)
-					if (user.upcomingSessions[i].date < new Date()) {
-						user.upcomingSessions[i].mentee.upcomingSessions.splice(i, 1)
-						user.upcomingSessions[i].mentee.save()
-						user.upcomingSessions[i].mentor.upcomingSessions.splice(i, 1)
-						user.upcomingSessions[i].mentor.save()
-						user.upcomingSessions[i].remove(err => {
-							if (err)
-								console.log(err)
-						})
-					}
-					*/
 				return done(null, User)
 			})
 	}))
