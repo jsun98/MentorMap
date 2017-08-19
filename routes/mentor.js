@@ -122,6 +122,8 @@ router.put('/session/update-time/:id', (req, res, next) => {
 // TRANSACTION
 router.put('/session/confirm/:id', (req, res, next) => {
 	Session.findById(req.params.id)
+		.populate('mentor')
+		.populate('mentee')
 		.then(session => {
 			if (!session || !session.paymentMethodToken) return res.status(404).send()
 			gateway.transaction.sale({
@@ -141,6 +143,10 @@ router.put('/session/confirm/:id', (req, res, next) => {
 							transaction_id: result.transaction.id,
 						}, { new: true })
 							.then(() => {
+								const hostname = 'mentormap.ca'
+								mailjet
+									.post('send')
+									.request(require('../email_templates/session_response')(session.mentor, session.mentee, session, 'Accepted', hostname))
 								res.status(200).send()
 							})
 							.catch(err => {
