@@ -7,6 +7,10 @@
   display: none;
 }
 
+.right_col {
+  min-height: 0px !important;
+}
+
 .nav-sm .container.body .col-md-3.left_col {
   width: 70px;
   padding: 0;

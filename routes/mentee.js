@@ -15,6 +15,48 @@ router.get('/register', (req, res, next) => {
 	res.render('mentee/register', { user: req.user })
 })
 
+router.post('/register', (req, res, next) => {
+
+	if (req.user.completed)
+		res.redirect('/dashboard')
+
+
+	req.body.skills = req.body.skills.split(',')
+
+	if (req.body.high_school_program.constructor !== Array)
+		req.body.high_school_program = [ req.body.high_school_program ]
+	if (req.body.preferred_program.constructor !== Array)
+		req.body.preferred_program = [ req.body.preferred_program ]
+
+	User.findByIdAndUpdate(req.user.id, {
+		$set:
+						{
+							completed: true,
+							'profile.gender': req.body.gender,
+							'profile.phone': req.body.phone,
+							'profile.age': req.body.age,
+							'profile.avg_11': parseInt(req.body.avg_11),
+							'profile.avg_12': parseInt(req.body.avg_12),
+							'profile.high_school': req.body.high_school,
+							'profile.grade': parseInt(req.body.grade),
+							'profile.skills': req.body.skills,
+							'profile.linkedin': req.body.linkedin,
+							'profile.paragraphs': req.body.paragraphs,
+							'profile.high_school_program': req.body.high_school_program,
+							'profile.preferred_program': req.body.preferred_program,
+							'profile.preferred_school': req.body.preferred_school,
+						},
+	})
+		.then(() => {
+			res.redirect('/dashboard')
+		})
+		.catch(err => {
+			next(err)
+		})
+
+
+})
+
 router.use('*', isRegCompleted)
 
 router.get('/dashboard', (req, res, next) => {

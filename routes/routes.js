@@ -42,90 +42,10 @@ router.get('/register', isLoggedIn, (req, res, next) => {
 })
 
 // update mentee database records
-router.post('/mentee-complete', isLoggedIn, (req, res, next) => {
 
-	if (req.user.completed) {
-		var err = new Error('Already Completed')
-		next(err)
-	}
-
-	req.body.skills = req.body.skills.split(',')
-
-	if (req.body.high_school_program.constructor !== Array)
-		req.body.high_school_program = [ req.body.high_school_program ]
-	if (req.body.preferred_program.constructor !== Array)
-		req.body.preferred_program = [ req.body.preferred_program ]
-	if (req.body.preferred_school.constructor !== Array)
-		req.body.preferred_school = [ req.body.preferred_school ]
-
-	User.findByIdAndUpdate(req.user.id, {
-		$set:
-						{
-							completed: true,
-							'profile.gender': req.body.gender,
-							'profile.phone': req.body.phone,
-							'profile.age': req.body.age,
-							'profile.avg_11': parseInt(req.body.avg_11),
-							'profile.avg_12': parseInt(req.body.avg_12),
-							'profile.high_school': req.body.high_school,
-							'profile.grade': parseInt(req.body.grade),
-							'profile.skills': req.body.skills,
-							'profile.linkedin': req.body.linkedin,
-							'profile.paragraphs': req.body.paragraphs,
-							'profile.high_school_program': req.body.high_school_program,
-							'profile.preferred_program': req.body.preferred_program,
-							'profile.preferred_school': req.body.preferred_school,
-						},
-	},
-	(err, tank) => {
-		if (err)
-			next(err)
-
-	}
-	)
-	res.redirect('/dashboard')
-
-})
 
 // update mentor database records
-router.post('/mentor-complete', isLoggedIn, (req, res, next) => {
 
-	if (req.user.completed) {
-		var err = new Error('Already Completed')
-		next(err)
-	}
-
-	req.body.skills = req.body.skills.split(',')
-	if (req.body.high_school_program.constructor !== Array)
-		req.body.high_school_program = [ req.body.high_school_program ]
-
-	User.findByIdAndUpdate(req.user.id, {
-		$set:
-						{
-							completed: true,
-							'profile.gender': req.body.gender,
-							'profile.phone': req.body.phone,
-							'profile.high_school_program': req.body.high_school_program,
-							'profile.skills': req.body.skills,
-							'profile.linkedin': req.body.linkedin,
-							'profile.paragraphs': req.body.paragraphs,
-							'profile.gpa': parseInt(req.body.gpa),
-							'profile.age': req.body.age,
-							'profile.curr_school': req.body.curr_school,
-							'profile.curr_major': req.body.curr_major,
-							'profile.curr_minor': req.body.curr_minor,
-							'profile.grad_year': parseInt(req.body.grad_year),
-						},
-	},
-	(err, tank) => {
-		if (err)
-			next(err)
-
-	}
-	)
-	res.redirect('/dashboard')
-
-})
 
 // =====================================
 // Dashboard Page  =====================

@@ -76,7 +76,7 @@ var userSchema = new mongoose.Schema({
 		avg_12: Number,
 		high_school: String,
 		grade: Number,
-		preferred_school: [ String ],
+		preferred_school: String,
 		preferred_program: [ String ],
 
 

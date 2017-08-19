@@ -14,6 +14,44 @@ router.get('/register', (req, res, next) => {
 	res.render('mentor/register', { user: req.user })
 })
 
+router.post('/register', (req, res, next) => {
+
+	if (req.user.completed)
+		res.redirect('/dashboard')
+
+
+	req.body.skills = req.body.skills.split(',')
+	if (req.body.high_school_program.constructor !== Array)
+		req.body.high_school_program = [ req.body.high_school_program ]
+
+	User.findByIdAndUpdate(req.user.id, {
+		$set:
+						{
+							completed: true,
+							'profile.gender': req.body.gender,
+							'profile.phone': req.body.phone,
+							'profile.high_school_program': req.body.high_school_program,
+							'profile.skills': req.body.skills,
+							'profile.linkedin': req.body.linkedin,
+							'profile.paragraphs': req.body.paragraphs,
+							'profile.gpa': parseInt(req.body.gpa),
+							'profile.age': req.body.age,
+							'profile.curr_school': req.body.curr_school,
+							'profile.curr_major': req.body.curr_major,
+							'profile.curr_minor': req.body.curr_minor,
+							'profile.grad_year': parseInt(req.body.grad_year),
+						},
+	})
+		.then(() => {
+			res.redirect('/dashboard')
+		})
+		.catch(err => {
+			next(err)
+		})
+
+
+})
+
 router.use('*', isRegCompleted)
 
 router.get('/dashboard', (req, res, next) => {
