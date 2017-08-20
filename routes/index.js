@@ -1,7 +1,6 @@
 const express = require('express'),
-	mailjet = require('../email_templates/email'),
-	router = express.Router(),
-	User = require('../passport/models/user')
+	router = express.Router()
+
 
 router.get('/', (req, res, next) => {
 	res.render('index/index', {
@@ -11,38 +10,15 @@ router.get('/', (req, res, next) => {
 
 })
 
-router.get('/email-confirm', isLoggedIn, (req, res, next) => {
-	res.render('index/email-confirm')
-})
-
-router.get('/prelaunch', (req, res, next) => {
-	res.render('index/prelaunch')
-})
-
-router.get('/verify/:id', (req, res, next) => {
-	User.findByIdAndUpdate(req.params.id, { verified: true })
-		.then(newUser => {
-			req.flash('success', 'Your account has now been verified. Log in to start exploring MentorMap!')
-			res.redirect('/auth/login')
-		})
-		.catch(err => {
-			next(err)
-		})
-})
-
-router.get('/resend', isLoggedIn, (req, res, next) => {
-	var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-	mailjet
-		.post('send')
-		.request(require('../email_templates/confirmation')(req.user, hostname))
-	res.redirect('/email-confirm')
-})
-
 router.get('/dashboard', isLoggedIn, (req, res, next) => {
 	if (req.user.role === 'mentor')
 		res.redirect('/mentor/dashboard')
 	else
 		res.redirect('/mentee/dashboard')
+})
+
+router.get('/prelaunch', (req, res, next) => {
+	res.render('index/prelaunch')
 })
 
 function isLoggedIn (req, res, next) {

@@ -202,6 +202,17 @@
 								});
 							}
 
+							function showDangerNotify (msg) {
+								PNotify.removeAll()
+								new PNotify({
+									title: 'Error',
+									text: msg,
+									type: 'error',
+									styling: "bootstrap3",
+									delay: 4000,
+									buttons: {sticker: false},
+								});
+							}
 
 							function showSuccessNotify (msg) {
 								PNotify.removeAll()
@@ -238,8 +249,8 @@
 											$("#btn-cancel-mentor").hide();
 											$('#btn-choose-mentor').show();
 										})
-										.fail(function () {
-											showDangerNotify("Oops, looks like something went wrong. Please try again later.")
+										.fail(function (res) {
+											showDangerNotify(res.responseText || "Oops, looks like something went wrong. Please try again later.")
 										});
 									});
 								});

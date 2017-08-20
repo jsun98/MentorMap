@@ -36,7 +36,7 @@
             <h1 class="navbar-left-logo" href="/"><img class="img-responsive" style="display: inherit;" src="index/images/logo.png"></h1>
             <a href="#email-form">
 				<% if (authenticated) { %>
-					<button class="header-btn" onclick="window.location.href='/mentee/dashboard'">Welcome, <%= user.profile.first_name %>!</button>
+					<button class="header-btn" onclick="window.location.href='/dashboard'">Welcome, <%= user.profile.first_name %>!</button>
 				<% } else { %>
                 	<button class="header-btn" onclick="window.location.href='/auth/login'">JOIN US NOW!</button>
 				<% } %>

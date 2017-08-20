@@ -10,16 +10,13 @@ const
 router.use('*', isLoggedIn, isEmailVerified, isMentee)
 
 router.get('/register', (req, res, next) => {
-	if (req.user.completed)
-		return res.redirect('/mentee/dashboard')
+	if (req.user.completed) return res.redirect('/mentee/dashboard')
 	res.render('mentee/register', { user: req.user })
 })
 
 router.post('/register', (req, res, next) => {
 
-	if (req.user.completed)
-		res.redirect('/dashboard')
-
+	if (req.user.completed) return res.redirect('/dashboard')
 
 	req.body.skills = req.body.skills.split(',')
 
@@ -28,24 +25,24 @@ router.post('/register', (req, res, next) => {
 	if (req.body.preferred_program.constructor !== Array)
 		req.body.preferred_program = [ req.body.preferred_program ]
 
-	User.findByIdAndUpdate(req.user.id, {
+	User.findByIdAndUpdate(req.user._id, {
 		$set:
-						{
-							completed: true,
-							'profile.gender': req.body.gender,
-							'profile.phone': req.body.phone,
-							'profile.age': req.body.age,
-							'profile.avg_11': parseInt(req.body.avg_11),
-							'profile.avg_12': parseInt(req.body.avg_12),
-							'profile.high_school': req.body.high_school,
-							'profile.grade': parseInt(req.body.grade),
-							'profile.skills': req.body.skills,
-							'profile.linkedin': req.body.linkedin,
-							'profile.paragraphs': req.body.paragraphs,
-							'profile.high_school_program': req.body.high_school_program,
-							'profile.preferred_program': req.body.preferred_program,
-							'profile.preferred_school': req.body.preferred_school,
-						},
+			{
+				completed: true,
+				'profile.gender': req.body.gender,
+				'profile.phone': req.body.phone,
+				'profile.age': req.body.age,
+				'profile.avg_11': parseInt(req.body.avg_11),
+				'profile.avg_12': parseInt(req.body.avg_12),
+				'profile.high_school': req.body.high_school,
+				'profile.grade': parseInt(req.body.grade),
+				'profile.skills': req.body.skills,
+				'profile.linkedin': req.body.linkedin,
+				'profile.paragraphs': req.body.paragraphs,
+				'profile.high_school_program': req.body.high_school_program,
+				'profile.preferred_program': req.body.preferred_program,
+				'profile.preferred_school': req.body.preferred_school,
+			},
 	})
 		.then(() => {
 			res.redirect('/dashboard')
@@ -123,7 +120,7 @@ router.get('/mentor-profile/:id', (req, res, next) => {
 		role: 'mentor',
 	}).exec()
 		.then(mentor => {
-			if (!mentor) return res.status(200).send('Mentor Not Found')
+			if (!mentor) return res.status(404).send('Mentor Not Found')
 			temp = mentor
 			return Mentorship.findOne({
 				mentee: req.user._id,
@@ -150,7 +147,7 @@ router.get('/mentor-availability/:id', (req, res, next) => {
 		role: 'mentor',
 	}).exec()
 		.then(mentor => {
-			if (!mentor) return res.status(200).send('Mentor Not Found')
+			if (!mentor) return res.status(404).send('Mentor Not Found')
 			temp = mentor
 			return Mentorship.findOne({
 				mentor: mentor._id,
@@ -158,7 +155,7 @@ router.get('/mentor-availability/:id', (req, res, next) => {
 			}).exec()
 		})
 		.then(mentorship => {
-			if (!mentorship) return res.status(200).send('You Are Not In A Mentorship with this mentor!')
+			if (!mentorship) return res.status(400).send('You Are Not In A Mentorship with this mentor!')
 			res.render('mentee/mentor_availability', {
 				user: req.user,
 				mentor: temp,
@@ -211,7 +208,7 @@ router.post('/choose-mentor', (req, res, next) => {
 		mentor: req.body.mentor_id,
 	}).exec()
 		.then(mentorship => {
-			if (mentorship) return res.status(200).send('already in mentorship')
+			if (mentorship) return res.status(400).send('already in mentorship')
 			const newMentorship = new Mentorship()
 			newMentorship.mentor = req.body.mentor_id
 			newMentorship.mentee = req.user._id
@@ -226,11 +223,20 @@ router.post('/choose-mentor', (req, res, next) => {
 })
 
 router.post('/cancel-mentor', (req, res, next) => {
-	Mentorship.findOneAndRemove({
+	Session.find({
 		mentee: req.user._id,
 		mentor: req.body.mentor_id,
+		type: { $in: [ 'available', 'requested', 'processing', 'scheduled' ] },
 	})
-		.then(() => {
+		.then(sessions => {
+			if (sessions.length > 0) return res.status(400).send('You have outstanding sessions with this mentor. Cannot cancel.')
+			return 	Mentorship.findOneAndRemove({
+				mentee: req.user._id,
+				mentor: req.body.mentor_id,
+			})
+		})
+		.then(mentor => {
+			if (!mentor) return res.status(400).send()
 			res.status(200).send()
 		})
 		.catch(err => {
@@ -239,15 +245,19 @@ router.post('/cancel-mentor', (req, res, next) => {
 })
 
 router.put('/session/cancel/:id', (req, res, next) => {
-	Session.findByIdAndUpdate(req.params.id, {
+	Session.findOneAndUpdate({
+		_id: req.params.id,
+		mentee: req.user._id,
+	}, {
 		color: 'green',
 		mentee: undefined,
 		paymentMethodToken: '',
 		transaction_id: '',
 		type: 'available',
-	}, { new: true })
+	})
 		.then(updated => {
-			res.status(200).send(updated)
+			if (!updated) return res.status(404).send()
+			res.status(200).send()
 		})
 		.catch(err => {
 			next(err)
@@ -271,9 +281,10 @@ router.put('/session/choose/:id', (req, res, next) => {
 			paymentMethodToken: result.paymentMethod.token,
 			color: 'orange',
 			type: 'requested',
-		}, { new: true })
+		})
 			.populate('mentor')
 			.then(updated => {
+				if (!updated) res.status(404).send()
 				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
 				return mailjet
 					.post('send')
@@ -319,7 +330,7 @@ function isMentee (req, res, next) {
 function isEmailVerified (req, res, next) {
 	if (req.user.verified)
 		return next()
-	res.redirect('/email-confirm')
+	res.redirect('/auth/email-confirm')
 }
 
 // checks if registration is completed

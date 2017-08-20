@@ -9,38 +9,35 @@ const express = require('express'),
 router.use('*', isLoggedIn, isEmailVerified, isMentor)
 
 router.get('/register', (req, res, next) => {
-	if (req.user.completed)
-		return res.redirect('/mentor/dashboard')
+	if (req.user.completed) return res.redirect('/mentor/dashboard')
 	res.render('mentor/register', { user: req.user })
 })
 
 router.post('/register', (req, res, next) => {
 
-	if (req.user.completed)
-		res.redirect('/dashboard')
-
+	if (req.user.completed) return res.redirect('/dashboard')
 
 	req.body.skills = req.body.skills.split(',')
 	if (req.body.high_school_program.constructor !== Array)
 		req.body.high_school_program = [ req.body.high_school_program ]
 
-	User.findByIdAndUpdate(req.user.id, {
+	User.findByIdAndUpdate(req.user._id, {
 		$set:
-						{
-							completed: true,
-							'profile.gender': req.body.gender,
-							'profile.phone': req.body.phone,
-							'profile.high_school_program': req.body.high_school_program,
-							'profile.skills': req.body.skills,
-							'profile.linkedin': req.body.linkedin,
-							'profile.paragraphs': req.body.paragraphs,
-							'profile.gpa': parseInt(req.body.gpa),
-							'profile.age': req.body.age,
-							'profile.curr_school': req.body.curr_school,
-							'profile.curr_major': req.body.curr_major,
-							'profile.curr_minor': req.body.curr_minor,
-							'profile.grad_year': parseInt(req.body.grad_year),
-						},
+			{
+				completed: true,
+				'profile.gender': req.body.gender,
+				'profile.phone': req.body.phone,
+				'profile.high_school_program': req.body.high_school_program,
+				'profile.skills': req.body.skills,
+				'profile.linkedin': req.body.linkedin,
+				'profile.paragraphs': req.body.paragraphs,
+				'profile.gpa': parseInt(req.body.gpa),
+				'profile.age': req.body.age,
+				'profile.curr_school': req.body.curr_school,
+				'profile.curr_major': req.body.curr_major,
+				'profile.curr_minor': req.body.curr_minor,
+				'profile.grad_year': parseInt(req.body.grad_year),
+			},
 	})
 		.then(() => {
 			res.redirect('/dashboard')
@@ -107,7 +104,11 @@ router.post('/session/new', (req, res, next) => {
 })
 
 router.put('/session/update-time/:id', (req, res, next) => {
-	Session.findByIdAndUpdate(req.params.id, {
+	Session.findOneAndUpdate({
+		_id: req.params.id,
+		mentor: req.user._id,
+		type: 'available',
+	}, {
 		start: req.body.start,
 		end: req.body.end,
 	})
@@ -121,7 +122,10 @@ router.put('/session/update-time/:id', (req, res, next) => {
 
 // TRANSACTION
 router.put('/session/confirm/:id', (req, res, next) => {
-	Session.findById(req.params.id)
+	Session.findOne({
+		_id: req.params.id,
+		mentor: req.user._id,
+	})
 		.populate('mentor')
 		.populate('mentee')
 		.then(session => {
@@ -137,11 +141,15 @@ router.put('/session/confirm/:id', (req, res, next) => {
 					gateway.testing.settle(result.transaction.id, (err, settleResult) => {
 						if (err) next(err)
 						console.log('testing settle: ' + settleResult.transaction.status)
-						Session.findByIdAndUpdate(req.params.id, {
+						Session.findOneAndUpdate({
+							_id: req.params.id,
+							mentor: req.user._id,
+							type: 'requested',
+						}, {
 							type: 'processing',
 							color: 'red',
 							transaction_id: result.transaction.id,
-						}, { new: true })
+						})
 							.then(() => {
 								const hostname = 'mentormap.ca'
 								mailjet
@@ -154,11 +162,15 @@ router.put('/session/confirm/:id', (req, res, next) => {
 							})
 					})
 				else
-					Session.findByIdAndUpdate(req.params.id, {
+					Session.findOneAndUpdate({
+						_id: req.params.id,
+						mentor: req.user._id,
+						type: 'available',
+					}, {
 						type: 'processing',
 						color: 'red',
 						transaction_id: result.transaction.id,
-					}, { new: true })
+					})
 						.then(() => {
 							res.status(200).send()
 						})
@@ -174,7 +186,11 @@ router.put('/session/confirm/:id', (req, res, next) => {
 
 // TRANSACTION
 router.put('/session/refuse/:id', (req, res, next) => {
-	Session.findByIdAndUpdate(req.params.id, {
+	Session.findOneAndUpdate({
+		_id: req.params.id,
+		mentor: req.user._id,
+		type: 'requested',
+	}, {
 		type: 'available',
 		color: 'green',
 		mentee: undefined,
@@ -323,7 +339,7 @@ function isMentor (req, res, next) {
 function isEmailVerified (req, res, next) {
 	if (req.user.verified)
 		return next()
-	res.redirect('/email-confirm')
+	res.redirect('/auth/email-confirm')
 }
 
 // checks if registration is completed

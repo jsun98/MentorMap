@@ -93,7 +93,6 @@
 
     <script>
       $(document).ready(function() {
-        var profiles = <%- JSON.stringify(profiles) %>;
         var pageProfilesCount = 4;
 
         $("#page-content").children().each(function (idx, val) {
@@ -102,7 +101,7 @@
         });
 
         $('#page-selection').bootpag({
-          total: profiles.length/pageProfilesCount + 1
+          total: <%= profiles.length %>/pageProfilesCount + 1
         }).on("page", function(event, num){
           var pageStartIdx = (num - 1) * pageProfilesCount;
           var pageEndIdx = pageStartIdx + pageProfilesCount;

@@ -312,7 +312,7 @@
 											calendar.fullCalendar('refetchEvents')
 										})
 										.fail((res) => {
-											showDangerNotify('Your card information is not valid or your bank declined the transaction. Please try again. Status: '+res.responseText)
+											showDangerNotify('Your card information is not valid or your bank declined the transaction. Please try again.')
 											$('.close').click();
 											calendar.fullCalendar('refetchEvents')
 										})

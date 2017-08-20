@@ -315,12 +315,15 @@ $(document).ready(function() {
 	$('#wizard').smartWizard({
 		transitionEffect: 'slide',
 		enableAllSteps: true,
-
+		hideButtonsOnDisabled: true,
+		onShowStep: function () {
+			$('.buttonFinish').hide();
+		}
 	});
 
 	$('.buttonNext').addClass('btn btn-success');
 	$('.buttonPrevious').addClass('btn btn-primary');
-	$('.buttonFinish').addClass('btn btn-default');
+	$('.buttonFinish').hide();
 });
 </script>
 <!-- /jQuery Smart Wizard -->

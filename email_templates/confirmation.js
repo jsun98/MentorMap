@@ -4,7 +4,7 @@ const fs = require('fs'),
 module.exports = function (user, hostname) {
 	const html = fs.readFileSync(path.join(__dirname, './confirmation.html'), 'utf8'),
 		text = fs.readFileSync(path.join(__dirname, './confirmation.txt'), 'utf8'),
-		link = 'http://' + hostname + '/verify/' + user._id
+		link = 'http://' + hostname + '/auth/verify/' + user._id
 	return {
 		FromEmail: 'admin@mentormap.ca',
 		FromName: 'MentorMap Admin',
