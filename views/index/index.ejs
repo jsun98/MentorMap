@@ -13,6 +13,11 @@
 	<link rel="stylesheet" href="vendor/slick/slick.css"/>
 	<link rel="stylesheet" href="vendor/slick/slick-theme.css"/>
     <link rel="stylesheet" href="index/stylesheets/bundle.min.css"/>
+	<!-- PNotify -->
+	<link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
 
 </head>
 
@@ -478,6 +483,24 @@
 <script type="text/javascript" src="vendor/slick/slick.min.js"></script>
 <script type="text/javascript" src="vendor/image-scale/image-scale.js"></script>
 <script type="text/javascript" src="vendor/matchHeight/jquery.matchHeight.js"></script>
+<!-- PNotify -->
+<script src="/vendor/pnotify/dist/pnotify.js"></script>
+<script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
+<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+
+<script>
+	new PNotify({
+		title: 'Sandbox Testing Environment',
+	    text: 'Welcome to MentorMap\'s Beta Release. Nothing you do in this sandbox environemnt will be saved to the production version.<br> For testing purposes only, payments will be processed every 10 minutes instead of every 24 hours in production. ',
+	    nonblock: {
+	        nonblock: true
+	    },
+		addclass: "stack-bottomleft",
+		width: '35%',
+		delay: 15000,
+		mouse_reset: false,
+	});
+</script>
 
 <script>
   $('.carousel').slick({
