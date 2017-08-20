@@ -205,7 +205,6 @@ router.get('/my-sessions', (req, res) => {
 		})
 })
 
-// Mentees choose mentor
 router.post('/choose-mentor', (req, res, next) => {
 	Mentorship.findOne({
 		mentee: req.user._id,
@@ -218,6 +217,19 @@ router.post('/choose-mentor', (req, res, next) => {
 			newMentorship.mentee = req.user._id
 			return newMentorship.save()
 		})
+		.then(() => {
+			res.status(200).send()
+		})
+		.catch(err => {
+			next(err)
+		})
+})
+
+router.post('/cancel-mentor', (req, res, next) => {
+	Mentorship.findOneAndRemove({
+		mentee: req.user._id,
+		mentor: req.body.mentor_id,
+	})
 		.then(() => {
 			res.status(200).send()
 		})

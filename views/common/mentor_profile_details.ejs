@@ -1,370 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('../partials/meta', {pageTitle: 'View Mentor Detail'}); %>
+<head>
+	<%- include('../partials/meta', {pageTitle: 'View Mentor Detail'}); %>
 
-    <!-- Bootstrap -->
-    <link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- PNotify -->
-    <link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
-    <link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-    <!-- Custom Theme Style -->
-    <link href="/vendor/gentelella/css/custom.min.css" rel="stylesheet">
-  </head>
+	<!-- Bootstrap -->
+	<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<!-- PNotify -->
+	<link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+	<!-- Custom Theme Style -->
+	<link href="/vendor/gentelella/css/custom.min.css" rel="stylesheet">
+</head>
 
-  <body class="nav-md">
-    <div class="container body">
-      <div class="main_container">
-        <!-- left navigation -->
-        <%- include('../partials/left_nav', {user: user}); %>
-        <!-- /left navigation -->
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
 
-        <!-- top navigation -->
-        <%- include('../partials/top_nav', {user: user}); %>
-        <!-- /top navigation -->
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
 
-        <!-- page content -->
-        <div class="right_col" role="main">
-          <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>Mentor Profile</h3>
-              </div>
+			<!-- page content -->
+			<div class="right_col" role="main">
+				<div class="">
+					<div class="page-title">
+						<div class="title_left">
+							<h3>Mentor Profile</h3>
+						</div>
 
-              <div class="title_right">
-                  <div class="input-group pull-right">
-                    <a type="button" href="/mentee/dashboard" class="btn btn-round btn-default">Back</a>
-                  </div>
-              </div>
-            </div>
+						<div class="title_right">
+							<div class="input-group pull-right">
+								<a type="button" href="/mentee/dashboard" class="btn btn-round btn-default">Back</a>
+							</div>
+						</div>
+					</div>
 
-            <div class="clearfix"></div>
+					<div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_content">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_content">
 
-                    <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+									<div class="col-md-3 col-sm-3 col-xs-12 profile_left">
 
-                      <div class="profile_img">
+										<div class="profile_img">
 
-                        <!-- end of image cropping -->
-                        <div id="crop-avatar">
-                          <!-- Current avatar -->
-                          <img class="img-responsive avatar-view" src="/base/images/picture.jpg" alt="Avatar" title="Change the avatar">
+											<!-- end of image cropping -->
+											<div id="crop-avatar">
+												<!-- Current avatar -->
+												<img class="img-responsive avatar-view" src="/base/images/picture.jpg" alt="Avatar" title="Change the avatar">
 
-                          <!-- Loading state -->
-                          <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
-                        </div>
-                        <!-- end of image cropping -->
+												<!-- Loading state -->
+												<div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+											</div>
+											<!-- end of image cropping -->
 
-                      </div>
-                      <h3><%= mentor.profile.first_name + ' ' + mentor.profile.last_name %></h3>
+										</div>
+										<h3><%= mentor.profile.first_name + ' ' + mentor.profile.last_name %></h3>
 
-                      <ul class="list-unstyled user_data">
-                        <li>
-                          <i class="fa fa-institution user-profile-icon"></i><%= mentor.profile.curr_school %>
-                        </li>
-						<li>
-						  <i class="fa fa-calendar user-profile-icon"></i> Graduates:  <%= mentor.profile.grad_year %>
-						</li>
-                        <li>
-                          <i class="fa fa-briefcase user-profile-icon"></i> <%= mentor.profile.curr_major %>
-                        </li>
-                        <% if (mentor.profile.curr_minor) { %>
-                        <li>
-                          <i class="fa fa-book user-profile-icon"></i> <%= mentor.profile.curr_minor %>
-                        </li>
-                        <% } %>
+										<ul class="list-unstyled user_data">
+											<li>
+												<i class="fa fa-institution user-profile-icon"></i><%= mentor.profile.curr_school %>
+											</li>
+											<li>
+												<i class="fa fa-calendar user-profile-icon"></i> Graduates:  <%= mentor.profile.grad_year %>
+											</li>
+											<li>
+												<i class="fa fa-briefcase user-profile-icon"></i> <%= mentor.profile.curr_major %>
+											</li>
+											<% if (mentor.profile.curr_minor) { %>
+												<li>
+													<i class="fa fa-book user-profile-icon"></i> <%= mentor.profile.curr_minor %>
+												</li>
+												<% } %>
 
-                        <% if (mentor.profile.linkedin) { %>
-                        <li class="m-top-xs">
-                          <i class="fa fa-external-link user-profile-icon"></i>
-                          <a href=<%= mentor.profile.linkedin %> target="_blank"><%= mentor.profile.linkedin %></a>
-                        </li>
-                        <% } %>
-                      </ul>
+												<% if (mentor.profile.linkedin) { %>
+													<li class="m-top-xs">
+														<i class="fa fa-external-link user-profile-icon"></i>
+														<a href=<%= mentor.profile.linkedin %> target="_blank"><%= mentor.profile.linkedin %></a>
+													</li>
+													<% } %>
+												</ul>
 
-                      <!-- Large modal -->
+												<!-- Large modal -->
 
-                      <% if (user.role === 'mentee' && matched == false) { %>
-                      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 10001;">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
+												<% if (user.role === 'mentee') { %>
+													<button id ='btn-choose-mentor' class="btn btn-success" ><i class="fa fa-check-square-o m-right-xs"></i> &nbspChoose This Mentor</button>
+													<button id ='btn-cancel-mentor' class="btn btn-danger" ><i class="fa fa-check-square-o m-right-xs"></i> &nbspCancel Mentorship</button>
+													<% } %>
+													<br />
 
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                              </button>
-                              <h4 class="modal-title" id="myModalLabel">Confirm Mentor Choice</h4>
-                            </div>
-                            <div class="modal-body">
-                              <h4><strong>Are You Sure You Want To Choose <%= mentor.profile.first_name + ' ' + mentor.profile.last_name %> As Your Mentor?</strong></h4>
-                              <p>
-                              Please keep in mind that your mentor will guide you through all aspects of your university admissions process.
-                              Make sure that you read through the mentor's profile throughly and that you believe he/she is a good choice. Note that
-                              while changing mentors in the future is possible, we will only approve such requests if you have a valid reason for doing so.
-                              </p>
-                              <div class="modal-footer">
-                                <button type="button" id="btn-choose-mentor" class="btn btn-success" style="margin-bottom:0;" >Confirm Choice</button>
-                                <button type="button" id="btn-close-modal" class="btn btn-default" data-dismiss="modal" style="margin-bottom:0;">Back</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+												</div>
+												<div class="col-md-9 col-sm-9 col-xs-12">
 
-                      <button id ='chooseMentor' class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-check-square-o m-right-xs"></i> &nbspChoose This Mentor</button>
-                      <% } else if (user.role === 'mentee' && matched === true) { %>
-                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 10001;">
-                          <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
+													<div class="" role="tabpanel" data-example-id="togglable-tabs">
+														<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+															<li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">About Me</a>
+															</li>
+															<li role="presentation" class=""><a href="#tab_content4" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Contact Information</a>
+															</li>
+														</ul>
 
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">Confirm Cancellation</h4>
-                              </div>
-                              <div class="modal-body">
-                                <h4><strong>Are You Sure You Want To Cancel This Mentorship?</strong></h4>
-                                <p>
-                                Please keep in mind that doing so will end your mentorship with this mentor permanantly. Your mentorship fee with this mentor
-                                will not be refunded unless you have a valid reason for cancelling this mentorship. Any outstanding sessions you have with this
-                                mentor will be voided.
-                                </p>
-                                <div class="modal-footer">
-                                  <button type="button" id="btn-cancel-mentor" class="btn btn-danger" style="margin-bottom:0;" >Confirm Cancellation</button>
-                                  <button type="button" id="btn-close-modal" class="btn btn-default" data-dismiss="modal" style="margin-bottom:0;">Back</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+														<div id="myTabContent" class="tab-content">
 
-                        <button id ='cancelMentor' class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-check-square-o m-right-xs"></i> &nbspCancel Mentorship</button>
-                      <% } %>
-                      <br />
+															<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
 
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-12">
+																<!-- About -->
+																<ul class="messages">
+																	<!-- start skills -->
+																	<h4>Skills And Experiences</h4>
+																	<ul class="list-unstyled user_data">
+																		<% for (var i = 0; i < mentor.profile.skills.length; i++) { %>
+																			<li>
+																				<p><%= mentor.profile.skills[i] %></p>
+																			</li>
+																			<% } %>
+																		</ul>
+																		<br/>
+																		<h4>Participated in the Following Programs</h4>
+																		<ul class="list-unstyled user_data">
+																			<% for (var i = 0; i < mentor.profile.high_school_program.length; i++) { %>
+																				<li>
+																					<p><%= mentor.profile.high_school_program[i] %></p>
+																				</li>
+																				<% } %>
+																			</ul>
+																		</ul>
+																		<!-- end about -->
 
-                      <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                          <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">About Me</a>
-                          </li>
-                          <% if ((user.role === 'mentee' && matched === true) || user.role === 'mentor') { %>
-                          <li role="presentation" class=""><a href="#tab_content4" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Contact Information</a>
-                          </li>
-                          <% } %>
-                        </ul>
+																	</div>
 
-                        <div id="myTabContent" class="tab-content">
+																	<div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="home-tab">
+																		<div>
+																			<h4>Email: </h4><p> <%= mentor.email %></p>
+																			<h4>Phone: </h4><p> <%= mentor.profile.phone %></p>
+																			<h4>Social Profile: </h4><p> <%= mentor.profile.linkedin %></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /page content -->
 
-                          <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+								<!-- footer content -->
+								<%- include('../partials/footer'); %>
+								<!-- /footer content -->
+							</div>
+						</div>
 
-                            <!-- About -->
-                            <ul class="messages">
-                              <!-- start skills -->
-                              <h4>Skills And Experiences</h4>
-                              <ul class="list-unstyled user_data">
-                                <% for (var i = 0; i < mentor.profile.skills.length; i++) { %>
-                                <li>
-                                  <p><%= mentor.profile.skills[i] %></p>
-                                </li>
-                                <% } %>
-                              </ul>
-							  <br/>
-							  <h4>Participated in the Following Programs</h4>
-							  <ul class="list-unstyled user_data">
-								<% for (var i = 0; i < mentor.profile.high_school_program.length; i++) { %>
-								<li>
-								  <p><%= mentor.profile.high_school_program[i] %></p>
-								</li>
-								<% } %>
-							  </ul>
-                            </ul>
-                            <!-- end about -->
+						<!-- jQuery -->
+						<script src="/vendor/jquery/dist/jquery.min.js"></script>
+						<!-- Bootstrap -->
+						<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+						<!-- FastClick -->
+						<script src="/vendor/fastclick/lib/fastclick.js"></script>
+						<!-- NProgress -->
+						<script src="/vendor/nprogress/nprogress.js"></script>
+						<!-- morris.js -->
+						<script src="/vendor/raphael/raphael.min.js"></script>
+						<script src="/vendor/morris.js/morris.min.js"></script>
+						<!-- bootstrap-progressbar -->
+						<script src="/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+						<!-- bootstrap-daterangepicker -->
+						<script src="/vendor/moment/moment.min.js"></script>
+						<script src="/vendor/datepicker/daterangepicker.js"></script>
+						<!-- PNotify -->
+						<script src="/vendor/pnotify/dist/pnotify.js"></script>
+						<script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
+						<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
 
-                          </div>
+						<!-- Custom Theme Scripts -->
+						<script src="/vendor/gentelella/js/custom.min.js"></script>
 
-                          <% if ((user.role === 'mentee' && matched === true) || user.role === 'mentor') { %>
-                          <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="home-tab">
-                            <div>
-                              <h4>Email: </h4><p> <%= mentor.email %></p>
-                              <h4>Phone: </h4><p> <%= mentor.profile.phone %></p>
-                              <h4>LinkedIn: </h4><p> <%= mentor.profile.linkedin %></p>
-                            </div>
-                          </div>
-                          <% } %>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /page content -->
+						<!-- bind buttons -->
+						<script>
 
-        <!-- footer content -->
-        <%- include('../partials/footer'); %>
-        <!-- /footer content -->
-      </div>
-    </div>
+						$(document).ready(function() {
 
-    <!-- jQuery -->
-    <script src="/vendor/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="/vendor/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="/vendor/nprogress/nprogress.js"></script>
-    <!-- morris.js -->
-    <script src="/vendor/raphael/raphael.min.js"></script>
-    <script src="/vendor/morris.js/morris.min.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="/vendor/moment/moment.min.js"></script>
-    <script src="/vendor/datepicker/daterangepicker.js"></script>
-    <!-- PNotify -->
-    <script src="/vendor/pnotify/dist/pnotify.js"></script>
-    <script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+							function showInfoNotify (msg) {
+								PNotify.removeAll()
+								new PNotify({
+									title: 'Info',
+									text: msg,
+									styling: "bootstrap3",
+									delay: 4000,
+									buttons: {sticker: false},
+								});
+							}
 
-    <!-- Custom Theme Scripts -->
-    <script src="/vendor/gentelella/js/custom.min.js"></script>
 
-    <!-- bind buttons -->
-    <script>
-      $(document).ready(function() {
-        $('#btn-choose-mentor').click(function() {
-          $.post("/mentee/choose-mentor", {mentor_id: '<%= mentor._id %>'})
-          .done(function (res) {
-            new PNotify({
-              title: 'Mentor Chosen!',
-              text: res,
-              type: 'success',
-              styling: "bootstrap3"
-            });
-            $("#chooseMentor").hide();
-            $('#btn-close-modal').click();
-          })
-          .fail(function () {
-            new PNotify({
-              title: 'Error!',
-              text: "Oops, looks like something went wrong. Please try again later.",
-              type: 'error',
-              styling: "bootstrap3"
-            });
-			$("#chooseMentor").show();
-          });
-        });
-        $('#btn-cancel-mentor').click(function() {
-          $.post("/mentee/cancel-mentor", {mentor_id: '<%= mentor._id %>'})
-          .done(function (res) {
-            new PNotify({
-              title: 'Mentorship Cancelled!',
-              text: res,
-              type: 'notice',
-              styling: "bootstrap3"
-            });
-            $("#cancelMentor").hide();
-            $('#btn-close-modal').click();
-          })
-          .fail(function () {
-            new PNotify({
-              title: 'Error!',
-              text: "Oops, looks like something went wrong. Please try again later.",
-              type: 'error',
-              styling: "bootstrap3"
-            });
-			$("#chooseMentor").show();
-          });
-        });
-      });
-    </script>
-    <!-- end bind buttons -->
+							function showSuccessNotify (msg) {
+								PNotify.removeAll()
+								new PNotify({
+									title: 'Success',
+									text: msg,
+									type: 'success',
+									styling: "bootstrap3",
+									delay: 4000,
+									buttons: {sticker: false},
+								});
+							}
 
-    <!-- datepicker -->
-    <script type="text/javascript">
-      $(document).ready(function() {
+							<% if (matched) { %>
+								$('#btn-choose-mentor').hide()
+								<% } else { %>
+									$('#btn-cancel-mentor').hide()
+									<% } %>
+									$('#btn-choose-mentor').click(function() {
+										$.post("/mentee/choose-mentor", {mentor_id: '<%= mentor._id %>'})
+										.done(function (res) {
+											showSuccessNotify('Mentor Chosen!')
+											$("#btn-cancel-mentor").show();
+											$('#btn-choose-mentor').hide();
+										})
+										.fail(function () {
+											showDangerNotify("Oops, looks like something went wrong. Please try again later.")
+										});
+									});
+									$('#btn-cancel-mentor').click(function() {
+										$.post("/mentee/cancel-mentor", {mentor_id: '<%= mentor._id %>'})
+										.done(function (res) {
+											showInfoNotify('Mentorship Cancelled!')
+											$("#btn-cancel-mentor").hide();
+											$('#btn-choose-mentor').show();
+										})
+										.fail(function () {
+											showDangerNotify("Oops, looks like something went wrong. Please try again later.")
+										});
+									});
+								});
+								</script>
+								<!-- end bind buttons -->
 
-        var cb = function(start, end, label) {
-          console.log(start.toISOString(), end.toISOString(), label);
-          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-          //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
-        }
+								<!-- datepicker -->
+								<script type="text/javascript">
+								$(document).ready(function() {
 
-        var optionSet1 = {
-          startDate: moment().subtract(29, 'days'),
-          endDate: moment(),
-          minDate: '01/01/2012',
-          maxDate: '12/31/2015',
-          dateLimit: {
-            days: 60
-          },
-          showDropdowns: true,
-          showWeekNumbers: true,
-          timePicker: false,
-          timePickerIncrement: 1,
-          timePicker12Hour: true,
-          ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          },
-          opens: 'left',
-          buttonClasses: ['btn btn-default'],
-          applyClass: 'btn-small btn-primary',
-          cancelClass: 'btn-small',
-          format: 'MM/DD/YYYY',
-          separator: ' to ',
-          locale: {
-            applyLabel: 'Submit',
-            cancelLabel: 'Clear',
-            fromLabel: 'From',
-            toLabel: 'To',
-            customRangeLabel: 'Custom',
-            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            firstDay: 1
-          }
-        };
-        $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-        $('#reportrange').daterangepicker(optionSet1, cb);
-        $('#reportrange').on('show.daterangepicker', function() {
-          console.log("show event fired");
-        });
-        $('#reportrange').on('hide.daterangepicker', function() {
-          console.log("hide event fired");
-        });
-        $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-          console.log("apply event fired, start/end dates are " + picker.startDate.format('MMMM D, YYYY') + " to " + picker.endDate.format('MMMM D, YYYY'));
-        });
-        $('#reportrange').on('cancel.daterangepicker', function(ev, picker) {
-          console.log("cancel event fired");
-        });
-        $('#options1').click(function() {
-          $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
-        });
-        $('#options2').click(function() {
-          $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
-        });
-        $('#destroy').click(function() {
-          $('#reportrange').data('daterangepicker').remove();
-        });
-      });
-    </script>
-    <!-- /datepicker -->
-  </body>
-</html>
+									var cb = function(start, end, label) {
+										console.log(start.toISOString(), end.toISOString(), label);
+										$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+										//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+									}
+
+									var optionSet1 = {
+										startDate: moment().subtract(29, 'days'),
+										endDate: moment(),
+										minDate: '01/01/2012',
+										maxDate: '12/31/2015',
+										dateLimit: {
+											days: 60
+										},
+										showDropdowns: true,
+										showWeekNumbers: true,
+										timePicker: false,
+										timePickerIncrement: 1,
+										timePicker12Hour: true,
+										ranges: {
+											'Today': [moment(), moment()],
+											'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+											'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+											'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+											'This Month': [moment().startOf('month'), moment().endOf('month')],
+											'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+										},
+										opens: 'left',
+										buttonClasses: ['btn btn-default'],
+										applyClass: 'btn-small btn-primary',
+										cancelClass: 'btn-small',
+										format: 'MM/DD/YYYY',
+										separator: ' to ',
+										locale: {
+											applyLabel: 'Submit',
+											cancelLabel: 'Clear',
+											fromLabel: 'From',
+											toLabel: 'To',
+											customRangeLabel: 'Custom',
+											daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+											monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+											firstDay: 1
+										}
+									};
+									$('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+									$('#reportrange').daterangepicker(optionSet1, cb);
+									$('#reportrange').on('show.daterangepicker', function() {
+										console.log("show event fired");
+									});
+									$('#reportrange').on('hide.daterangepicker', function() {
+										console.log("hide event fired");
+									});
+									$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+										console.log("apply event fired, start/end dates are " + picker.startDate.format('MMMM D, YYYY') + " to " + picker.endDate.format('MMMM D, YYYY'));
+									});
+									$('#reportrange').on('cancel.daterangepicker', function(ev, picker) {
+										console.log("cancel event fired");
+									});
+									$('#options1').click(function() {
+										$('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+									});
+									$('#options2').click(function() {
+										$('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
+									});
+									$('#destroy').click(function() {
+										$('#reportrange').data('daterangepicker').remove();
+									});
+								});
+								</script>
+								<!-- /datepicker -->
+							</body>
+							</html>
