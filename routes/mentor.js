@@ -52,7 +52,7 @@ router.post('/register', (req, res, next) => {
 
 })
 
-router.use('*', isRegCompleted)
+router.use('*', isRegCompleted, isTutorialComplete)
 
 router.get('/dashboard', (req, res, next) => {
 	res.render('mentor/dashboard', { user: req.user })
@@ -298,7 +298,21 @@ router.get('/review', (req, res, next) => {
 	res.render('common/review', { user: req.user })
 })
 
+router.get('/help', (req, res, next) => {
+	res.render('mentor/help', { user: req.user })
+})
 
+function isTutorialComplete (req, res, next) {
+	if (req.user.tutorial)
+		return next()
+	User.findByIdAndUpdate(req.user._id, { tutorial: true })
+		.then(() => {
+			res.redirect('/mentor/help')
+		})
+		.catch(() => {
+			res.redirect('/mentor/dashboard')
+		})
+}
 
 function isMentor (req, res, next) {
 	if (req.user.role === 'mentor')

@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('../partials/meta', {pageTitle: 'Complete Registration'}); %>
+
+	<!-- Bootstrap -->
+	<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<!-- iCheck -->
+	<link href="/vendor/iCheck/skins/flat/green.css" rel="stylesheet">
+	<!-- Select2 -->
+	<link href="/vendor/select2/dist/css/select2.min.css" rel="stylesheet">
+	<!-- Dropzone.js -->
+	<link href="/vendor/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+	<!-- Custom Theme Style -->
+	<link href="/base/stylesheets/bundle.min.css" rel="stylesheet">
+
+	<style>
+		.content {
+			padding: 0 150px;
+		}
+		.content p, .content li {
+			font-size: 16px;
+			color: black;
+			margin-bottom: 30px;
+		}
+		.content h3 {
+			color: black;
+		}
+	</style>
+
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
+
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+
+
+				<!-- complete profile -->
+				<div class="help-page">
+
+					<div class="row">
+
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title">
+									<h2>Tutorial and Help<small>If you have any additional questions, feel free to email us at info@mentormap.ca</small></h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+
+
+									<!-- Smart Wizard -->
+									<p>We will show you how to get started.</p>
+									<div id="wizard" class="form_wizard wizard_horizontal">
+										<ul class="wizard_steps">
+											<li>
+												<a href="#step-1">
+													<span class="step_no">1</span>
+													<span class="step_descr">
+														Welcome<br />
+														<small>Welcome to Tutorials</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-2">
+													<span class="step_no">2</span>
+													<span class="step_descr">
+														Part 1<br />
+														<small>Finding a mentor</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-3">
+													<span class="step_no">3</span>
+													<span class="step_descr">
+														Part 2<br />
+														<small>Calendar and Sessions</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-4">
+													<span class="step_no">4</span>
+													<span class="step_descr">
+														Part 3<br />
+														<small>Requesting and joining a video session</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-5">
+													<span class="step_no">5</span>
+													<span class="step_descr">
+														Part 4<br />
+														<small>Payment and refund</small>
+													</span>
+												</a>
+											</li>
+										</ul>
+										<div id="step-1" style="text-align: center;">
+											<h3>Welcome to MentorMap</h3>
+											<p>
+												If this is your first time joining us, this tutorial will hopefully give you an
+												idea of how our site works. We hope that you'll be able to get used to our system
+												and make the most out of your experience here at MentorMap!
+											</p>
+										</div>
+										<div id="step-2">
+											<h3>Connecting with a mentor</h3>
+											<p>
+												You can connect with any mentor registered on our website. <br>
+												To start, click on 'Find A New Mentor' on the left navigation bar. <br>
+												You will see a few randomly selected mentors. Click on 'View Profile'
+												to see this mentor's details.
+											</p>
+											<h3>Mentor profile page</h3>
+											<p>
+												The profile page displays some important information about each mentor. <br>
+												Namely their current school, program, skills and interests. <br>
+												You can read through these information and decide which mentor fits you
+												the most.
+											</p>
+											<h3>Entering into a mentorship</h3>
+											<p>
+												Once you have found your favourite mentor, simply go into the mentor's profile page, click on 'Choose
+												This Mentor'. <br>
+												Please keep in mind that while it is free to choose mentors, we recommend that you choose
+												no more than 3 mentors.
+											</p>
+											<h3>View My Mentors</h3>
+											<p>
+												You can see mentors you have connected with by clicking on 'View My Mentors' on the left
+												navigation bar.
+											</p>
+											<h3>Cancelling A Mentorship</h3>
+											<p>
+												You can cancel a mentorship with a mentor by going to a mentor's profile page and clicking on 'Cancel Mentorship'
+											</p>
+
+
+										</div>
+										<div id="step-3">
+											<h3>Your calendar</h3>
+											<p>
+												Your calendar will display any sessions you have requested from mentors in the form of events. <br>
+												 You can switch between day, week and month views to see your sessions.
+											 </p>
+											<p>To view a session's details and perform various actions, simply click on an event.</p>
+											<h3>Sessions</h3>
+											<p>There are a few possible status for sessions that you can see on your calendar:</p>
+											<ul>
+												<li>Available (green) - only shown on mentor's availbility calendar.
+													 this means that this session slot is available for you to make a request to chat with the mentor.</li>
+												<li>
+													Requested (orange) - you have requested this session slot and is waiting for mentor's confirmation.
+													At this point, you can still cancel the request.
+												</li>
+												<li>
+													Processing (red) - the mentor has accepted your request and your payment is now being processed.
+													When the session is setup, we will send you an email with Zoom link so you can start video chatting
+													with your mentor. You will not be able to cancel your session at this stage.
+												</li>
+												<li>
+													Scheduled (red) - payment accepted and Zoom links have been set up.
+												</li>
+												<li>
+													Payment_error (gery) - an error with your payment occured. the session is cancelled.
+												</li>
+												<li>
+													Expired (grey) - all sessions older than current time + 24 hours will be marked expired.
+												</li>
+											</ul>
+										</div>
+										<div id="step-4">
+											<h3>When is my mentor available to do a session?</h3>
+											<p>
+												You can see your mentor's availability by clicking on 'View My Mentors'. <br>
+												then on your mentor's profile card, click on 'Availibility'.
+											</p>
+											<h3>How do I request a session?</h3>
+											<p>
+												After click on 'Availibility' on your mentor's profile card, you will see your mentor's availibility
+												displayed on a calendar similar to the one on your dashboard. <br>
+												You can click on any 'available' (green) slot to make a session request.
+											</p>
+											<h3>What is Zoom?</h3>
+											<p>
+												Zoom is a video conferencing service. We schedule Zoom video conferences for you automatically when
+												your mentor confirms your session request. <br>
+												You can simply use the Zoom link we send you to join the session and start chatting. <br>
+												Note that you can only join the session once your mentor (the host) has joined.
+											</p>
+											<h3>What happens after I request a session?</h3>
+											<p>
+												After making your payment, the session will be in 'requested' status. <br>
+												When your mentor confirms the request, it will go into 'processing status'.<br>
+												This means we're processing your payment and once it is finished, you will receive an email with a Zoom link. <br>
+												Use this link to download Zoom and join the video chat at the specified start time.
+											</p>
+										</div>
+										<div id="step-5">
+											<h3>When do I get charged?</h3>
+											<p>
+												You will only be charged after your mentor confirmed your session request. <br>
+												Otherwise there will be no charge applied to your account
+											</p>
+											<h3>Is my credit/debit card information safe?</h3>
+											<p>
+												Our site uses BrainTree (a subsidiary of PayPal) to process payments.<br>
+												We do not store any credit/debit card information in our database. <br>
+												All communications are handled by BrainTree's servers so your payment
+												information is absolutely secure.
+											</p>
+											<h3>What if my mentor doesn't show up for a session?</h3>
+											<p>
+												Simply send us an email at service@mentormap.ca with the mentor's name and any relevant information.
+												We will investigate and refund you in full.
+											</p>
+											<h3>What if I don't show up to a session?</h3>
+											<p>
+												You will be charged the full price and we cannot give you a refund. <br>
+												If you contacted us beforehand we may be able to give you a refund depending on the circumstances.
+											</p>
+										</div>
+									</div>
+
+							</div>
+							<!-- End SmartWizard Content -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end complete profile -->
+
+
+	</div>
+	<!-- /page content -->
+
+	<!-- footer content -->
+	<%- include('../partials/footer'); %>
+	<!-- /footer content -->
+</div>
+</div>
+
+<!-- jQuery -->
+<script src="/vendor/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="/vendor/fastclick/lib/fastclick.js"></script>
+<!-- iCheck -->
+<script src="/vendor/iCheck/icheck.min.js"></script>
+<!-- Select2 -->
+<script src="/vendor/select2/dist/js/select2.full.min.js"></script>
+<!-- Dropzone.js -->
+<script src="/vendor/dropzone/dist/min/dropzone.min.js"></script>
+<!-- validator -->
+<script src="/vendor/validator/validator.min.js"></script>
+<script src="/vendor/validator/multifield.js"></script>
+<!-- jQuery Smart Wizard -->
+<script src="/vendor/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+<!-- jquery.inputmask -->
+<script src="/vendor/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+<!-- jQuery Tags Input -->
+<script src="/vendor/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+
+<!-- Custom Theme Scripts -->
+<script src="/vendor/gentelella/js/custom.min.js"></script>
+
+
+<!-- jQuery Smart Wizard -->
+<script>
+$(document).ready(function() {
+	$('#wizard').smartWizard({
+		transitionEffect: 'slide',
+		enableAllSteps: true,
+
+	});
+
+	$('.buttonNext').addClass('btn btn-success');
+	$('.buttonPrevious').addClass('btn btn-primary');
+	$('.buttonFinish').addClass('btn btn-default');
+});
+</script>
+<!-- /jQuery Smart Wizard -->
+</body>
+</html>

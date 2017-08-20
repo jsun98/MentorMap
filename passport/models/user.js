@@ -38,6 +38,10 @@ var userSchema = new mongoose.Schema({
 		required: true,
 		default: Date(),
 	},
+	tutorial: {
+		type: Boolean,
+		default: false,
+	},
 	ZoomId: String,
 	BrainTreeId: String,
 
