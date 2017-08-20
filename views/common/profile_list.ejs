@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('../partials/meta', {pageTitle: 'List Profiles'}); %>
+    <%- include('../partials/meta', {pageTitle: 'Profiles'}); %>
 
-    <!-- Bootstrap -->
-    <link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-    <!-- Custom Theme Style -->
-    <link href="/base/stylesheets/bundle.min.css" rel="stylesheet">
+	<%- include('../partials/common_css'); %>
   </head>
 
   <body class="nav-md">
@@ -77,19 +71,10 @@
       </div>
     </div>
 
-    <!-- jQuery -->
-    <script src="/vendor/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="/vendor/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="/vendor/nprogress/nprogress.js"></script>
+	<%- include('../partials/common_scripts'); %>
     <!-- Bootpag -->
     <script src="/vendor/bootpag/jquery.bootpag.min.js"></script>
 
-    <!-- Custom Theme Scripts -->
-    <script src="/base/javascript/custom.min.js"></script>
 
     <script>
       $(document).ready(function() {

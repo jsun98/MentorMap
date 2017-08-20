@@ -3,22 +3,11 @@
 <head>
 	<%- include('../partials/meta', {pageTitle: 'Dashboard'}); %>
 
-	<!-- Bootstrap -->
-	<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-	<!-- Font Awesome -->
-	<link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-	<!-- iCheck -->
-	<link href="/vendor/iCheck/skins/flat/green.css" rel="stylesheet">
-	<!-- PNotify -->
-	<link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
-	<link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-	<link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
-	<link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+	<%- include('../partials/common_css'); %>
+
 	<!-- FullCalendar -->
 	<link href="/vendor/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
 	<link href="/vendor/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
-	<!-- Custom Theme Style -->
-	<link href="/base/stylesheets/bundle.min.css" rel="stylesheet">
 
 </head>
 
@@ -137,30 +126,9 @@
 	<div id="event_details" data-toggle="modal" data-target="#CalenderModalEventDetails"></div>
 	<!-- /calendar modal -->
 
-	<!-- jQuery -->
-	<script src="/vendor/jquery/dist/jquery.min.js"></script>
-	<!-- Bootstrap -->
-	<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-	<!-- FastClick -->
-	<script src="/vendor/fastclick/lib/fastclick.js"></script>
-	<!-- iCheck -->
-	<script src="/vendor/iCheck/icheck.min.js"></script>
-	<!-- gauge.js
-	<script src="/vendor/bernii/gauge.js/dist/gauge.min.js"></script>
-
-	<script src="/vendor/Chart.js/dist/Chart.min.js"></script>
--->
-<!-- jQuery Sparklines -->
-<script src="/vendor/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-<!-- PNotify -->
-<script src="/vendor/pnotify/dist/pnotify.js"></script>
-<script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
-<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+<%- include('../partials/common_scripts'); %>
 <!-- FullCalendar -->
-<script src="/vendor/moment/min/moment.min.js"></script>
 <script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
-<!-- Custom Theme Scripts -->
-<script src="/vendor/gentelella/js/custom.min.js"></script>
 
 <!-- FullCalendar -->
 <script>
@@ -261,33 +229,6 @@ $(window).load(function() {
 </script>
 <!-- /FullCalendar -->
 
-<!-- jQuery Sparklines -->
-<script>
-$(document).ready(function() {
-	$(".sparkline_one").sparkline([2, 4, 3, 4, 5, 4, 5, 4, 3, 4, 5, 6, 7, 5, 4, 3, 5, 6], {
-		type: 'bar',
-		height: '40',
-		barWidth: 9,
-		colorMap: {
-			'7': '#a1a1a1'
-		},
-		barSpacing: 2,
-		barColor: '#26B99A'
-	});
-
-	$(".sparkline_two").sparkline([2, 4, 3, 4, 5, 4, 5, 4, 3, 4, 5, 6, 7, 5, 4, 3, 5, 6], {
-		type: 'line',
-		width: '200',
-		height: '40',
-		lineColor: '#26B99A',
-		fillColor: 'rgba(223, 223, 223, 0.57)',
-		lineWidth: 2,
-		spotColor: '#26B99A',
-		minSpotColor: '#26B99A'
-	});
-});
-</script>
-<!-- /jQuery Sparklines -->
 
 </body>
 </html>

@@ -36,7 +36,7 @@ var CronJob = require('cron').CronJob,
 		console.log('Daily session job finished')
 	},
 	true,
-	'America/Toronto'
+	'America/New_York'
 	)
 
 

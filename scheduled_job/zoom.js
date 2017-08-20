@@ -58,7 +58,7 @@ var CronJob = require('cron').CronJob,
 		console.log('Zoom job finished')
 	},
 	true,
-	'America/Toronto'
+	'America/New_York'
 	)
 
 
