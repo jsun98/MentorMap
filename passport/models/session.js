@@ -1,33 +1,42 @@
-var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
+const mongoose = require('mongoose')
 
-// define the schema for our user model
+var sessionSchema = new mongoose.Schema({
+	creation_date: {
+		type: Date,
+		default: Date(),
+		required: true,
+	},
+	type: {
+		type: String,
+		enum: [ 'available', 'requested', 'processing', 'scheduled', 'payment_error', 'expired' ],
+		default: 'available',
+	},
+	paymentMethodToken: String,
+	transaction_id: String,
+	start: {
+		type: Date,
+		required: true,
+	},
+	end: {
+		type: Date,
+		required: true,
+	},
+	mentor: {
+		type: mongoose.Schema.ObjectId,
+		ref: 'User',
+	},
+	mentee: {
+		type: mongoose.Schema.ObjectId,
+		ref: 'User',
+	},
+	startURL: String,
+	joinURL: String,
+	color: {
+		type: String,
+		required: true,
+		enum: [ 'red', 'green', 'orange', 'grey', 'yellow' ],
+		default: 'green',
+	},
+})
 
-var sessionSchema = new mongoose.Schema();
-
-sessionSchema.add({
-  creation_date: Date,
-  type: String,
-  purpose: String,
-  date: Date,
-  startTime: String,
-  endTime: String,
-  mentor : {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User'
-  },
-  mentee : {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User'
-  },
-});
-
-// methods ======================
-// generating a hash
-sessionSchema.methods.generateHash = function(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
-
-
-// create the model for users and expose it to our app
-module.exports = mongoose.model('Session', sessionSchema);
+module.exports = mongoose.model('MentorSession', sessionSchema)

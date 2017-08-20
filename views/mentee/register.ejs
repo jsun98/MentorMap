@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('../partials/meta', {pageTitle: 'Complete Registration'}); %>
+
+	<%- include('../partials/common_css'); %>
+
+
+	<!-- iCheck -->
+	<link href="/vendor/iCheck/skins/flat/green.css" rel="stylesheet">
+	<!-- Select2 -->
+	<link href="/vendor/select2/dist/css/select2.min.css" rel="stylesheet">
+	<!-- Dropzone.js -->
+	<link href="/vendor/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
+
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+
+
+				<!-- complete profile -->
+				<div class="complete-registration">
+
+					<div class="row">
+
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title">
+									<h2>Complete Registration<small>You must complete the full registration to become a mentor</small></h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+
+
+									<!-- Smart Wizard -->
+									<p>This wizard will walk you through the sign up process.</p>
+									<div id="wizard" class="form_wizard wizard_horizontal">
+										<ul class="wizard_steps">
+											<li>
+												<a href="#step-1">
+													<span class="step_no">1</span>
+													<span class="step_descr">
+														Step 1<br />
+														<small>Personal Profile</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-2">
+													<span class="step_no">2</span>
+													<span class="step_descr">
+														Step 2<br />
+														<small>Academic Information</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-3">
+													<span class="step_no">3</span>
+													<span class="step_descr">
+														Step 3<br />
+														<small>Additional Information</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-4">
+													<span class="step_no">4</span>
+													<span class="step_descr">
+														Step 4<br />
+														<small>Terms of Service</small>
+													</span>
+												</a>
+											</li>
+										</ul>
+										<div id="step-1">
+											<h2 class="StepTitle">Step 1 - Personal Profile</h2>
+											<p>Just for our information</p>
+											<form id="form-step-1" method="post" class="form-horizontal form-label-left" novalidate>
+
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name
+													</label>
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="first-name" readonly value=<%= user.profile.first_name %> >
+														<span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+													</div>
+												</div>
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name
+													</label>
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<input type="text" class="form-control col-md-7 col-xs-12 has-feedback-left" id="last-name" readonly value=<%= user.profile.last_name %> >
+														<span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+													</div>
+												</div>
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Email
+													</label>
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<input id="email" type="email" name=email class="form-control col-md-7 col-xs-12 has-feedback-left" readonly value=<%= user.email %> >
+														<span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+													</div>
+												</div>
+
+												<div class="item multi required form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Gender <span class="required">*</span></label>
+													<div class="col-md-6 col-sm-6 col-xs-12">
+														<select class="required select2_single form-control" tabindex="-1" name="gender" style="width: 100%;" style="width: 100%;">
+															<option></option>
+															<option value='male'>Male</option>
+															<option value='female'>Female</option>
+															<option value='other'>Other</option>
+															<option value='na'>Prefer Not To Disclose</option>
+														</select>
+													</div>
+												</div>
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Age <span class="required">*</span>
+													</label>
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<input id="age" class="form-control col-md-7 col-xs-12 has-feedback-left" required="required" type="number" data-validate-minmax="15, 28" name="age">
+														<span class="fa fa-birthday-cake form-control-feedback left" aria-hidden="true"></span>
+													</div>
+												</div>
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Phone Number <span class="required">*</span>
+													</label>
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<input id="phone" name="phone" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. (999) 999-9999" required="required" type="tel">
+														<span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+													</div>
+												</div>
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">High School <span class="required">*</span>
+													</label>
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<input id="school" name="high_school" class="form-control col-md-7 col-xs-12 has-feedback-left" required="required" type="text" placeholder="e.g. Bayview Secondary School">
+														<span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
+													</div>
+												</div>
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Grade <span class="required">*</span></label>
+													<div class="col-md-6 col-sm-6 col-xs-12">
+														<select class="required select2_single form-control" tabindex="-1" name="grade" style="width: 100%;">
+															<option></option>
+															<option value=9>9</option>
+															<option value=10>10</option>
+															<option value=11>11</option>
+															<option value=12>12</option>
+															<option value=13>13</option>
+														</select>
+													</div>
+												</div>
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Social Profile
+													</label>
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<input id="linkedin" name="linkedin" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="e.g. Facebook, Twitter, Linkedin etc." type="text">
+														<span class="fa fa-linkedin form-control-feedback left" aria-hidden="true"></span>
+													</div>
+												</div>
+
+											</form>
+
+										</div>
+										<div id="step-2">
+											<h2 class="StepTitle">Step 2 - Academic Information</h2>
+											<p>Let us get to know you better</p>
+											<form id="form-step-2" action="/mentee/register" method="post" class="form-horizontal form-label-left" target="_self" novalidate>
+
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Your Grade 11 Average <span class="required">*</span></label>
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<select class="required select2_single form-control" tabindex="-1" name="avg_11" style="width: 100%;">
+															<option></option>
+															<option value='4'>100%-95%</option>
+															<option value='3'>94%-90%</option>
+															<option value='2'>89%-85%</option>
+															<option value='1'>84%-75%</option>
+															<option value='0'>Below 75%</option>
+															<option value='-1'>N/A</option>
+														</select>
+													</div>
+												</div>
+
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Your Grade 12 Average <span class="required">*</span></label>
+
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<select class="required select2_single form-control" tabindex="-1" name="avg_12" style="width: 100%;">
+															<option></option>
+															<option value='4'>100%-95%</option>
+															<option value='3'>94%-90%</option>
+															<option value='2'>89%-85%</option>
+															<option value='1'>84%-75%</option>
+															<option value='0'>Below 75%</option>
+															<option value='-1'>N/A</option>
+														</select>
+													</div>
+												</div>
+
+
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">You Are A Part Of <span class="required">*</span>
+													</label>
+													<div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+														<select class="required select2_multiple_4 form-control" multiple="multiple" name="high_school_program" style="width: 100%;">
+															<option></option>
+															<option value="AP">AP (Advanced Placement)</option>
+															<option value="IB">IB (International Baccalaureate)</option>
+															<option value="TOPS">TOPS (Talented Offerings for Programs in the Sciences)</option>
+															<option value="ESL">ESL (English as a Second Language)</option>
+														</select>
+													</div>
+												</div>
+
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Your Skills And Extracurriculars <span class="required">*</span></label>
+													<div class="col-md-6 col-sm-6 col-xs-12">
+														<input id="tags_1" type="text" required="required" class="tags form-control" name="skills" />
+														<p>This will show up on your personal profile. You can write things like: Leader of Computer Science Club, Participant of DECA Internation etc. Start typing and press 'Enter' to record a tag.</p>
+													</div>
+												</div>
+
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Preferred Post Secondary Institutions <span class="required">*</span></label>
+													<div class="col-md-6 col-sm-6 col-xs-12">
+														<input type="text" class="form-control col-md-7 col-xs-12" name='preferred_school' required='required' placeholder="e.g. University of Toronto">
+													</div>
+												</div>
+
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12">Preferred Major Fields of Study <span class="required">*</span></label>
+													<div class="col-md-6 col-sm-6 col-xs-12">
+														<select class="required select2_multiple_2 form-control" multiple="multiple" name="preferred_program" style="width: 100%;">
+															<option></option>
+															<option value="Medicine and Health Sciences">Medicine and Health Sciences</option>
+															<option value="Computer Science">Computer Science</option>
+															<option value="Engineering and Applied Sciences">Engineering and Applied Sciences</option>
+															<option value="Mathematics and Physics">Mathematics and Physics</option>
+															<option value="Accounting, Finance and Financial Mathematics">Accounting, Finance and Financial Mathematics</option>
+															<option value="Business, Economics and Commerce">Business, Economics and Commerce</option>
+															<option value="Arts and Humanities">Arts and Humanities</option>
+															<option value="Natural Sciences">Natural Sciences (Biology, Chemistry, Earth and Space)</option>
+															<option value="Political Science, Law and Societal Studies">Political Science, Law and Societal Studies</option>
+															<option value="Social Sciences">Social Sciences (Psychology, Sociology, Nutrition Science)</option>
+														</select>
+													</div>
+												</div>
+
+
+
+											</form>
+										</div>
+										<div id="step-3">
+											<h2 class="StepTitle">Step 3 Additional Information</h2>
+											<p>Provide us with some more information to help us better match you with a suitable mentor</p>
+											<form id="form-step-3" class="form-horizontal form-label-left" novalidate>
+
+												<div class="item form-group">
+													<div class="col-md-12 col-sm-12 col-xs-12">
+														<label class="control-label" for="textarea">What are you looking for in a mentor? (min. 100 chars) <span class="required">*</span></label>
+														<textarea id="additional-info1" data-validate-length-range="100,500" required="required" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+													</div>
+												</div>
+												<div class="item form-group">
+													<div class="col-md-12 col-sm-12 col-xs-12">
+														<label class="control-label" for="textarea">Tell us more about your future goals. (min. 100 chars) <span class="required">*</span></label>
+														<textarea id="additional-info2" data-validate-length-range="100,500" required="required" name="paragraphs" class="form-control col-md-7 col-xs-12" required="required"></textarea>
+													</div>
+												</div>
+												<div class="item form-group">
+													<div class="col-md-12 col-sm-12 col-xs-12">
+														<label class="control-label" for="textarea">Feel Free to Tell Us Anything Else. </label>
+														<textarea id="additional-info3" name="paragraphs" class="form-control col-md-7 col-xs-12"></textarea>
+													</div>
+												</div>
+											</form>
+											<!--
+											<div class="col-md-12 col-sm-12 col-xs-12">
+											<label class="control-label" for="textarea">Drop Us Your Resume If You Have One</label>
+											<form action="form_upload.html" class="dropzone"></form>
+										</div>
+									-->
+								</div>
+								<div id="step-4">
+									<h2 class="StepTitle">Step 4 Terms of Service</h2>
+									<h3>1. Terms</h3>
+
+									<p>By accessing the website at <a href="http://www.mentormap.ca">http://www.mentormap.ca</a>, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this website are protected by applicable copyright and trademark law.</p>
+
+									<h3>2. Use License</h3>
+
+									<ol type="a">
+										<li>
+											Permission is granted to temporarily download one copy of the materials (information or software) on MentorMap's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+
+											<ol type="i">
+												<li>modify or copy the materials;</li>
+												<li>use the materials for any commercial purpose, or for any public display (commercial or non-commercial);</li>
+												<li>attempt to decompile or reverse engineer any software contained on MentorMap's website;</li>
+												<li>remove any copyright or other proprietary notations from the materials; or</li>
+												<li>transfer the materials to another person or "mirror" the materials on any other server.</li>
+											</ol>
+										</li>
+										<li>This license shall automatically terminate if you violate any of these restrictions and may be terminated by MentorMap at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.</li>
+									</ol>
+
+									<h3>3. Disclaimer</h3>
+
+									<ol type="a">
+										<li>The materials on MentorMap's website are provided on an 'as is' basis. MentorMap makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</li>
+										<li>Further, MentorMap does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.</li>
+									</ol>
+
+									<h3>4. Limitations</h3>
+
+									<p>In no event shall MentorMap or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on MentorMap's website, even if MentorMap or a MentorMap authorized representative has been notified orally or in writing of the possibility of such damage. Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.</p>
+
+									<h3>5. Accuracy of materials</h3>
+
+									<p>The materials appearing on MentorMap website could include technical, typographical, or photographic errors. MentorMap does not warrant that any of the materials on its website are accurate, complete or current. MentorMap may make changes to the materials contained on its website at any time without notice. However MentorMap does not make any commitment to update the materials.</p>
+
+									<h3>6. Links</h3>
+
+									<p>MentorMap has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by MentorMap of the site. Use of any such linked website is at the user's own risk.</p>
+
+									<h3>7. Modifications</h3>
+
+									<p>MentorMap may revise these terms of service for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these terms of service.</p>
+
+									<h3>8. Governing Law</h3>
+
+									<p>These terms and conditions are governed by and construed in accordance with the laws of Canada and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.</p>
+
+								</div>
+
+							</div>
+							<!-- End SmartWizard Content -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end complete profile -->
+
+
+	</div>
+	<!-- /page content -->
+
+	<!-- footer content -->
+	<%- include('../partials/footer'); %>
+	<!-- /footer content -->
+</div>
+</div>
+
+
+
+<%- include('../partials/common_scripts'); %>
+<!-- Select2 -->
+<script src="/vendor/select2/dist/js/select2.full.min.js"></script>
+<!-- Dropzone.js -->
+<script src="/vendor/dropzone/dist/min/dropzone.min.js"></script>
+<!-- validator -->
+<script src="/vendor/validator/validator.min.js"></script>
+<script src="/vendor/validator/multifield.js"></script>
+<!-- jQuery Smart Wizard -->
+<script src="/vendor/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+<!-- jQuery Tags Input -->
+<script src="/vendor/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+
+<!-- Select2 -->
+<script>
+$(document).ready(function() {
+	$(".select2_single").select2({
+		placeholder: "Choose One...",
+		allowClear: true
+	});
+	$(".select2_multiple_2").select2({
+		maximumSelectionLength: 2,
+		placeholder: "Choose up to 2",
+		allowClear: true
+	});
+	$(".select2_multiple_3").select2({
+		maximumSelectionLength: 3,
+		placeholder: "Choose up to 3",
+		allowClear: true
+	});
+	$(".select2_multiple_4").select2({
+		maximumSelectionLength: 4,
+		placeholder: "Choose up to 4",
+		allowClear: true
+	});
+});
+</script>
+<!-- /Select2 -->
+
+
+<!-- validator -->
+<script>
+
+// initialize the validator function
+validator.message.date = 'not a real date';
+
+// validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
+$('form')
+.on('blur', 'input[required], input.optional, textarea[required], select.required', validator.checkField)
+.on('change', 'select.required', validator.checkField)
+//.on('keypress', 'input[required][pattern]', validator.keypress);
+
+$('#form-step-2').submit(function(e) {
+
+	e.preventDefault();
+	var submit = true;
+	// evaluate the form using generic validaing
+	if( !validator.checkAll( $('form') ) ){
+		submit = false;
+	}
+
+	if ( submit ) {
+		var form2SelectCount = $('#form-step-2').find("select").length;
+
+		$('#form-step-1 :input, #form-step-1 textarea, #form-step-1 select').clone().hide().appendTo('#form-step-2');
+		$('#form-step-3 :input, #form-step-3 textarea').clone().hide().appendTo('#form-step-2');
+
+		var selects = $('#form-step-1').find("select");
+
+		$(selects).each(function(i) {
+			var select = this;
+			$('#form-step-2').find("select").eq(i+form2SelectCount).val($(select).val());
+		});
+
+		this.submit();
+	}
+	return false;
+
+});
+
+</script>
+<!-- /validator -->
+
+
+<!-- jQuery Tags Input -->
+<script>
+function onAddTag(tag) {
+	alert("Added a tag: " + tag);
+}
+
+function onRemoveTag(tag) {
+	alert("Removed a tag: " + tag);
+}
+
+function onChangeTag(input, tag) {
+	alert("Changed a tag: " + tag);
+}
+
+$(document).ready(function() {
+	$('#tags_1').tagsInput({
+		width: '100%',
+		maxTags: 15,
+	});
+});
+</script>
+<!-- /jQuery Tags Input -->
+
+<!-- jQuery Smart Wizard -->
+<script>
+$(document).ready(function() {
+	$('#wizard').smartWizard({
+		onLeaveStep: function() {
+			return validator.checkAll($('form'));
+		},
+		onFinish: function() {
+			$('#form-step-2').submit();
+		},
+		hideButtonsOnDisabled: true,
+		transitionEffect: 'slide',
+		labelFinish:'Accept'
+	});
+
+	$('.buttonNext').addClass('btn btn-success');
+	$('.buttonPrevious').addClass('btn btn-primary');
+	$('.buttonFinish').addClass('btn btn-default');
+});
+</script>
+<!-- /jQuery Smart Wizard -->
+</body>
+</html>

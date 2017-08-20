@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/meta', {pageTitle: 'Home'}); %>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+	<link rel="stylesheet" href="vendor/slick/slick.css"/>
+	<link rel="stylesheet" href="vendor/slick/slick-theme.css"/>
+    <link rel="stylesheet" href="index/stylesheets/bundle.min.css"/>
+	<!-- PNotify -->
+	<link href="/vendor/pnotify/dist/pnotify.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.brighttheme.css" rel="stylesheet">
+	<link href="/vendor/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Navigation
+    ================================================== -->
+<div id="hero" class="hero-background">
+    <div class="overlay">
+
+    </div>
+    <div class="container">
+      <!-- Navigation
+        ================================================== -->
+        <div class="header-container header">
+            <h1 class="navbar-left-logo" href="/"><img class="img-responsive" style="display: inherit;" src="index/images/logo.png"></h1>
+            <a href="#email-form">
+				<% if (authenticated) { %>
+					<button class="header-btn" onclick="window.location.href='/dashboard'">Welcome, <%= user.profile.first_name %>!</button>
+				<% } else { %>
+                	<button class="header-btn" onclick="window.location.href='/auth/login'">JOIN US NOW!</button>
+				<% } %>
+            </a>
+            <div class="header-right">
+                <a class="navbar-item" href="#features">Features</a>
+                <a class="navbar-item" href="#mentors">Mentors</a>
+                <a class="navbar-item" href="#testimonials">Stories</a>
+                <a class="navbar-item" href="#pricing">Pricing</a>
+            </div>
+        </div>
+        <!--/navigation-->
+
+        <div class="hero row">
+            <div class="hero-right col-sm-12 col-sm-12 col-centered" >
+                <h1 class="header-headline bold"> Mentorship Service For High School Students <br></h1>
+                <h4 class="header-running-text light"> Get quality mentorship from students studying at Canada's best universities.</h4>
+                <a>
+                    <button class="hero-btn" id='learn-more'> Learn More</button>
+                </a>
+            </div><!--hero-left-->
+
+        </div><!--hero-->
+
+    </div> <!--hero-container-->
+</div><!--hero-background-->
+
+<!-- Features
+  ================================================== -->
+
+<div id="features" class="white-section  text-section row">
+
+  <h2 class="pricing-section-header strong text-center">WHAT IS <span class='theme-color'>MENTORMAP</span> ALL ABOUT?</h2>
+  <h4 class="pricing-section-sub text-center light bottom-break">We connect high school students with university mentors</h4>
+
+  <div class="col-sm-12">
+
+    <div class="feature-section-text">
+      <span>
+		  At <img class="img-responsive" style="display: inherit;" src="index/images/logo.png"> We connect students uncertain about their futures in university with appropriate mentors who will impart valuable firsthand experience.
+		   This will include helping the student set their future goals through analysis of personality, values, and personal interests, and together
+		    developing a strategy to attain that goal. This strategy involves development of habits, both personal and academic, selection and
+			involvement in relevant extracurriculars, and assistance in university application processes. All mentors are selected and screened
+			university students, successful in their respective programs, as evidenced by their extensive recorded profile.
+
+      </span>
+    </div>
+  </div>
+
+</div><!--white-section-text-section--->
+
+<!-- Carousel
+  ================================================== -->
+
+<div id="mentors" class="grey-section">
+  <h2 class="pricing-section-header strong text-center">Meet Our <span class='theme-color'>Mentors</span></h2>
+  <h4 class=" pricing-section-sub text-center light bottom-break">Find a mentor that matches your personality and goals</h4>
+
+  <div class="row">
+    <div class="carousel col-sm-12">
+      <div>
+        <img class="img-responsive mentor" src="index/images/mentor1.png">
+      </div>
+      <div>
+        <img class="img-responsive mentor" src="index/images/mentor2.jpg">
+      </div>
+      <div>
+        <img class="img-responsive mentor" src="index/images/mentor3.png">
+      </div>
+      <div>
+        <img class="img-responsive mentor" src="index/images/mentor4.png">
+      </div>
+	  <div>
+		<img class="img-responsive mentor" src="index/images/mentor5.png">
+	  </div>
+    </div>
+  </div>
+
+</div><!--white-section-text-section--->
+
+<!-- why mentormap
+  ================================================== -->
+
+<div id='why' class="white-section row" style="padding: 0 10vw">
+
+    <div class="col-sm-12">
+
+        <div class="word-section-text row">
+
+          <div class="col-sm-12">
+            <h2 class="word-section-header strong">WHY CHOOSE <span class='theme-color'>MENTORMAP</span>?</h2>
+          </div>
+
+
+          <div class="col-sm-4">
+            <h3>Academics</h3>
+            <p>Our mentors are exclusively high achieving individuals each with
+            unique but proven effective methods of regulation and study.
+            These habits and systems will help you achieve further academic success.
+            <p>
+          </div>
+          <div class="col-sm-4">
+            <h3>Professionalism</h3>
+            <p>
+            The real world is full of networking and social graces, and without effective
+             communication skills, one may feel as a grounded bird. Learn tips from experienced
+              mentors in professional interactions.
+            </p>
+          </div>
+          <div class="col-sm-4">
+            <h3>Ethics</h3>
+            <p>
+            Through all our hard work, the end goal of us all wish the improvement
+            of the social status quo. Hear about stories of passion from mentors who
+            have poured their hearts and efforts in the name of social ethics.
+            <p>
+          </div>
+
+
+      </div>
+    </div>
+    <!--imac-->
+</div><!--white-section-text-section--->
+
+<!-- Where do i start?
+  ================================================== -->
+
+<div class="grey-section text-section row">
+    <!--imac-->
+
+    <div class="col-sm-12">
+
+        <div class="word-section-text">
+
+            <h2 class="word-section-header strong">SO... WHERE DO I <span class='theme-color'>START</span>?</h2>
+
+            <div class="word-section-desc">
+              <ul>
+                <li><strong>Step 1.</strong> sign up and we will provide you a mentor preference questionnaire
+                   that gives us an idea of what your ideal mentor will be like. You will also get a chance to upload your profile picture.</li>
+                <li><strong>Step 2.</strong> You will be able to browser through a few randomly chosen mentors, view their profiles, and once
+					you decide, you can choose to apply for a mentorship with that mentor.</li>
+                <li><strong>Step 3.</strong> after choosing your mentor, you go see their availability on the mentor's calendar.
+					you can request a video session on Zoom or choose to contact the mentor to arrange other options.</li>
+                <li><strong>Step 4.</strong> when the meeting time comes, we will send you an email containing the link to your Zoom session.
+					After your mentor has hosted the call, you can chat away!</li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</div><!--white-section-text-section--->
+
+
+<!-- Logos
+  ================================================== -->
+
+<div id="logos" class="white-section row">
+    <h2 class="pricing-section-header strong text-center"> OUR <span class='theme-color'>EXCEPTIONAL</span> QUALIFICATIONS</h2>
+    <h4 class="pricing-section-sub text-center light bottom-break">Our mentors come from the best universities in Canada</h4>
+    <div class="col-sm-3">
+      <div class="img-fit">
+        <img class="scale" src="index/images/uni-logos/uni-logo-1.png"/>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="img-fit">
+        <img class="scale" src="index/images/uni-logos/uni-logo-2.jpg"/>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="img-fit">
+        <img class="scale" src="index/images/uni-logos/uni-logo-3.png"/>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="img-fit">
+        <img class="scale" src="index/images/uni-logos/uni-logo-4.gif"/>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="img-fit">
+        <img class="scale" src="index/images/uni-logos/uni-logo-5.png"/>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="img-fit">
+        <img class="scale" src="index/images/uni-logos/uni-logo-6.png"/>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="img-fit">
+        <img class="scale" src="index/images/uni-logos/uni-logo-7.png"/>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="img-fit">
+        <img class="scale" src="index/images/uni-logos/uni-logo-8.png"/>
+      </div>
+    </div>
+</div><!--logos-section-->
+
+
+<!-- Testimonils
+  ================================================== -->
+
+<div id="testimonials" class="grey-section">
+  <h2 class="pricing-section-header strong text-center">DISCOVER <span class='theme-color'>MENTORMAP</span> STORIES</h2>
+  <h4 class=" pricing-section-sub text-center light bottom-break">testimonials from our mentor and mentees</h4>
+  <div class="team-container row">
+
+	  <div class="col-sm-6 team-member">
+		  <img class="headshot2" src="index/images/kylin.png">
+		  <div class="team-member-text">
+			  <h4 class="team-member-position light">Mentee</h4>
+			  <h5 class="bold">Kylin</h5>
+			  <span class='word-section-text'>
+			  <p class="testimonials-text light">This is a wonderful project which helped me a lot on my preparation for
+				university. During the session, the mentor learnt about my situation and gave
+				me advice on my current study. He was experienced in university application of
+				my interested program and directed me to get start to prepare. His own
+				experience cheered me a lot as well.</p>
+		    	</span>
+		  </div>
+	  </div>
+
+	  <div class="col-sm-6 team-member">
+		  <img class="headshot2" src="index/images/anita.png">
+		  <div class="team-member-text">
+			  <h4 class="team-member-position light">Mentee</h4>
+			  <h5 class="bold">Anita</h5>
+			  <span class='word-section-text'>
+			  <p class="light">I was unclear on what my future was going to be;
+				  however, a mentor helped point me in the right direction. During the session,
+				   we narrowed the selection down to the careers I wanted the most. We then looked at things I had to do to achieve that goal.
+				   I would encourage anyone who is unsure about their future to take this amazing oppertunity.</p>
+			  </span>
+		  </div>
+	  </div>
+  </div>
+
+</div><!--white-section-text-section--->
+
+<!-- Pricing
+  ================================================== -->
+<div id="pricing" class="white-section">
+
+    <h2 class="pricing-section-header strong text-center">AFFORDABLE <span class='theme-color'>PRICING</span> PLANS</h2>
+    <h4 class=" pricing-section-sub text-center light">Great benefits for both mentee and mentors</h4>
+
+    <div class="pricing-table row">
+        <div class="col-sm-6">
+            <div class="mid-plan">
+                <h3 class="plan-title light">For Mentors</h3>
+                <h4 class="plan-cost bold">9.99</h4>
+                <h5 class="monthly">earned per session</h5>
+                <ul class="plan-features">
+					<li>Free to join and start earning</li>
+                    <li>Must be on time and commit to a set time</li>
+                    <li>Be ready for follow up questions</li>
+					<li>Connect with mentee over social media</li>
+					<li>Commit at least one hour per session</li>
+                </ul>
+                <div class="plan-price-div text-center">
+                    <div class="choose-plan-div">
+                        <a class="plan-btn light" href="/auth/signup">
+                            Get Started
+                        </a>
+                    </div>
+                </div>
+            </div><!--basic-plan--->
+        </div><!--col-->
+
+        <div class="col-sm-6">
+            <div class="mid-plan">
+                <h3 class="plan-title light">For Mentees</h3>
+                <h4 class="plan-cost bold">11.99</h4>
+                <h5 class="monthly">per mentoring session</h5>
+                <ul class="plan-features">
+                    <li>Hour-long one to one sessions</li>
+					<li>Build personal connections</li>
+					<li>Discuss plans for your future</li>
+					<li>Full mentor support during and after session</li>
+                </ul>
+                <div class="plan-price-div text-center">
+                    <div class="choose-plan-div">
+                        <a class="plan-btn light" href="/auth/signup">
+                            Get Started
+                        </a>
+                    </div>
+                </div>
+            </div><!--pro-plan--->
+        </div><!--col-->
+
+    </div>  <!--pricing-table-->
+
+</div><!--pricing-background-->
+
+<!-- Team
+  ================================================== -->
+
+<div id="team" class="grey-section">
+    <h2 class="pricing-section-header strong text-center">THE <span class='theme-color'>TEAM</span></h2>
+    <h4 class="pricing-section-sub text-center light bottom-break">Meet the founders</h4>
+
+    <div class="team-container row">
+
+        <div class="col-sm-4 team-member">
+            <img class="headshot" src="index/images/kevin.png">
+            <div class="team-member-text">
+                <h4 class="team-member-position light">Founder - Administration</h4>
+                <h5 class="bold">Kevin Wu</h5>
+                <h6>York University</h6>
+                <p class="light">Schulich School of Business</p>
+				<a href="https://www.facebook.com/kevin.wu.90"><img class="team-social-icon"
+                                                       src="index/images/team-facebook.svg"></a>
+                <a href="https://www.linkedin.com/in/kevinwu98/"><img class="team-social-icon"
+                                                        src="index/images/team-linkedin.png"></a>
+            </div>
+        </div>
+
+        <div class="col-sm-4 team-member">
+            <img class="headshot" src="index/images/france.png">
+            <div class="team-member-text">
+                <h4 class="team-member-position light">Co-Founder - Administration</h4>
+                <h5 class="bold">France Song</h5>
+                <h6>Western University</h6>
+                <p class="light">Medical Sciences</p>
+				<a href="https://www.facebook.com/francisco.song"><img class="team-social-icon"
+                                                       src="index/images/team-facebook.svg"></a>
+                <a href="https://www.linkedin.com/in/france-song-138338135"><img class="team-social-icon"
+                                                        src="index/images/team-linkedin.png"></a>
+            </div>
+        </div>
+
+        <div class="col-sm-4 team-member">
+            <img class="headshot" src="index/images/josh.png">
+            <div class="team-member-text">
+              <h4 class="team-member-position light">Co-Founder - Software</h4>
+              <h5 class="bold">Joshua Sun</h5>
+              <h6>University of Waterloo</h6>
+              <p class="light">Software Engineering</p>
+                <a href="https://github.com/jsun98"><img class="team-social-icon" src="index/images/team-github.png"></a>
+                <a href="https://www.facebook.com/joshua.sun.75"><img class="team-social-icon"
+                                                       src="index/images/team-facebook.svg"></a>
+                <a href="https://www.linkedin.com/in/josh-sun/"><img class="team-social-icon"
+                                                        src="index/images/team-linkedin.png"></a>
+            </div>
+
+        </div>
+
+		<div class="col-sm-6 team-member">
+			<img class="headshot" src="index/images/helen.png">
+			<div class="team-member-text">
+			  <h4 class="team-member-position light">Co-Founder - Marketing</h4>
+			  <h5 class="bold">Helen Chen</h5>
+			  <h6>Marc Garneau</h6>
+			  <p class="light">TOPS Student</p>
+				<a href="https://www.facebook.com/profile.php?id=100010156037852"><img class="team-social-icon"
+													   src="index/images/team-facebook.svg"></a>
+			</div>
+
+		</div>
+		<div class="col-sm-6 team-member">
+			<img class="headshot" src="index/images/bill.png">
+			<div class="team-member-text">
+			  <h4 class="team-member-position light">Co-Founder - Software</h4>
+			  <h5 class="bold">Bill Qi</h5>
+			  <h6>University of Waterloo</h6>
+			  <p class="light">Software Engineering</p>
+			  <a href="https://github.com/brity"><img class="team-social-icon" src="index/images/team-github.png"></a>
+			  <a href="https://www.facebook.com/profile.php?id=100005058077749"><img class="team-social-icon"
+				  src="index/images/team-facebook.svg"></a>
+			  <a href="https://www.linkedin.com/in/bill-sipu-qi-386352133/"><img class="team-social-icon"
+				  src="index/images/team-linkedin.png"></a>
+			</div>
+
+		</div>
+
+
+    </div> <!--team-container--->
+
+</div> <!--team-section--->
+
+<!-- Email-Section
+  ================================================== -->
+
+<div class="red-section">
+    <h3 class="red-section-header bold"> Got a question?</h3>
+    <h4 class="red-section-subtext light">Contact customerservice@mentormap.ca</h4>
+
+    <div class="email-form-div">
+      <button type="button" class="btn submit-btn" onclick="window.location.href='/auth/login'">Sign Up</button>
+    </div>
+    <!--email-form-div-->
+
+    <div id="newsletter-loading-div"></div>
+    <!--email-form-->
+</div>
+<!--blue-section-->
+
+<!-- Footer
+  ================================================== -->
+
+<div class="footer">
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-2"></div>
+
+            <div class="col-sm-8 webscope">
+                <span class="webscope-text"> Website design by
+                <a class='btn-link' href="https://github.com/jsun98"> Joshua Sun @ MentorMap </a><br>
+				CopyRight © <% new Date().getFullYear() %> MentorMap - All Rights Reserved
+				</span>
+            </div>
+            <!--webscope-->
+
+            <div class="col-sm-2">
+                <div class="social-links">
+                    <a href="javascript:void"> <img class="social-link"
+                                                                    src="index/images/twitter.svg"/> </a>
+                    <a href="javascript:void"> <img
+                            src="index/images/facebook.svg"/> </a>
+                </div>
+                <!--social-links-->
+            </div>
+            <!--social-links-parent-->
+
+        </div>
+        <!--row-->
+
+    </div>
+    <!--container-->
+</div>
+<!--footer-->
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+
+<script src="/index/javascript/index.js"></script>
+
+<script type="text/javascript" src="/vendor/slick/slick.min.js"></script>
+<script type="text/javascript" src="/vendor/image-scale/image-scale.js"></script>
+<script type="text/javascript" src="/vendor/matchHeight/jquery.matchHeight.js"></script>
+<!-- PNotify -->
+<script src="/vendor/pnotify/dist/pnotify.js"></script>
+<script src="/vendor/pnotify/dist/pnotify.buttons.js"></script>
+<script src="/vendor/pnotify/dist/pnotify.nonblock.js"></script>
+
+<script>
+	new PNotify({
+		title: 'Sandbox Testing Environment',
+	    text: 'Welcome to MentorMap\'s Beta Release. Nothing you do in this sandbox environemnt will be saved to the production version.<br> For testing purposes only, payments will be processed every 10 minutes instead of every 24 hours in production. ',
+	    nonblock: {
+	        nonblock: true
+	    },
+		addclass: "stack-bottomleft",
+		width: '35%',
+		delay: 15000,
+		mouse_reset: false,
+	});
+</script>
+
+<script>
+  $('.carousel').slick({
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 1500,
+    dots: true,
+    infinite: true,
+    arrows: false,
+    responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+
+  });
+</script>
+
+<script>
+
+  $(function() {
+    $("img.scale").imageScale({
+      scale: "best-fit-down",
+      align: "left"
+    });
+  });
+
+
+
+</script>
+
+<script>
+  $(function() {
+      $('#logos div').matchHeight(false);
+  });
+</script>
+
+<script>
+	$(function() {
+		$("#learn-more").click(function() {
+		    $('html,body').animate({
+		        scrollTop: $("#why").offset().top},
+		     'slow');
+		});
+	})
+</script>
+
+</body>
+
+</html>

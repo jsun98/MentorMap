@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('../partials/meta', {pageTitle: 'Dashboard'}); %>
+
+	<%- include('../partials/common_css'); %>
+
+	<!-- FullCalendar -->
+	<link href="/vendor/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+	<link href="/vendor/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
+
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+				<div class="">
+					<div class="page-title">
+						<div class="title_left">
+							<h3>My Dashboard <small>Any sessions you booked will show up here</small></h3>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="x_panel">
+								<div class="x_title">
+									<h2>Schedule</h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+
+									<div id='calendar'></div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /page content -->
+
+			<!-- footer content -->
+			<%- include('../partials/footer'); %>
+			<!-- /footer content -->
+		</div>
+	</div>
+
+	<!-- calendar modal -->
+	<div id="CalenderModalEventDetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close close2" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title" id="myModalLabel2">Session Details</h4>
+				</div>
+				<div class="modal-body">
+
+					<div id="testmodal2" style="padding: 5px 20px;">
+						<form id="antoform2" class="form-horizontal calender" role="form">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Status</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="status" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Start</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="start" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">End</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="end" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Mentor</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="mentor" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Mentee</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="mentee" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Zoom Link</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="zoom-join" readonly>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<p style="text-align: left;">Note: you will only be charged after your request has been confirmed by the mentor.
+					If the mentor refuses your request you will be refunded in full. If the mentor does not show up for the seesion,
+					please email us and we will refund you in full.</p>
+					<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
+					<button type="button" id='cancel' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Cancel Request</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="event_details" data-toggle="modal" data-target="#CalenderModalEventDetails"></div>
+	<!-- /calendar modal -->
+
+<%- include('../partials/common_scripts'); %>
+<!-- FullCalendar -->
+<script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
+
+<!-- FullCalendar -->
+<script>
+$(window).load(function() {
+
+	function showDangerNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Error',
+			text: msg,
+			type: 'error',
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showInfoNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Info',
+			text: msg,
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showSuccessNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Success',
+			text: msg,
+			type: 'success',
+			styling: "bootstrap3",
+			delay: 4000,
+			buttons: {sticker: false},
+		});
+	}
+
+	var calendar = $('#calendar').fullCalendar({
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		},
+		selectable: false,
+		selectHelper: false,
+		editable: false,
+		minTime: "07:00:00",
+		maxTime: "22:00:00",
+		timezone: 'local',
+		allDaySlot: false,
+		eventClick: function(calEvent, jsEvent, view) {
+			$('#event_details').click();
+			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
+			$('#mentee').val(calEvent.mentee ? calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name : '')
+			$('#status').val(calEvent.type)
+			$('#zoom-join').val(calEvent.joinURL)
+
+			if (calEvent.type === 'requested' && calEvent.start < moment().add(24, 'h')) {
+				$('#cancel').hide()
+				showInfoNotify('You cannot make any changes within 24 hours of the starting time. The status of this session will change to "expired" shortly.')
+			} else if (calEvent.type === 'requested') {
+				$("#cancel").off().on("click", function() {
+					$.ajax({
+						url: "/mentee/session/cancel/"+calEvent._id,
+						type: 'PUT'
+					})
+					.done((res) => {
+						showInfoNotify('Your Session Has Been Canceled')
+						$('.close').click();
+						calendar.fullCalendar('refetchEvents')
+					})
+					.fail(() => {
+						showDangerNotify('There was an error. Please try again later.')
+						$('.close').click();
+						calendar.fullCalendar('refetchEvents')
+					})
+				}).show();
+			} else {
+				$('#cancel').hide()
+			}
+			calendar.fullCalendar('unselect');
+
+		},
+		events: '/mentee/my-sessions',
+		eventRender: function(event, element) {
+			element.append('Status: '+event.type)
+		}
+
+	});
+});
+</script>
+<!-- /FullCalendar -->
+
+
+</body>
+</html>

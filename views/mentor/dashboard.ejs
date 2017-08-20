@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('../partials/meta', {pageTitle: 'Dashboard'}); %>
+
+	<%- include('../partials/common_css'); %>
+	<!-- FullCalendar -->
+	<link href="/vendor/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+	<link href="/vendor/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+
+
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
+
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+				<div class="">
+					<div class="page-title">
+						<div class="title_left" style="width: 100%;">
+							<h3>My Dashboard <small>You can update your availability by dragging a time range</small></h3>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="x_panel">
+								<div class="x_title">
+									<h2>Schedule</h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+
+									<div id='calendar'></div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /page content -->
+
+			<!-- footer content -->
+			<%- include('../partials/footer'); %>
+			<!-- /footer content -->
+<div id="CalenderModalEventDetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close close2" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel2">Session Details</h4>
+			</div>
+			<div class="modal-body">
+
+				<div id="testmodal2" style="padding: 5px 20px;">
+					<form id="antoform2" class="form-horizontal calender" role="form">
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Status</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="status" readonly>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Start</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="start" readonly>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">End</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="end" readonly>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Mentor</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="mentor" readonly>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Mentee</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="mentee" readonly>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Zoom Host Start Link</label>
+							<div class="col-sm-9">
+								<textarea type="text" class="form-control" id="zoom-start" readonly></textarea>
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<p style="text-align: left;">Note: if you confirm a request, you will not be able
+					 to make any changes to or cancel the session. You may only cancel a
+					 session if it has not been confirmed by you. If you absolutely have to cancel
+				 	 a session after it has been confirmed, please email us and explain your circumstances.</p>
+				<h4 id='wait-msg' hidden>Please wait...</h4>
+				<button type="button" id='confirm' class="btn btn-success btn-control" style="margin: 0;">Accept</button>
+				<button type="button" id='refuse' class="btn btn-warning btn-control" style="margin: 0;">Refuse</button>
+				<button type="button" id='delete' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Delete</button>
+				<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="event_details" data-toggle="modal" data-target="#CalenderModalEventDetails"></div>
+<!-- /calendar modal -->
+
+
+<%- include('../partials/common_scripts'); %>
+<!-- FullCalendar -->
+<script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
+
+
+<!-- FullCalendar -->
+<script>
+$(window).load(function() {
+
+	function showDangerNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Error',
+			text: msg,
+			type: 'error',
+			styling: "bootstrap3",
+			delay: 6000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showInfoNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Info',
+			text: msg,
+			styling: "bootstrap3",
+			delay: 6000,
+			buttons: {sticker: false},
+		});
+	}
+
+
+	function showSuccessNotify (msg) {
+		PNotify.removeAll()
+		new PNotify({
+			title: 'Success',
+			text: msg,
+			type: 'success',
+			styling: "bootstrap3",
+			delay: 6000,
+			buttons: {sticker: false},
+		});
+	}
+
+	var calendar = $('#calendar').fullCalendar({
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		},
+		minTime: "07:00:00",
+		maxTime: "22:00:00",
+		allDaySlot: false,
+		timezone: 'local',
+		defaultView: 'agendaWeek',
+		selectable: true,
+		selectHelper: true,
+		selectOverlap: false,
+		select: function(start, end) {
+			if (calendar.fullCalendar( 'getView' ).name === 'month') {
+				calendar.fullCalendar('unselect')
+				return false
+			}
+			if (start < moment().add(24, 'h')) {
+				showDangerNotify('Your time slot must be booked 24 hours in advance!')
+				calendar.fullCalendar('unselect')
+				return false
+			}
+			if(end-start > 1.08e+7 || end-start < 3e+6) {
+				showDangerNotify('Time slot must be between 60 - 180 minutes')
+				calendar.fullCalendar('unselect')
+				return false
+			}
+
+			$.post('/mentor/session/new/', {
+				start: start.valueOf(),
+				end: end.valueOf(),
+			}).done(function (res) {
+				showSuccessNotify('New Time Slot Created')
+				calendar.fullCalendar('refetchEvents')
+				calendar.fullCalendar('unselect')
+			});
+		},
+		eventClick: function( calEvent, jsEvent, view ) {
+			$('#event_details').click();
+			$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
+			$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
+			$('#mentee').val(calEvent.mentee ? calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name : '')
+			$('#zoom-start').val(calEvent.startURL)
+			$('#status').val(calEvent.type)
+
+			if ((calEvent.type === 'requested' || calEvent.type === 'available') && calEvent.start < moment().add(24, 'h')) {
+				$("#confirm").hide()
+				$("#refuse").hide()
+				$("#delete").hide()
+				showInfoNotify('You cannot make any changes within 24 hours of the starting time. The status of this session will change to "expired" shortly.')
+				return
+			} else if (calEvent.type === "requested") {
+				$('#delete').hide()
+				$("#confirm").off().on("click", function() {
+					$('#wait-msg').show()
+					$('.modal-footer button').hide()
+					$.ajax({
+						url: '/mentor/session/confirm/'+calEvent._id,
+						type: 'PUT',
+						data: {
+							start: calEvent.start.format(),
+							end: calEvent.end.format(),
+						}
+					}).done(function (res) {
+						showSuccessNotify('Session confirmed! It is now being processed. You will receive an email containing the Zoom link once we have it ready. Please make sure that you start your session on time.')
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					}).fail(function () {
+						showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					}).always(function () {
+						$('#wait-msg').hide()
+						$('.modal-footer button').show()
+					})
+				}).show()
+				$("#refuse").off().on("click", function() {
+					$('#wait-msg').show()
+					$('.modal-footer button').hide()
+					$.ajax({
+						url: '/mentor/session/refuse/'+calEvent._id,
+						type: 'PUT'
+					}).done(function (res) {
+						showInfoNotify('Request for session refused!')
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					}).fail(function () {
+						showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					}).always(function () {
+						$('#wait-msg').hide()
+						$('.modal-footer button').show()
+					})
+				}).show()
+			}
+			else if (calEvent.type === "available") {
+				$("#confirm").hide()
+				$("#refuse").hide()
+				$("#delete").off().on("click", function() {
+					$.ajax({
+						url: '/mentor/session/delete/'+calEvent._id,
+						type: 'DELETE',
+					}).done(function (res) {
+						showInfoNotify('Time slot deleted')
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					}).fail(function () {
+						showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+						$('.close').click()
+						calendar.fullCalendar('refetchEvents')
+					})
+				}).show()
+			} else {
+				$("#confirm").hide()
+				$("#refuse").hide()
+				$("#delete").hide()
+			}
+		},
+		eventDrop: function(calEvent, delta, revertFunc, jsEvent) {
+			if (calendar.fullCalendar( 'getView' ).name === 'month' || calEvent.type !== 'available') {
+				revertFunc()
+				return false
+			}
+			if (calEvent.start < moment().add(24, 'h')) {
+				showDangerNotify('Your time slot must be booked 24 hours in advance!')
+				revertFunc()
+				return false
+			}
+
+			var start = calEvent.start
+			var end = calEvent.end
+			$.ajax({
+				url: '/mentor/session/update-time/'+calEvent._id,
+				type: 'PUT',
+				data: {
+					start: start.valueOf(),
+					end: end.valueOf(),
+				}
+			}).done(function (res) {
+				showSuccessNotify('Time slot change saved!')
+				calendar.fullCalendar('refetchEvents')
+			}).fail(function () {
+				showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+				calendar.fullCalendar('refetchEvents')
+			})
+		},
+		eventResize: function(calEvent, delta, revertFunc, jsEvent) {
+			if (calendar.fullCalendar( 'getView' ).name === 'month' || calEvent.type !== 'available') {
+				revertFunc()
+				return false
+			}
+			if (calEvent.start < moment().add(24, 'h')) {
+				showDangerNotify('Your time slot must be booked 24 hours in advance!')
+				revertFunc()
+				return false
+			}
+			if(calEvent.end - calEvent.start > 1.08e+7 || calEvent.end - calEvent.start < 3e+6) {
+				showDangerNotify('Time slot must be between 60 to 180 minutes')
+				revertFunc()
+				return false
+			}
+
+			var start = calEvent.start
+			var end = calEvent.end
+			$.ajax({
+				url: '/mentor/session/update-time/'+calEvent._id,
+				type: 'PUT',
+				data: {
+					start: start.valueOf(),
+					end: end.valueOf(),
+				}
+			}).done(function (res) {
+				showSuccessNotify('Time slot changes saved')
+				calendar.fullCalendar('refetchEvents')
+			}).fail(function () {
+				showDangerNotify('Looks like something went wrong on our side. Please try again later.')
+				calendar.fullCalendar('refetchEvents')
+			})
+		},
+		eventRender: function(event, element) {
+			element.append('Status: '+event.type)
+		},
+		editable: true,
+		eventOverlap: false,
+		events: '/mentor/my-sessions',
+	});
+});
+</script>
+<!-- /FullCalendar -->
+
+
+</body>
+</html>

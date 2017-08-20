@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('../partials/meta', {pageTitle: 'Dashboard'}); %>
+
+	<%- include('../partials/common_css'); %>
+	<!-- FullCalendar -->
+	<link href="/vendor/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+	<link href="/vendor/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
+
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+				<div class="">
+					<div class="page-title">
+						<div class="title_left" style="width: 100%;">
+							<h3>See My Mentor's Availability <small>To request a session with this mentor or view session details, click on any available green slots.</small></h3>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="x_panel">
+								<div class="x_title">
+									<h2><%= mentor.profile.first_name + " " + mentor.profile.last_name %>'s availability </h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+
+									<div id='calendar'></div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /page content -->
+
+			<!-- footer content -->
+			<%- include('../partials/footer'); %>
+			<!-- /footer content -->
+		</div>
+	</div>
+
+	<div id="CalenderModalEventDetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close close2" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title" id="myModalLabel2">Session Details</h4>
+				</div>
+				<div class="modal-body">
+
+					<div id="testmodal2" style="padding: 5px 20px;">
+						<form id="antoform2" class="form-horizontal calender" role="form">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Status</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="status" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Start</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="start" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">End</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="end" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Mentor</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="mentor" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Mentee</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="mentee" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Zoom Link</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="zoom-join" readonly>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<p style="text-align: left;">Note: you will only be charged after your request has been confirmed by the mentor.
+						If the mentor refuses your request you will be refunded in full. If the mentor does not show up for the seesion,
+						please email us and we will refund you in full.</p>
+						<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
+						<button type="button" id='choose' class="btn btn-success antoupdate btn-control" style="margin: 0;">Make Payment and Request Session</button>
+						<button type="button" id='cancel' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Cancel Request</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="event_details" data-toggle="modal" data-target="#CalenderModalEventDetails"></div>
+		<!-- /calendar modal -->
+
+		<!-- calendar modal -->
+		<div id="paymentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<button type="button" class="close close2" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title" id="myModalLabel2">Make Your Payment via Credit or Debit Cards</h4>
+					</div>
+					<div class="modal-body">
+
+						<div id="testmodal2" style="padding: 5px 20px;">
+							<form id="antoform2" class="form-horizontal calender" role="form">
+								<h1>Amount: $11.99 CDN</h1>
+								<p id='payment-wait-msg'>Please wait...</p>
+								<div id="dropin-container"></div>
+							</form>
+						</div>
+					</div>
+					<div class="modal-footer">
+							<button id="braintree-button" class='btn btn-success paymentControl' style="margin: 0;">Make Payment</button>
+							<button type="button" class="btn btn-default close2 paymentControl" data-dismiss="modal" style="margin: 0;">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="paymentModalControl" data-toggle="modal" data-target="#paymentModal"></div>
+			<!-- /calendar modal -->
+
+
+			<%- include('../partials/common_scripts'); %>
+		<script src="https://js.braintreegateway.com/web/dropin/1.6.1/js/dropin.min.js"></script>
+		<!-- FullCalendar -->
+		<script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
+
+
+
+		<!-- FullCalendar -->
+		<script>
+		$(window).load(function() {
+
+			function showDangerNotify (msg) {
+				PNotify.removeAll()
+				new PNotify({
+					title: 'Error',
+					text: msg,
+					type: 'error',
+					styling: "bootstrap3",
+					delay: 4000,
+					buttons: {sticker: false},
+				});
+			}
+
+
+			function showInfoNotify (msg) {
+				PNotify.removeAll()
+				new PNotify({
+					title: 'Info',
+					text: msg,
+					styling: "bootstrap3",
+					delay: 4000,
+					buttons: {sticker: false},
+				});
+			}
+
+
+			function showSuccessNotify (msg) {
+				PNotify.removeAll()
+				new PNotify({
+					title: 'Success',
+					text: msg,
+					type: 'success',
+					styling: "bootstrap3",
+					delay: 4000,
+					buttons: {sticker: false},
+				});
+			}
+
+			var calendar = $('#calendar').fullCalendar({
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,agendaWeek,agendaDay'
+				},
+				defaultView: 'agendaWeek',
+				selectable: true,
+				selectHelper: false,
+				minTime: "07:00:00",
+				maxTime: "22:00:00",
+				timezone: 'local',
+				allDaySlot: false,
+				eventClick: function(calEvent, jsEvent, view) {
+					if (calEvent.type !== 'available')
+						$('.btn-control').hide()
+
+					$('#event_details').click();
+					$('#start').val(calEvent.start.format('dddd, MMMM Do YYYY, HH:mm'))
+					$('#end').val(calEvent.end.format('dddd, MMMM Do YYYY, HH:mm'))
+					$('#mentor').val(calEvent.mentor.profile.first_name + ' ' + calEvent.mentor.profile.last_name)
+					$('#mentee').val(calEvent.type === 'available' ? '' : calEvent.mentee.profile.first_name + ' ' + calEvent.mentee.profile.last_name)
+					$('#zoom-join').val(calEvent.joinURL)
+					$('#status').val(calEvent.type)
+
+					if ((calEvent.type === 'requested' || calEvent.type === 'available') && calEvent.start < moment().add(24, 'h')) {
+						$('#choose').hide()
+						$('#cancel').hide()
+						showInfoNotify('You cannot make any changes or requests within 24 hours of the starting time. The status of this session will change to expired shortly.')
+					} else if (calEvent.type === 'requested') {
+						$("#choose").hide()
+						$("#cancel").off().on("click", function() {
+							$.ajax({
+								url: "/mentee/session/cancel/"+calEvent._id,
+								type: 'PUT'
+							})
+							.done(function (res) {
+								showInfoNotify('Your Session Has Been Canceled')
+								$('.close').click();
+								calendar.fullCalendar('refetchEvents')
+							})
+							.fail(function () {
+								showDangerNotify('There was an error. Please try again later.')
+								$('.close').click();
+								calendar.fullCalendar('refetchEvents')
+							})
+						}).show();
+					} else if (calEvent.type === 'available'){
+						$("#cancel").hide()
+						$("#choose").off().on("click", function() {
+							$('.paymentControl').hide()
+							$('.close').click();
+							$('#paymentModalControl').click()
+							$('#payment-wait-msg').show()
+							var $button = $('#braintree-button');
+
+							function handlePaymentButtonClick (instance) {
+								return function () {
+									$('.paymentControl').hide()
+									instance.requestPaymentMethod(function (err, payload) {
+										if (err) {
+											$('.close').click();
+											showDangerNotify('Server error, please try again later')
+											return
+										}
+										$.ajax({
+											url: "/mentee/session/choose/"+calEvent._id,
+											type: 'PUT',
+											data: { nonce: payload.nonce }
+										})
+										.done((res) => {
+											showSuccessNotify('Payment received. Your request has been processed. You will receive an email when the mentor responds to your request. You will not be charged until the mentor confirms your request.')
+											$('.close').click();
+											calendar.fullCalendar('refetchEvents')
+										})
+										.fail((res) => {
+											showDangerNotify('Your card information is not valid or your bank declined the transaction. Please try again.')
+											$('.close').click();
+											calendar.fullCalendar('refetchEvents')
+										})
+									});
+								}
+							}
+
+							$.get('/mentee/paymentToken')
+								.done(function (token) {
+									$('#dropin-container').empty()
+									braintree.dropin.create({
+										authorization: token,
+										container: '#dropin-container'
+									}, function (createErr, instance) {
+										$('.paymentControl').show()
+										$('#payment-wait-msg').hide()
+										$button.off().click(handlePaymentButtonClick(instance));
+									});
+								})
+								.fail(function() {
+									$('.close').click();
+									showDangerNotify('Server error, please try again later')
+								})
+
+						}).show();
+					} else {
+						$('#choose').hide()
+						$('#cancel').hide()
+					}
+
+					calendar.fullCalendar('unselect');
+
+				},
+				editable: false,
+				events:	'/mentee/sessionByMentorId/' + '<%= mentor._id %>',
+				eventRender: function(event, element) {
+					element.append('Status: '+event.type)
+
+				}
+			});
+		});
+		</script>
+		<!-- /FullCalendar -->
+
+</body>
+</html>

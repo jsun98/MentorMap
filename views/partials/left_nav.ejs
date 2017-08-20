@@ -1,7 +1,7 @@
 <div class="col-md-3 left_col">
   <div class="left_col scroll-view">
   <div class="navbar nav_title" style="border: 0;">
-    <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>MentorMap</span></a>
+    <a class="site_title"></i> <span>MentorMap</span></a>
   </div>
 
   <div class="clearfix"></div>
@@ -9,7 +9,7 @@
   <!-- menu profile quick info -->
   <div class="profile">
     <div class="profile_pic">
-      <img src="images/user.png" alt="..." class="img-circle profile_img">
+      <img src="/base/images/user.png" alt="..." class="img-circle profile_img">
     </div>
     <div class="profile_info">
       <span>Welcome,</span>
@@ -29,17 +29,24 @@
     <div class="menu_section">
       <h3 style="padding-left: 17px;"><%= user.role || 'Error' %></h3>
     </div>
-    <!--
     <div class="menu_section">
       <h3>Menu</h3>
       <ul class="nav side-menu">
-        <li><a><i class="fa fa-sitemap"></i> Landing Page <span class="fa"></span></a></li>
-        <li><a><i class="fa fa-sitemap"></i> View Profile <span class="fa"></span></a></li>
-        <li><a><i class="fa fa-sitemap"></i> Pricing <span class="fa"></span></a></li>
-        <li><a><i class="fa fa-sitemap"></i> Help <span class="fa"></span></a></li>
+		 <% if (user.role === 'mentee' && user.completed) { %>
+			<li><a href='/mentee/dashboard'><i class="fa fa-home"></i> My Dashboard <span class="fa"></span></a></li>
+	        <li><a href="/mentee/my-mentors"><i class="fa fa-comments-o"></i> View My Mentors <span class="fa"></span></a></li>
+	        <li><a href="/mentee/new-mentors"><i class="fa fa-table"></i> Find A New Mentor <span class="fa"></span></a></li>
+			<li><a href="/mentee/review"><i class="fa fa-edit"></i> Leave Us A Review <span class="fa"></span></a></li>
+		    <li><a href="/mentee/help"><i class="fa fa-question-circle"></i> Help <span class="fa"></span></a></li>
+		<% } else if (user.role === 'mentor' && user.completed){ %>
+			<li><a href='/mentor/dashboard'><i class="fa fa-home"></i> My Dashboard <span class="fa"></span></a></li>
+			<li><a href="/mentor/my-mentees"><i class="fa fa-comments-o"></i> View My Mentees <span class="fa"></span></a></li>
+			<li><a href="/mentor/mentor-list"><i class="fa fa-table"></i> View Other Mentors <span class="fa"></span></a></li>
+			<li><a href="/mentor/review"><i class="fa fa-edit"></i> Leave Us A Review <span class="fa"></span></a></li>
+			<li><a href="/mentor/help"><i class="fa fa-question-circle"></i> Help <span class="fa"></span></a></li>
+		<% } %>
       </ul>
     </div>
-  -->
 
   </div>
   <!-- /sidebar menu -->

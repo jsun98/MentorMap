@@ -1,9 +1,0 @@
-{
-  "undef": true,
-  "unused": true,
-  "node": true,
-  "es5": true,
-  "globals": {
-    "MY_GLOBAL": true
-  }
-}

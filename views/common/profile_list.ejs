@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/meta', {pageTitle: 'Profiles'}); %>
+
+	<%- include('../partials/common_css'); %>
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <!-- left navigation -->
+        <%- include('../partials/left_nav', {user: user}); %>
+        <!-- /left navigation -->
+
+        <!-- top navigation -->
+        <%- include('../partials/top_nav', {user: user}); %>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3><%= title %></h3>
+              </div>
+
+              <div class="title_right">
+                  <div class="input-group pull-right">
+                	<a type="button" href="/mentee/dashboard" class="btn btn-round btn-default">Back</a>
+                  </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="x_panel">
+                  <div class="x_content">
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                        <div id="page-selection" class="pagination pagination-split"></div>
+                      </div>
+
+                      <div class="clearfix"></div>
+
+                      <div id="page-content">
+
+                        <% for (var i = 0 ; i < profiles.length; i++) { %>
+
+
+                          <%- include('../partials/profile_tab', {profile: profiles[i], title: title, user: user}); %>
+
+                        <% } %>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <%- include('../partials/footer'); %>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+	<%- include('../partials/common_scripts'); %>
+    <!-- Bootpag -->
+    <script src="/vendor/bootpag/jquery.bootpag.min.js"></script>
+
+
+    <script>
+      $(document).ready(function() {
+        var pageProfilesCount = 4;
+
+        $("#page-content").children().each(function (idx, val) {
+          if (idx < 4)
+            $(this).show();
+        });
+
+        $('#page-selection').bootpag({
+          total: <%= profiles.length %>/pageProfilesCount + 1
+        }).on("page", function(event, num){
+          var pageStartIdx = (num - 1) * pageProfilesCount;
+          var pageEndIdx = pageStartIdx + pageProfilesCount;
+          $("#page-content").children().each(function (idx, val) {
+            if (idx < pageStartIdx || idx >= pageEndIdx)
+              $(this).hide();
+            else
+              $(this).show();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

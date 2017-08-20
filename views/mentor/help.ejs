@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('../partials/meta', {pageTitle: 'Complete Registration'}); %>
+	<%- include('../partials/common_css'); %>
+
+
+	<style>
+		.content {
+			padding: 0 150px;
+		}
+		.content p, .content li {
+			font-size: 16px;
+			color: black;
+			margin-bottom: 30px;
+		}
+		.content h3 {
+			color: black;
+		}
+	</style>
+
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
+
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+
+
+				<!-- complete profile -->
+				<div class="help-page">
+
+					<div class="row">
+
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title">
+									<h2>Tutorial and Help<small>If you have any additional questions, feel free to email us at info@mentormap.ca</small></h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+
+
+									<!-- Smart Wizard -->
+									<p>We will show you how to get started.</p>
+									<div id="wizard" class="form_wizard wizard_horizontal">
+										<ul class="wizard_steps">
+											<li>
+												<a href="#step-1">
+													<span class="step_no">1</span>
+													<span class="step_descr">
+														Welcome<br />
+														<small>Welcome to MentorMap</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-2">
+													<span class="step_no">2</span>
+													<span class="step_descr">
+														Part 1<br />
+														<small>Finding a mentor</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-3">
+													<span class="step_no">3</span>
+													<span class="step_descr">
+														Part 2<br />
+														<small>Calendar and Sessions</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-4">
+													<span class="step_no">4</span>
+													<span class="step_descr">
+														Part 3<br />
+														<small>Starting a Session</small>
+													</span>
+												</a>
+											</li>
+											<li>
+												<a href="#step-5">
+													<span class="step_no">5</span>
+													<span class="step_descr">
+														Part 4<br />
+														<small>Getting Paid</small>
+													</span>
+												</a>
+											</li>
+										</ul>
+										<div id="step-1" style="text-align: center;">
+											<h3>Welcome to MentorMap</h3>
+											<p>
+												If this is your first time joining us, this tutorial will hopefully give you an
+												idea of how our site works. We hope that you'll be able to get used to our system
+												and make the most out of your experience here at MentorMap!
+											</p>
+										</div>
+										<div id="step-2">
+											<h3>How do I see my mentees?</h3>
+											<p>
+												Only mentees can connect with mentors and not vice versa. <br>
+												When a mentee connects with you, you will receive an email notification from us. <br>
+												You can see your mentees by clicking on 'View My Mentees' on the left navigation bar<br>
+												then you can click on 'Profile' to see this mentee's details.
+											</p>
+											<h3>Mentee profile page</h3>
+											<p>
+												The profile page displays some important information about each mentee. <br>
+												Namely their current school, program, skills and interests. <br>
+												You can use this information to prepare for an upcoming session.
+											</p>
+											<h3>View Other Mentors</h3>
+											<p>
+												You can see other mentors by clicking on 'View Other Mentors' on the left
+												navigation bar.
+											</p>
+										</div>
+										<div id="step-3">
+											<h3>Your calendar</h3>
+											<p>
+												Your calendar on the dashboard will display your free time slots and any requests you get from mentees <br>
+												Your free time slots will be visible to the mentees and they can request sessions through our site.
+											 </p>
+											<p>To view a session's details and perform various actions, simply click on an event.</p>
+											<h3>How do I create time slots?</h3>
+											<p>
+												Simply drag your mouse accross the calendar to create a time slot.<br>
+												Your slot must be at least 60 miniutes long and no more than 180 minutes.
+											</p>
+											<h3>How do I know when I get a request?</h3>
+											<p>
+												You will get an email notification from us.<br>
+												In addition, the session slot on your calendar to turn orange.
+											</p>
+											<h3>How do I confirm or refuse a request?</h3>
+											<p>
+												Click on an orange slot and you have a choice of either accpeting or refusing the request.
+											</p>
+											<h3>Sessions</h3>
+											<p>There are a few possible status for sessions that you can see on your calendar:</p>
+											<ul>
+												<li>
+													Available (green) - you are free for a session during this time.
+													this means that this session slot is available for mentees to make a request to chat with the mentor.
+													You can remove free slots any time.
+												 </li>
+												<li>
+													Requested (orange) - a mentee has requested this session slot and is waiting for the mentor's confirmation.
+													At this point, you can choose to accept or refuse the request
+												</li>
+												<li>
+													Processing (red) - the mentor has accepted the request and your payment is now being processed.
+													When the session is setup, we will send you an email with a Zoom host link so you can host the video
+													call. You will not be able to cancel your session at this stage.
+												</li>
+												<li>
+													Scheduled (red) - payment accepted and Zoom links have been set up.
+												</li>
+												<li>
+													Payment_error (gery) - an error with the mentee's payment. the session is cancelled.
+												</li>
+												<li>
+													Expired (grey) - all sessions older than current time + 24 hours will be marked expired.
+												</li>
+											</ul>
+											<h3>What can I do under each status?</h3>
+											<ul>
+												<li>
+													Available (green) - you can freely change, edit or delete this slot
+												 </li>
+												<li>
+													Requested (orange) - you can either accept or decline this request but cannot make changes.
+												</li>
+												<li>
+													Processing (red) - you have confirmed this session and cannot make any changes.
+												</li>
+												<li>
+													Scheduled (red) - you have confirmed this session and cannot make any changes.
+												</li>
+												<li>
+													Payment_error (gery) - you have confirmed this session and cannot make any changes.
+												</li>
+												<li>
+													Expired (grey) - session has expired and you cannot make any changes.
+												</li>
+											</ul>
+										</div>
+										<div id="step-4">
+											<h3>What if I'm late or unable to attend a confirmed session?</h3>
+											<p>
+												We expect all our mentors to act professionally.<br>
+												By confirming a session, you are being absolutely certain that you will
+												be able to attend the session.<br>
+												If circumstances do come up and you cannot make a confirmed session, please
+												email us at mentorservice@mentormap.ca ASAP.<br>
+												We expect you to be no more than 10 minutes late to an agreed on start time.
+											</p>
+											<h3>How do I start a video session?</h3>
+											<p>
+												Use the Zoom host link we send you through email to start hosting the session.<br>
+												You can also find this link by click on a session slot.
+											</p>
+											<h3>What is Zoom?</h3>
+											<p>
+												Zoom is a video conferencing service. We schedule Zoom video conferences for you automatically when
+												your mentor confirms your session request. <br>
+												You can simply use the Zoom link we send you to join the session and start chatting. <br>
+												Note that you can only join the session once your mentor (the host) has joined.
+											</p>
+											<h3>What happens after I confirm a request?</h3>
+											<p>
+												After your confirm the request, we will process the mentee's payment.<br>
+												This is done everyday at midnight. Once it has been processed we will
+												send out the Zoom links via email.
+											</p>
+										</div>
+										<div id="step-5">
+											<h3>When do I get paid?</h3>
+											<p>
+												You are paid at the end of each month.
+											</p>
+											<h3>How much do I get?</h3>
+											<p>
+												You get $10 per every session you do.
+											</p>
+											<h3>What if my mentee doesn't show up for a session?</h3>
+											<p>
+												As long as the payment goes through, you will be paid regardless
+												the mentee shows up or not.
+											</p>
+											<h3>What if I don't show up to a session?</h3>
+											<p>
+												You will not get the $10 for that session. Depending on the circumstances,
+												we may need to give you a fine and/or request an apology letter.
+											</p>
+										</div>
+									</div>
+
+							</div>
+							<!-- End SmartWizard Content -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end complete profile -->
+
+
+	</div>
+	<!-- /page content -->
+
+	<!-- footer content -->
+	<%- include('../partials/footer'); %>
+	<!-- /footer content -->
+</div>
+</div>
+
+
+<%- include('../partials/common_scripts'); %>
+<!-- jQuery Smart Wizard -->
+<script src="/vendor/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+
+
+<!-- jQuery Smart Wizard -->
+<script>
+$(document).ready(function() {
+	$('#wizard').smartWizard({
+		transitionEffect: 'slide',
+		enableAllSteps: true,
+		hideButtonsOnDisabled: true,
+		onShowStep: function () {
+			$('.buttonFinish').hide();
+		}
+	});
+
+	$('.buttonNext').addClass('btn btn-success');
+	$('.buttonPrevious').addClass('btn btn-primary');
+	$('.buttonFinish').hide();
+});
+</script>
+<!-- /jQuery Smart Wizard -->
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('../partials/meta', {pageTitle: 'View Mentor Detail'}); %>
+
+	<%- include('../partials/common_css'); %>
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
+
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+				<div class="">
+					<div class="page-title">
+						<div class="title_left">
+							<h3>Mentor Profile</h3>
+						</div>
+
+						<div class="title_right">
+							<div class="input-group pull-right">
+								<a type="button" href="/mentee/dashboard" class="btn btn-round btn-default">Back</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_content">
+
+									<div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+
+										<div class="profile_img">
+
+											<!-- end of image cropping -->
+											<div id="crop-avatar">
+												<!-- Current avatar -->
+												<img class="img-responsive avatar-view" src="/base/images/picture.jpg" alt="Avatar" title="Change the avatar">
+
+												<!-- Loading state -->
+												<div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+											</div>
+											<!-- end of image cropping -->
+
+										</div>
+										<h3><%= mentor.profile.first_name + ' ' + mentor.profile.last_name %></h3>
+
+										<ul class="list-unstyled user_data">
+											<li>
+												<i class="fa fa-institution user-profile-icon"></i><%= mentor.profile.curr_school %>
+											</li>
+											<li>
+												<i class="fa fa-calendar user-profile-icon"></i> Graduates:  <%= mentor.profile.grad_year %>
+											</li>
+											<li>
+												<i class="fa fa-briefcase user-profile-icon"></i> <%= mentor.profile.curr_major %>
+											</li>
+											<% if (mentor.profile.curr_minor) { %>
+												<li>
+													<i class="fa fa-book user-profile-icon"></i> <%= mentor.profile.curr_minor %>
+												</li>
+												<% } %>
+
+												<% if (mentor.profile.linkedin) { %>
+													<li class="m-top-xs">
+														<i class="fa fa-external-link user-profile-icon"></i>
+														<a href=<%= mentor.profile.linkedin %> target="_blank"><%= mentor.profile.linkedin %></a>
+													</li>
+													<% } %>
+												</ul>
+
+												<!-- Large modal -->
+
+												<% if (user.role === 'mentee') { %>
+													<button id ='btn-choose-mentor' class="btn btn-success" ><i class="fa fa-check-square-o m-right-xs"></i> &nbspChoose This Mentor</button>
+													<button id ='btn-cancel-mentor' class="btn btn-danger" ><i class="fa fa-check-square-o m-right-xs"></i> &nbspCancel Mentorship</button>
+													<% } %>
+													<br />
+
+												</div>
+												<div class="col-md-9 col-sm-9 col-xs-12">
+
+													<div class="" role="tabpanel" data-example-id="togglable-tabs">
+														<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+															<li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">About Me</a>
+															</li>
+															<li role="presentation" class=""><a href="#tab_content4" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Contact Information</a>
+															</li>
+														</ul>
+
+														<div id="myTabContent" class="tab-content">
+
+															<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+																<!-- About -->
+																<ul class="messages">
+																	<!-- start skills -->
+																	<h4>Skills And Experiences</h4>
+																	<ul class="list-unstyled user_data">
+																		<% for (var i = 0; i < mentor.profile.skills.length; i++) { %>
+																			<li>
+																				<p><%= mentor.profile.skills[i] %></p>
+																			</li>
+																			<% } %>
+																		</ul>
+																		<br/>
+																		<h4>Participated in the Following Programs</h4>
+																		<ul class="list-unstyled user_data">
+																			<% for (var i = 0; i < mentor.profile.high_school_program.length; i++) { %>
+																				<li>
+																					<p><%= mentor.profile.high_school_program[i] %></p>
+																				</li>
+																				<% } %>
+																			</ul>
+																		</ul>
+																		<!-- end about -->
+
+																	</div>
+
+																	<div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="home-tab">
+																		<div>
+																			<h4>Email: </h4><p> <%= mentor.email %></p>
+																			<h4>Phone: </h4><p> <%= mentor.profile.phone %></p>
+																			<h4>Social Profile: </h4><p> <%= mentor.profile.linkedin %></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /page content -->
+
+								<!-- footer content -->
+								<%- include('../partials/footer'); %>
+								<!-- /footer content -->
+							</div>
+						</div>
+
+						<%- include('../partials/common_scripts'); %>
+
+						<!-- bind buttons -->
+						<script>
+
+						$(document).ready(function() {
+							
+							function showInfoNotify (msg) {
+								PNotify.removeAll()
+								new PNotify({
+									title: 'Info',
+									text: msg,
+									styling: "bootstrap3",
+									delay: 4000,
+									buttons: {sticker: false},
+								});
+							}
+
+							function showDangerNotify (msg) {
+								PNotify.removeAll()
+								new PNotify({
+									title: 'Error',
+									text: msg,
+									type: 'error',
+									styling: "bootstrap3",
+									delay: 4000,
+									buttons: {sticker: false},
+								});
+							}
+
+							function showSuccessNotify (msg) {
+								PNotify.removeAll()
+								new PNotify({
+									title: 'Success',
+									text: msg,
+									type: 'success',
+									styling: "bootstrap3",
+									delay: 4000,
+									buttons: {sticker: false},
+								});
+							}
+
+							<% if (matched) { %>
+								$('#btn-choose-mentor').hide()
+								<% } else { %>
+									$('#btn-cancel-mentor').hide()
+									<% } %>
+									$('#btn-choose-mentor').click(function() {
+										$.post("/mentee/choose-mentor", {mentor_id: '<%= mentor._id %>'})
+										.done(function (res) {
+											showSuccessNotify('Mentor Chosen!')
+											$("#btn-cancel-mentor").show();
+											$('#btn-choose-mentor').hide();
+										})
+										.fail(function () {
+											showDangerNotify("Oops, looks like something went wrong. Please try again later.")
+										});
+									});
+									$('#btn-cancel-mentor').click(function() {
+										$.post("/mentee/cancel-mentor", {mentor_id: '<%= mentor._id %>'})
+										.done(function (res) {
+											showInfoNotify('Mentorship Cancelled!')
+											$("#btn-cancel-mentor").hide();
+											$('#btn-choose-mentor').show();
+										})
+										.fail(function (res) {
+											showDangerNotify(res.responseText || "Oops, looks like something went wrong. Please try again later.")
+										});
+									});
+								});
+								</script>
+								<!-- end bind buttons -->
+							</body>
+						</html>
