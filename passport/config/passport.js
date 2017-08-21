@@ -45,6 +45,9 @@ module.exports = function (passport) {
 			newUser.profile.last_name = req.body.last_name
 			newUser.role = 'mentee'
 
+			if (process.env.NODE_ENV === 'testing')
+				newUser.verified = true
+
 			if (process.env.NODE_ENV === 'development') {
 				newUser.tokens = 100
 				newUser.verified = true
@@ -115,6 +118,9 @@ module.exports = function (passport) {
 			newUser.profile.first_name = req.body.first_name
 			newUser.profile.last_name = req.body.last_name
 			newUser.role = 'mentor'
+
+			if (process.env.NODE_ENV === 'testing')
+				newUser.verified = true
 
 			if (process.env.NODE_ENV === 'development') {
 				newUser.tokens = 100
