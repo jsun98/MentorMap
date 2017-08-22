@@ -202,12 +202,12 @@ $(window).load(function() {
 						url: "/mentee/session/cancel/"+calEvent._id,
 						type: 'PUT'
 					})
-					.done((res) => {
+					.done(function (res) {
 						showInfoNotify('Your Session Has Been Canceled')
 						$('.close').click();
 						calendar.fullCalendar('refetchEvents')
 					})
-					.fail(() => {
+					.fail(function () {
 						showDangerNotify('There was an error. Please try again later.')
 						$('.close').click();
 						calendar.fullCalendar('refetchEvents')

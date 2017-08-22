@@ -273,12 +273,12 @@
 											type: 'PUT',
 											data: { nonce: payload.nonce }
 										})
-										.done((res) => {
+										.done(function (res) {
 											showSuccessNotify('Payment received. Your request has been processed. You will receive an email when the mentor responds to your request. You will not be charged until the mentor confirms your request.')
 											$('.close').click();
 											calendar.fullCalendar('refetchEvents')
 										})
-										.fail((res) => {
+										.fail(function (res) {
 											showDangerNotify('Your card information is not valid or your bank declined the transaction. Please try again.')
 											$('.close').click();
 											calendar.fullCalendar('refetchEvents')
