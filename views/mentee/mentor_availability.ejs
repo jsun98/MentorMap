@@ -265,8 +265,7 @@
 									$('.paymentControl').hide()
 									instance.requestPaymentMethod(function (err, payload) {
 										if (err) {
-											$('.close').click();
-											showDangerNotify('Server error, please try again later')
+											$('.paymentControl').show()
 											return
 										}
 										$.ajax({

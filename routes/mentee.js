@@ -203,10 +203,14 @@ router.get('/my-sessions', (req, res) => {
 })
 
 router.post('/choose-mentor', (req, res, next) => {
-	Mentorship.findOne({
-		mentee: req.user._id,
-		mentor: req.body.mentor_id,
-	}).exec()
+	User.findById(req.body.mentor_id)
+		.then(mentor => {
+			if (!mentor.completed || !mentor.verified) return res.status(400).send()
+			return Mentorship.findOne({
+				mentee: req.user._id,
+				mentor: req.body.mentor_id,
+			}).exec()
+		})
 		.then(mentorship => {
 			if (mentorship) return res.status(400).send('already in mentorship')
 			const newMentorship = new Mentorship()

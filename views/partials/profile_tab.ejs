@@ -3,6 +3,7 @@
     <div class="col-sm-12">
       <div class="left col-xs-7">
         <h2><%= profile.profile.first_name + ' ' + profile.profile.last_name %></h2>
+		<p><%= profile.email %></p>
         <p><strong>About: </strong> </p>
         <ul class="list-unstyled">
           <% if (profile.role == "mentor") { %>
