@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 // setup middleware
-app.use(logger('dev'))
+app.use(logger('common'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
@@ -48,7 +48,12 @@ app.use(passport.session()) // persistent login sessions
 app.use(flash()) // use connect-flash for flash messages stored in session
 // ======end passport=========================================================================================
 
-// route handlers
+app.use('*', (req, res, next) => {
+	if (req.headers['x-forwarded-proto'] !== 'https')
+		res.redirect('https://www.mentormap.ca' + req.url)
+	else
+		next()
+})
 app.use('/auth', require('./routes/authentication.js'))
 app.use('/mentee', require('./routes/mentee.js'))
 app.use('/mentor', require('./routes/mentor.js'))
