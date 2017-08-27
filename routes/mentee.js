@@ -289,7 +289,7 @@ router.put('/session/choose/:id', (req, res, next) => {
 			.populate('mentor')
 			.then(updated => {
 				if (!updated) res.status(404).send()
-				var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+				var hostname = req.hostname
 				return mailjet
 					.post('send')
 					.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))

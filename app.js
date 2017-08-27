@@ -49,7 +49,7 @@ app.use(flash()) // use connect-flash for flash messages stored in session
 // ======end passport=========================================================================================
 
 app.use('*', (req, res, next) => {
-	if (req.headers['x-forwarded-proto'] !== 'https')
+	if (req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV !== 'development')
 		res.redirect('https://www.mentormap.ca' + req.url)
 	else
 		next()

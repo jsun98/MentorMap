@@ -32,7 +32,7 @@ router.get('/email-confirm', isLoggedIn, (req, res, next) => {
 })
 
 router.get('/resend', isLoggedIn, (req, res, next) => {
-	var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+	var hostname = req.hostname
 	mailjet
 		.post('send')
 		.request(require('../email_templates/confirmation')(req.user, hostname))

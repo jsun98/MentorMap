@@ -137,7 +137,7 @@ router.put('/session/confirm/:id', (req, res, next) => {
 			}, (err, result) => {
 				if (err) next(err)
 				if (!result.success) res.status(400).send()
-				if (process.env.NODE_ENV === 'development')
+				if (process.env.NODE_ENV !== 'production')
 					gateway.testing.settle(result.transaction.id, (err, settleResult) => {
 						if (err) next(err)
 						console.log('testing settle: ' + settleResult.transaction.status)
@@ -199,7 +199,7 @@ router.put('/session/refuse/:id', (req, res, next) => {
 	})
 		.populate('mentee')
 		.then(updated => {
-			var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+			var hostname = req.hostname
 			mailjet
 				.post('send')
 				.request(require('../email_templates/session_response')(req.user, updated.mentee, updated, 'Refused', hostname))
