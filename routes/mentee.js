@@ -97,7 +97,7 @@ router.get('/new-mentors', (req, res, next) => {
 				completed: true,
 				verified: true,
 				$or: [ { mentorsArr: { $size: 0 } }, { _id: { $nin: mentorsArr } } ],
-			}).limit(4)
+			}).limit(8)
 		})
 		.then(mentors => {
 			res.render('common/profile_list', {

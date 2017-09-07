@@ -28,6 +28,7 @@ var CronJob = require('cron').CronJob,
 								timezone: 'UTC',
 								duration: (moment(session.end) - moment(session.start)) / 60000,
 							}, response => {
+								console.log(response)
 								if (response.error) return
 								session.type = 'scheduled'
 								session.color = 'red'

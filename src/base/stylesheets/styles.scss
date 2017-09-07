@@ -10,6 +10,15 @@
 	min-height: 0px !important;
 }
 
+.helppic-sm {
+	max-height: 50px;
+	display: block;
+}
+.helppic-full {
+	max-height: 300px;
+	display: block;
+}
+
 .nav-sm .container.body .col-md-3.left_col {
   width: 70px;
   padding: 0;
@@ -868,7 +877,8 @@ legend {
 
 /** Contacts **/
 .profile_details:nth-child(3n) {
-  clear: both; }
+  //clear: both;
+}
 
 .profile_details .profile_view {
   display: inline-block;

@@ -132,7 +132,7 @@ router.put('/session/confirm/:id', (req, res, next) => {
 			if (!session || !session.paymentMethodToken) return res.status(404).send()
 			gateway.transaction.sale({
 				paymentMethodToken: session.paymentMethodToken,
-				amount: '11.99',
+				amount: '12.99',
 				options: { submitForSettlement: true },
 			}, (err, result) => {
 				if (err) next(err)

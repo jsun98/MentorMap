@@ -46,9 +46,7 @@
                       <div class="clearfix"></div>
 
                       <div id="page-content">
-
                         <% for (var i = 0 ; i < profiles.length; i++) { %>
-
 
                           <%- include('../partials/profile_tab', {profile: profiles[i], title: title, user: user}); %>
 
@@ -86,7 +84,7 @@
         });
 
         $('#page-selection').bootpag({
-          total: <%= profiles.length %>/pageProfilesCount + 1
+          total: <%= profiles.length %>/pageProfilesCount
         }).on("page", function(event, num){
           var pageStartIdx = (num - 1) * pageProfilesCount;
           var pageEndIdx = pageStartIdx + pageProfilesCount;
