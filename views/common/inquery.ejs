@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('../partials/meta', {pageTitle: 'Contact Us'}); %>
+
+	<%- include('../partials/common_css'); %>
+
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+
+			<!-- left navigation -->
+			<%- include('../partials/left_nav', {user: user}); %>
+			<!-- /left navigation -->
+
+			<!-- top navigation -->
+			<%- include('../partials/top_nav', {user: user}); %>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+				<div class="">
+					<div class="page-title">
+						<div class="title_left">
+							<h3>Contact Us</h3>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="x_panel">
+								<div class="x_title">
+									<h2>Contact Us</h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+									<h2>Questions or Concerns?</h2>
+									<h4>Email <a href="mailto:support@mentormap.ca" target="_top">support@mentormap.ca</a>
+									<p>We will do our best to response within 24 hours</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /page content -->
+
+			<!-- footer content -->
+			<%- include('../partials/footer'); %>
+			<!-- /footer content -->
+		</div>
+	</div>
+
+
+	<%- include('../partials/common_scripts'); %>
+
+</body>
+</html>

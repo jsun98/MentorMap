@@ -289,6 +289,10 @@ router.get('/help', (req, res, next) => {
 	res.render('mentee/help', { user: req.user })
 })
 
+router.get('/inquery', (req, res, next) => {
+	res.render('common/inquery', { user: req.user })
+})
+
 function isTutorialComplete (req, res, next) {
 	if (req.user.tutorial)
 		return next()

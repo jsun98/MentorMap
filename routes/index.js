@@ -17,8 +17,8 @@ router.get('/dashboard', isLoggedIn, (req, res, next) => {
 		res.redirect('/mentee/dashboard')
 })
 
-router.get('/prelaunch', (req, res, next) => {
-	res.render('index/prelaunch')
+router.get('/mentor-signup-request', (req, res, next) => {
+	res.render('index/mentor_signup_request')
 })
 
 function isLoggedIn (req, res, next) {
