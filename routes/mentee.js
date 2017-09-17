@@ -4,8 +4,7 @@ const
 	User = require('../passport/models/user'),
 	Session = require('../passport/models/session'),
 	mailjet = require('../email_templates/email'),
-	Mentorship = require('../passport/models/mentorship'),
-	gateway = require('../BrainTree/braintree.js')
+	Mentorship = require('../passport/models/mentorship')
 
 router.use('*', isLoggedIn, isEmailVerified, isMentee)
 
@@ -58,13 +57,6 @@ router.use('*', isRegCompleted, isTutorialComplete)
 
 router.get('/dashboard', (req, res, next) => {
 	res.render('mentee/dashboard', { user: req.user })
-})
-
-router.get('/paymentToken', (req, res, next) => {
-	gateway.clientToken.generate({ customerId: req.user.BrainTreeId }, (err, response) => {
-		if (err) next(err)
-		res.status(200).send(response.clientToken)
-	})
 })
 
 router.get('/my-mentors', (req, res, next) => {
@@ -255,8 +247,6 @@ router.put('/session/cancel/:id', (req, res, next) => {
 	}, {
 		color: 'green',
 		mentee: undefined,
-		paymentMethodToken: '',
-		transaction_id: '',
 		type: 'available',
 	})
 		.then(updated => {
@@ -268,39 +258,27 @@ router.put('/session/cancel/:id', (req, res, next) => {
 		})
 })
 
-// TRANSACTION
 router.put('/session/choose/:id', (req, res, next) => {
-	gateway.paymentMethod.create({
-		customerId: req.user.BrainTreeId,
-		paymentMethodNonce: req.body.nonce,
-		options: {
-			verifyCard: true,
-			makeDefault: true,
-		},
-	}, (err, result) => {
-		if (err) return next(err)
-		if (!result.success) return res.status(400).send(result.verification.status)
-		Session.findByIdAndUpdate(req.params.id, {
-			mentee: req.user._id,
-			paymentMethodToken: result.paymentMethod.token,
-			color: 'orange',
-			type: 'requested',
-		})
-			.populate('mentor')
-			.then(updated => {
-				if (!updated) res.status(404).send()
-				var hostname = req.hostname
-				return mailjet
-					.post('send')
-					.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))
-			})
-			.then(() => {
-				res.status(200).send()
-			})
-			.catch(err => {
-				next(err)
-			})
+
+	Session.findByIdAndUpdate(req.params.id, {
+		mentee: req.user._id,
+		color: 'orange',
+		type: 'requested',
 	})
+		.populate('mentor')
+		.then(updated => {
+			if (!updated) res.status(404).send()
+			var hostname = req.hostname
+			return mailjet
+				.post('send')
+				.request(require('../email_templates/new_session')(updated.mentor, req.user, updated, hostname))
+		})
+		.then(() => {
+			res.status(200).send()
+		})
+		.catch(err => {
+			next(err)
+		})
 })
 
 router.get('/review', (req, res, next) => {

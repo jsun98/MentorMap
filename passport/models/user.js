@@ -43,7 +43,6 @@ var userSchema = new mongoose.Schema({
 		default: false,
 	},
 	ZoomId: String,
-	BrainTreeId: String,
 
 	profile: {
 		// common info

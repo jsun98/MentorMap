@@ -4,7 +4,6 @@
 const LocalStrategy = require('passport-local').Strategy,
 	User = require('../models/user'),
 	mailjet = require('../../email_templates/email'),
-	gateway = require('../../BrainTree/braintree.js'),
 	Zoom = require('zoomus')({
 		key: 'R6fQ_CoxSUeWXxshTvhZhg',
 		secret: 'AhhzZfhGL4T3ACCBjsjlK5IvqQqUvYERygMV',
@@ -72,27 +71,17 @@ module.exports = function (passport) {
 				newUser.profile.grad_year = 2021
 			}
 
-			gateway.customer.create({
-				firstName: newUser.profile.first_name,
-				lastName: newUser.profile.last_name,
-				email: newUser.email,
-			}, (err, result) => {
-				if (err) return done(err)
-				if (!result.success) return done(new Error('Cannot create new BrainTree customer'))
-				newUser.BrainTreeId = result.customer.id
-				newUser.save()
-					.then(savedUser => {
-						done(null, newUser)
-						var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
-						return mailjet
-							.post('send')
-							.request(require('../../email_templates/confirmation')(savedUser, hostname))
-					})
-					.catch(err => {
-						done(err)
-					})
-
-			})
+			newUser.save()
+				.then(savedUser => {
+					done(null, newUser)
+					var hostname = process.env.NODE_ENV === 'development' ? 'localhost:' + process.env.PORT : req.hostname
+					return mailjet
+						.post('send')
+						.request(require('../../email_templates/confirmation')(savedUser, hostname))
+				})
+				.catch(err => {
+					done(err)
+				})
 
 
 		})

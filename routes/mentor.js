@@ -4,7 +4,8 @@ const express = require('express'),
 	Session = require('../passport/models/session'),
 	mailjet = require('../email_templates/email'),
 	Mentorship = require('../passport/models/mentorship'),
-	gateway = require('../BrainTree/braintree.js')
+	Zoom = require('../zoom/zoom'),
+	moment = require('moment')
 
 router.use('*', isLoggedIn, isEmailVerified, isMentor)
 
@@ -122,66 +123,48 @@ router.put('/session/update-time/:id', (req, res, next) => {
 
 // TRANSACTION
 router.put('/session/confirm/:id', (req, res, next) => {
+
+
 	Session.findOne({
 		_id: req.params.id,
 		mentor: req.user._id,
+		type: 'requested',
 	})
 		.populate('mentor')
 		.populate('mentee')
 		.then(session => {
-			if (!session || !session.paymentMethodToken) return res.status(404).send()
-			gateway.transaction.sale({
-				paymentMethodToken: session.paymentMethodToken,
-				amount: '12.99',
-				options: { submitForSettlement: true },
-			}, (err, result) => {
-				if (err) next(err)
-				if (!result.success) res.status(400).send()
-				if (process.env.NODE_ENV !== 'production')
-					gateway.testing.settle(result.transaction.id, (err, settleResult) => {
-						if (err) next(err)
-						console.log('testing settle: ' + settleResult.transaction.status)
-						Session.findOneAndUpdate({
-							_id: req.params.id,
-							mentor: req.user._id,
-							type: 'requested',
-						}, {
-							type: 'processing',
-							color: 'red',
-							transaction_id: result.transaction.id,
-						})
-							.then(() => {
-								const hostname = 'mentormap.ca'
-								mailjet
-									.post('send')
-									.request(require('../email_templates/session_response')(session.mentor, session.mentee, session, 'Accepted', hostname))
-								res.status(200).send()
-							})
-							.catch(err => {
-								next(err)
-							})
+			if (!session) return res.status(404).send()
+			Zoom.meeting.create({
+				host_id: session.mentor.ZoomId,
+				type: 2,
+				topic: 'Mentoring Session',
+				start_time: moment.utc(session.start).format('YYYY-MM-DD[T]HH:mm:ss[Z]'),
+				timezone: 'UTC',
+				duration: (moment(session.end) - moment(session.start)) / 60000,
+			}, response => {
+				if (response.error) return next(new Error(response.error))
+				session.type = 'scheduled'
+				session.color = 'red'
+				session.joinURL = response.join_url
+				session.startURL = response.start_url
+				session.save()
+					.then(() => {
+						const hostname = 'mentormap.ca'
+						mailjet
+							.post('send')
+							.request(require('../email_templates/session_response')(session.mentor, session.mentee, session, 'Accepted', hostname))
+						mailjet
+							.post('send')
+							.request(require('../email_templates/session_confirm')(session.mentor, session.mentee, session, hostname))
+						res.status(200).send()
 					})
-				else
-					Session.findOneAndUpdate({
-						_id: req.params.id,
-						mentor: req.user._id,
-						type: 'available',
-					}, {
-						type: 'processing',
-						color: 'red',
-						transaction_id: result.transaction.id,
-					})
-						.then(() => {
-							res.status(200).send()
-						})
-						.catch(err => {
-							next(err)
-						})
-
-
-
+					.catch(err => next(err))
 			})
 		})
+		.catch(err => {
+			next(err)
+		})
+
 })
 
 // TRANSACTION

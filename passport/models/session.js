@@ -11,8 +11,6 @@ var sessionSchema = new mongoose.Schema({
 		enum: [ 'available', 'requested', 'processing', 'scheduled', 'payment_error', 'expired' ],
 		default: 'available',
 	},
-	paymentMethodToken: String,
-	transaction_id: String,
 	start: {
 		type: Date,
 		required: true,

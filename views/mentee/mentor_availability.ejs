@@ -111,11 +111,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<p style="text-align: left;">Note: you will only be charged after your request has been confirmed by the mentor.
-						If the mentor refuses your request you will be refunded in full. If the mentor does not show up for the seesion,
-						please email us and we will refund you in full.</p>
 						<button type="button" class="btn btn-default close2" data-dismiss="modal" style="margin: 0;">Close</button>
-						<button type="button" id='choose' class="btn btn-success antoupdate btn-control" style="margin: 0;">Make Payment and Request Session</button>
+						<button type="button" id='choose' class="btn btn-success antoupdate btn-control" style="margin: 0;">Request Session</button>
 						<button type="button" id='cancel' class="btn btn-danger antoupdate btn-control" style="margin: 0;">Cancel Request</button>
 					</div>
 				</div>
@@ -125,39 +122,7 @@
 		<div id="event_details" data-toggle="modal" data-target="#CalenderModalEventDetails"></div>
 		<!-- /calendar modal -->
 
-		<!-- calendar modal -->
-		<div id="paymentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-			<div class="modal-dialog" style="overflow-y: scroll; max-height:80vh;">
-				<div class="modal-content">
-
-					<div class="modal-header">
-						<button type="button" class="close close2" data-dismiss="modal" aria-hidden="true">×</button>
-						<h4 class="modal-title" id="myModalLabel2">Make Your Payment via Credit or Debit Cards</h4>
-					</div>
-					<div class="modal-body">
-
-						<div id="testmodal2" style="padding: 5px 20px;">
-							<form id="antoform2" class="form-horizontal calender" role="form">
-								<h1>Amount: $12.99 CDN</h1>
-								<p id='payment-wait-msg'>Please wait...</p>
-								<div id="dropin-container"></div>
-							</form>
-						</div>
-					</div>
-					<div class="modal-footer">
-							<button id="braintree-button" class='btn btn-success paymentControl' style="margin: 0;">Make Payment</button>
-							<button type="button" class="btn btn-default close2 paymentControl" data-dismiss="modal" style="margin: 0;">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div id="paymentModalControl" data-toggle="modal" data-target="#paymentModal"></div>
-			<!-- /calendar modal -->
-
-
-			<%- include('../partials/common_scripts'); %>
-		<script src="https://js.braintreegateway.com/web/dropin/1.6.1/js/dropin.min.js"></script>
+		<%- include('../partials/common_scripts'); %>
 		<!-- FullCalendar -->
 		<script src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
 
@@ -254,55 +219,23 @@
 					} else if (calEvent.type === 'available'){
 						$("#cancel").hide()
 						$("#choose").off().on("click", function() {
-							$('.paymentControl').hide()
-							$('.close').click();
-							$('#paymentModalControl').click()
-							$('#payment-wait-msg').show()
-							var $button = $('#braintree-button');
-
-							function handlePaymentButtonClick (instance) {
-								return function () {
-									$('.paymentControl').hide()
-									instance.requestPaymentMethod(function (err, payload) {
-										if (err) {
-											$('.paymentControl').show()
-											return
-										}
-										$.ajax({
-											url: "/mentee/session/choose/"+calEvent._id,
-											type: 'PUT',
-											data: { nonce: payload.nonce }
-										})
-										.done(function (res) {
-											showSuccessNotify('Payment received. Your request has been processed. You will receive an email when the mentor responds to your request. You will not be charged until the mentor confirms your request.')
-											$('.close').click();
-											calendar.fullCalendar('refetchEvents')
-										})
-										.fail(function (res) {
-											showDangerNotify('Your card information is not valid or your bank declined the transaction. Please try again.')
-											$('.close').click();
-											calendar.fullCalendar('refetchEvents')
-										})
-									});
-								}
-							}
-
-							$.get('/mentee/paymentToken')
-								.done(function (token) {
-									$('#dropin-container').empty()
-									braintree.dropin.create({
-										authorization: token,
-										container: '#dropin-container'
-									}, function (createErr, instance) {
-										$('.paymentControl').show()
-										$('#payment-wait-msg').hide()
-										$button.off().click(handlePaymentButtonClick(instance));
-									});
-								})
-								.fail(function() {
-									$('.close').click();
-									showDangerNotify('Server error, please try again later')
-								})
+							$('.modal-footer').hide()
+							$.ajax({
+								url: "/mentee/session/choose/"+calEvent._id,
+								type: 'PUT',
+							})
+							.done(function (res) {
+								$('.modal-footer').show()
+								showSuccessNotify('Your request has been processed. You will receive an email when the mentor responds to your request.')
+								$('.close').click();
+								calendar.fullCalendar('refetchEvents')
+							})
+							.fail(function (res) {
+								$('.modal-footer').show()
+								showDangerNotify('Oops, looks like something went wrong on our side. Please try again later or contact customer support.')
+								$('.close').click();
+								calendar.fullCalendar('refetchEvents')
+							})
 
 						}).show();
 					} else {
