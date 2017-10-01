@@ -14,7 +14,7 @@ module.exports = function (mentor, mentee, session, hostname) {
 		'Html-part': html
 			.replace('%start', moment(session.start).format('MMM Do, YYYY HH:mm:ss'))
 			.replace('%end', moment(session.end).format('MMM Do, YYYY HH:mm:ss'))
-			.replace(/%link/g, 'http://mentormap.ca/auth/login')
+			.replace(/%link/g, 'https://mentormap.ca/auth/login')
 			.replace('%name', mentee.profile.first_name + ' ' + mentee.profile.last_name),
 		Recipients: [
 			{ Email: mentor.email },
