@@ -65,6 +65,15 @@ router.get('/signup', (req, res, next) => {
 	})
 })
 
+router.get('/mentor-signup', (req, res, next) => {
+	res.render('mentor/mentor_login', {
+		user: req.user,
+		error: req.flash('error'),
+		success: req.flash('success'),
+		startPage: 'signup',
+	})
+})
+
 router.post('/login', passport.authenticate('user-login', {
 	successRedirect: '/dashboard',
 	failureRedirect: '/auth/login',
@@ -77,9 +86,9 @@ router.post('/signup/', passport.authenticate('mentee-signup', {
 	failureFlash: true,
 }))
 
-router.post('/mentor-signup/:secret', passport.authenticate('mentor-signup', {
+router.post('/mentor-signup', passport.authenticate('mentor-signup', {
 	successRedirect: '/dashboard',
-	failureRedirect: '/auth/signup',
+	failureRedirect: '/auth/mentor-signup',
 	failureFlash: true,
 }))
 

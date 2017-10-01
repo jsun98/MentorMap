@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<%- include('../partials/meta', {pageTitle: 'Login'}); %>
+	<%- include('../partials/common_css'); %>
+
+	<link href="/vendor/strengthjs/strength.css" rel="stylesheet">
+	<link rel="stylesheet" href="/login/stylesheets/bundle.min.css"/>
+
+</head>
+
+<body>
+
+	<div class="login-page">
+		<div class="form">
+			<form class="register-form auth-form" method="POST" action="/auth/mentor-signup" novalidate>
+				<img class="img-responsive" src="/index/images/logo.png">
+				<h2 class="title">Become a Mentor</h2>
+				<div class="item form-group">
+					<input type="email" name="email" placeholder="Email" autocomplete="email" class='form-control' required='required' data-validate-length-range="5,25" />
+				</div>
+				<div class="item form-group">
+					<input type="password" name="password" id='password' placeholder="Password" autocomplete="new-password" class='form-control' required='required' data-validate-length-range="6,24"/>
+				</div>
+				<div class="item form-group">
+					<input type="text" name="first_name" placeholder="First Name" autocomplete="given-name" required='required' class='form-control'/>
+				</div>
+				<div class="item form-group">
+					<input type="text" name="last_name" placeholder="Last Name" autocomplete="family-name" required='required' class='form-control'/>
+				</div>
+				<button type='submit'>Create My Account</button>
+				<p class="message">Already registered? <a href="javascript:void(0)">Sign In</a></p>
+				<br><br><a href='/'>Back To Home Page</a></p>
+			</form>
+			<form class="login-form auth-form" method="POST" action="/auth/login" novalidate>
+				<img class="img-responsive"  src="/index/images/logo.png">
+				<h2 class="title">Sign In</h2>
+				<div class="item form-group">
+					<input type="email" name="email" placeholder="Email" autocomplete="email" required='required' class='form-control'/>
+				</div>
+				<div class="item form-group">
+					<input type="password" name="password" placeholder="Password" autocomplete="new-password" required='required' class='form-control' />
+				</div>
+				<button type='submit'>Log In</button>
+				<p class="message">Not registered? <a href="javascript:void(0)">Create an account</a><br><br><a href='/'>Back To Home Page</a></p>
+			</form>
+		</div>
+	</div>
+	<footer>
+		<p>
+		CopyRight © <% new Date().getFullYear() %> MentorMap - All Rights Reserved
+		<p>
+	</footer>
+
+
+	<%- include('../partials/common_scripts'); %>
+	<!-- validator -->
+    <script src="/vendor/validator/validator.min.js"></script>
+	<script src="/vendor/strengthjs/strength.js"></script>
+
+	<!-- validator -->
+	<script>
+
+	  // initialize the validator function
+	  validator.message.empty = 'Input cannot be empty!';
+	  validator.message.short = 'Your input is too short!';
+	  validator.message.long = 'Your input is too long!';
+	  validator.message.email = 'Email address is invalid!';
+
+	  $('form').submit(function(e) {
+
+		e.preventDefault();
+			var submit = true;
+			// evaluate the form using generic validaing
+			if( !validator.checkAll( $('form') ) ){
+				submit = false;
+			}
+
+			if ( submit ) {
+				this.submit();
+			}
+			return false;
+
+	  });
+
+	</script>
+	<!-- /validator -->
+
+
+	<script>
+		$(document).ready(function ($) {
+			$("#password").strength();
+			$('.strength_meter').hide()
+			$('.button_strength').hide()
+
+			$("#password")
+				.on('blur', function () {
+					$('.strength_meter').hide()
+				})
+				.on('keypress focus change', function () {
+					$('.strength_meter').show()
+				})
+		});
+
+	$('.message a').click(function(){
+		$('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+	});
+
+	<% if (startPage === 'signup') { %>
+		$('form').animate({height: "toggle", opacity: "toggle"}, 0);
+		<% } %>
+
+
+
+		function showSuccessNotify (msg) {
+			new PNotify({
+				title: 'Success',
+				text: msg,
+				type: 'success',
+				styling: "bootstrap3",
+				delay: 4000,
+				buttons: {sticker: false},
+			});
+		}
+
+		function showDangerNotify (msg) {
+			new PNotify({
+				title: 'Error',
+				text: msg,
+				type: 'error',
+				styling: "bootstrap3",
+				delay: 4000,
+				buttons: {sticker: false},
+			});
+		}
+
+		<% for (var i = 0; i < error.length; i++) { %>
+			showDangerNotify('<%= error[i] %>')
+		<% } %>
+
+		<% for (var i = 0; i < success.length; i++) { %>
+			showSuccessNotify('<%= success[i] %>')
+		<% } %>
+	</script>
+
+</body>
+
+</html>

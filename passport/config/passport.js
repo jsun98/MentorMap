@@ -93,8 +93,6 @@ module.exports = function (passport) {
 		passwordField: 'password',
 		passReqToCallback: true,
 	}, (req, email, password, done) => {
-		if (req.params.secret !== process.env.MENTOR_CREATE_SECRET)
-			return done(new Error('wrong secret'))
 		User.findOne({ email }, (err, user) => {
 			if (err) return done(err)
 
