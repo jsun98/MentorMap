@@ -19,7 +19,7 @@ router.post('/register', (req, res, next) => {
 	if (req.user.completed) return res.redirect('/dashboard')
 
 	req.body.skills = req.body.skills.split(',')
-	if (req.body.high_school_program.constructor !== Array)
+	if (!(req.body.high_school_program instanceof Array))
 		req.body.high_school_program = [ req.body.high_school_program ]
 
 	User.findByIdAndUpdate(req.user._id, {

@@ -19,9 +19,9 @@ router.post('/register', (req, res, next) => {
 
 	req.body.skills = req.body.skills.split(',')
 
-	if (req.body.high_school_program.constructor !== Array)
+	if (!(req.body.high_school_program instanceof Array))
 		req.body.high_school_program = [ req.body.high_school_program ]
-	if (req.body.preferred_program.constructor !== Array)
+	if (!(req.body.preferred_program instanceof Array))
 		req.body.preferred_program = [ req.body.preferred_program ]
 
 	User.findByIdAndUpdate(req.user._id, {
